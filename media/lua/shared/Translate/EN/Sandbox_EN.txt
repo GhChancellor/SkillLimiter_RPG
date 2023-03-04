@@ -1,0 +1,12 @@
+Sandbox_EN = {
+	Sandbox_SL = "Lele Skill Limiter",
+
+    Sandbox_T1 = "First Level",
+    Sandbox_T1_tooltip = "Prova 1"
+
+    Sandbox_T2 = "Second Level",
+    Sandbox_T2_tooltip = "prova 2",
+
+    Sandbox_T3 = "Third Level",
+    Sandbox_T3_tooltip = "prova 3",
+}
