@@ -34,11 +34,76 @@ local function characterMaxLevelPerk(perk, maxLevel)
 end
 
 local function onCustomUIKeyPressed(key)
+
     local character = getPlayer()
+
+    --key34(character, key)
+    --key35(character, key)
+    key36(character, key)
+end
+
+function key36(character, key)
+    if key == 36 then -- <<<< j
+        print("Key = J\n")
+
+        -- characterObjCreation funziona correttamente finchè non attivi characterObjAllSkills
+        -- poi " unifica " i valori
+
+        -- characterObjCreation funziona correttamente
+        local characterObjCreation = getCharacterCreation(character)
+
+        -- se attivi characterObjAllSkills allora characterObjAllSkills e characterObjAllSkills
+        -- diventano una cosa unica.
+        -- mi da l'idea che l'oggetto sia una valore global
+
+
+        -- PROVA AD ATTIVARLO i valore di characterObjCreation cambieranno
+        -- local characterObjAllSkills = getCharacterAllSkills(character)
+
+        for i1, v1 in pairs(characterObjCreation.getPerkDetails()) do
+            print("characterObjCreation " .. tostring(v1.perk))
+        end
+
+        print("----------------------------------------------------\n")
+
+        --for i2, v2 in pairs(characterObjAllSkills.getPerkDetails()) do
+        --    print("characterObjAllSkills " .. tostring(v2.perk))
+        --end
+
+        --for i1, v1 in pairs(characterObjAllSkills.getPerkDetails()) do
+        --    for i2, v2 in pairs(characterObjCreation.getPerkDetails()) do
+        --        if v1.perk == v2.perk then
+        --            v1 = v2
+        --            v1.flag = true
+        --
+        --            print(tostring(v1.flag))
+        --        end
+        --    end
+        --end
+
+
+
+        --for i, v in pairs(characterObjAllSkills.getPerkDetails()) do
+        --    if "Combat" == v.perk:getParent():getName()  then -- < da creare un metodo
+        --        calculateCombatMaxLevel(v.perk, v.level)
+        --    else
+        --        calculateCharacterMaxPerk(v.perk, v.level)
+        --    end
+        --end
+
+
+
+        --  DBG_display_SLExample(false, true, true)
+
+        --print(tostring(v.getPerkDetails().getLevel()))
+
+        --print(tostring(i) .. " " .. tostring(characterCreation[i]))
+
+    end
+end
+
+function key34(character, key)
     if key == 34 then -- <<<< g
-        -- 04-03-2023
-        -- >>>>>>>>>>>>>>>> ATTENZIONE <<<<<<<<<<<<<<<<<<<
-        -- La lista da ancora poblemi, se abilit il DGB Maintenace non viene aggiunta
         require("CharacterCreation.lua")
 
         local characterCreation = {}
@@ -48,12 +113,13 @@ local function onCustomUIKeyPressed(key)
         end
         print("\n")
     end
+end
 
+function key35(character, key)
     if key == 35 then -- <<< h
         -- reset tables
         characterMaxLevelPerks = {}
         characterMaxLevelCombats = {}
-
 
         createCharacter(character)
         DBG_display_SLExample(false, true, true)
@@ -61,7 +127,6 @@ local function onCustomUIKeyPressed(key)
     end
 
     if flag_onCustomUIKeyPressed then
-
         flag_onCustomUIKeyPressed = false
     end
 end
@@ -71,23 +136,23 @@ end
 ---@param perk PerkFactory.Perk
 ---@param _ --- unused
 function checkLevelMax(character, perk, _)
-    local characterObj = getCharacterCurrentSkill(character, perk)
+    local CharacterObj = getCharacterCurrentSkill(character, perk)
 
     -- if per andare direttamente al secondo ciclo
 
     for perk_, level in pairs(characterMaxLevelPerks) do
         -- if true
-        if (characterMaxLevelPerks[perk_].perk == characterObj.getAbility().getPerk()) then
-            if (characterObj.getAbility().getLevel() >= level.maxLevel ) then
-                blockLevel(character, perk, level.maxLevel, characterObj)
+        if (characterMaxLevelPerks[perk_].perk == CharacterObj.getPerkDetails().getPerk()) then
+            if (CharacterObj.getPerkDetails().getLevel() >= level.maxLevel ) then
+                blockLevel(character, perk, level.maxLevel, CharacterObj)
             end
         end
     end
 
     for perk_, level in pairs(characterMaxLevelCombats) do
-        if (characterMaxLevelCombats[perk_].perk == characterObj.getAbility().getPerk()) then
-            if (characterObj.getAbility().getLevel() >= level.maxLevel ) then
-                blockLevel(character, perk, level.maxLevel, characterObj)
+        if (characterMaxLevelCombats[perk_].perk == CharacterObj.getPerkDetails().getPerk()) then
+            if (CharacterObj.getPerkDetails().getLevel() >= level.maxLevel ) then
+                blockLevel(character, perk, level.maxLevel, CharacterObj)
             end
         end
     end
@@ -104,7 +169,7 @@ function blockLevel(character, perk, maxLevel, characterObj)
         convertLevelToXp_ = convertLevelToXp_ + convertLevelToXp(perk, level_)
     end
 
-    local totalXp = ( convertLevelToXp_ - characterObj.getAbility().getXp()) * 2
+    local totalXp = ( convertLevelToXp_ - characterObj.getPerkDetails().getXp()) * 2
     if totalXp == 0 then
         return
     end
@@ -120,9 +185,9 @@ function createCharacter(character)
         return nil
     end
 
-    local characterObj = getCharacterAllSkills(character)
+    local CharacterObj = getCharacterAllSkills(character)
 
-    for i, v in pairs(characterObj.getAbilitys()) do
+    for i, v in pairs(CharacterObj.getPerkDetails()) do
         if "Combat" == v.perk:getParent():getName()  then -- < da creare un metodo
             calculateCombatMaxLevel(v.perk, v.level)
         else

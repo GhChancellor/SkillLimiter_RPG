@@ -4,7 +4,9 @@
 --- DateTime: 12/02/23 10:20
 --- V002
 
-local CharacterObj = require("objects/CharacterObj")
+---@class ProjectZomboidLibs
+
+
 local characterTraitsTable_ = { perk, level }
 local professionsTable_ = { perk, level }
 
@@ -53,81 +55,6 @@ function getCharacterProfession(character)
     return professionsTable_
 end
 
-
--- ----------------------
-
--- TODO resetChart
----Reset Character
----@param character IsoGameCharacter
-function resetChart(character)
-    if not character then
-        return nil
-    end
-
-    local profession = getCharacterProfession_PZ(character)
-    local perk_ = getPerk_PZ(perk)
-    local level = getPerkLevel_PZ(character, perk_)
-    local xp = getXpPerk_PZ(character, perk_)
-
-end
-
--- TODO setPerkLevel
----Set Perk Level and level
----@param character IsoGameCharacter
----@param perk PerkFactory.Perk
----@return float xp
---- - IsoGameCharacter.XP : zombie.characters.IsoGameCharacter.XP
-function setPerkLevel(character, perk, levelPerk)
-    character:setPerkLevelDebug(perk, levelPerk)  -- Perks.Maintenance
-end
-
--- TODO setCharacterProfession_PZ
---- Get Charater profession
----@param character IsoGameCharacter
----@param profession String
---- - SurvivorDesc : zombie.characters.SurvivorDesc
-function setCharacterProfession_PZ(character, profession)
-    if not character then
-        return nil
-    end
-
-    character:getDescriptor().setProfession(profession)
-end
-
--- TODO setProfessionSkills_PZ
-function setProfessionSkills_PZ()
-
-end
-
--- TODO setXpLevelToZero
-function setXpLevelToZero()
-
-end
-
--- TODO LoseLevel
----Set Perk Level and level
----@param character IsoGameCharacter
----@param perk PerkFactory.Perk
----@return float xp
---- ISPlayerStatsUI.lua 635
---- - IsoGameCharacter.XP : zombie.characters.IsoGameCharacter.XP
-function setPerkLevel_PZ(character, perk, levelPerk)
-    --local character = getPlayer()
-    --local perk = PerkFactory.getPerk(Perks.Cooking)
-    --character:level0(perk)
-    --character:LoseLevel(perk)
-    --character:LevelPerk(perk)  -- Perks.Maintenance
-end
-
--- TODO getParent_PZ
----@param character IsoGameCharacter
-function getParent_PZ(character)
-
-end
-
-
--- ----------------------
-
 --- Get Perk
 ---@param perk PerkFactory
 ---@return PerkFactory.Perk perk
@@ -161,6 +88,8 @@ function getCharacterCurrentSkill(character, perk)
         return nil
     end
 
+    local CharacterObj = require("objects/CharacterObj")
+
     local profession = getCharacterProfession_PZ(character)
     local perk_ = getPerk_PZ(perk)
     local level = getPerkLevel_PZ(character, perk_)
@@ -179,6 +108,8 @@ function getCharacterAllSkills(character)
         return nil
     end
 
+    local CharacterObj = require("objects/CharacterObj")
+
     local profession = getCharacterProfession_PZ(character)
 
     -- add profession e add Ability into table
@@ -189,7 +120,7 @@ function getCharacterAllSkills(character)
         local level = getPerkLevel_PZ(character, perk)
         local xp = getXpPerk_PZ(character, perk)
         -- table
-        CharacterObj.addAbility(perk, level, xp)
+        CharacterObj.addPerkDetails(perk, level, xp)
     end
     return CharacterObj
 end
@@ -301,8 +232,74 @@ function convertLevelToXp(perk, level)
     return nil
 end
 
-function DBG_displayProjectZomboidLibs()
-    for i, v in pairs( CharacterObj.getAbilitys() ) do
-        print(tostring(v.perk) .. " Level: " .. tostring(v.level) .. " Xp: " .. tostring(v.xp) )
-    end
+-- ----------------------
+
+-- TODO resetChart
+---Reset Character
+---@param character IsoGameCharacter
+function resetChart(character)
+    --if not character then
+    --    return nil
+    --end
+    --
+    --local profession = getCharacterProfession_PZ(character)
+    --local perk_ = getPerk_PZ(perk)
+    --local level = getPerkLevel_PZ(character, perk_)
+    --local xp = getXpPerk_PZ(character, perk_)
 end
+
+-- TODO setPerkLevel
+---Set Perk Level and level
+---@param character IsoGameCharacter
+---@param perk PerkFactory.Perk
+---@return float xp
+--- - IsoGameCharacter.XP : zombie.characters.IsoGameCharacter.XP
+function setPerkLevel(character, perk, levelPerk)
+    --character:setPerkLevelDebug(perk, levelPerk)  -- Perks.Maintenance
+end
+
+-- TODO setCharacterProfession_PZ
+--- Get Charater profession
+---@param character IsoGameCharacter
+---@param profession String
+--- - SurvivorDesc : zombie.characters.SurvivorDesc
+function setCharacterProfession_PZ(character, profession)
+    --if not character then
+    --    return nil
+    --end
+    --
+    --character:getDescriptor().setProfession(profession)
+end
+
+-- TODO setProfessionSkills_PZ
+function setProfessionSkills_PZ()
+
+end
+
+-- TODO setXpLevelToZero
+function setXpLevelToZero()
+
+end
+
+-- TODO LoseLevel
+---Set Perk Level and level
+---@param character IsoGameCharacter
+---@param perk PerkFactory.Perk
+---@return float xp
+--- ISPlayerStatsUI.lua 635
+--- - IsoGameCharacter.XP : zombie.characters.IsoGameCharacter.XP
+function setPerkLevel_PZ(character, perk, levelPerk)
+    --local character = getPlayer()
+    --local perk = PerkFactory.getPerk(Perks.Cooking)
+    --character:level0(perk)
+    --character:LoseLevel(perk)
+    --character:LevelPerk(perk)  -- Perks.Maintenance
+end
+
+-- TODO getParent_PZ
+---@param character IsoGameCharacter
+function getParent_PZ(character)
+
+end
+
+-- ----------------------

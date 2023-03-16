@@ -5,12 +5,16 @@
 --- non sono sicuro dei local, sembra funzionare
 --- return CharacterOOP l'ho aggiunto io e restuisce i metodi
 ---
-local AbilityObj = require("objects/AbilityObj")
 
+---@class CharacterObj
+
+local PerkDetailsObj = require("objects/PerkDetailsObj")
+
+-- TODO al capo non piacciano, sistemare gli oggetti come da sue specifiche
 local CharacterObj = {}
 local MetaCharacter = {}
 MetaCharacter.__index = CharacterObj
-local abilitys = {}
+local perkDetails_LIST = {}
 
 local instance
 
@@ -28,7 +32,7 @@ function CharacterObj.createCharacter(profession)
     instance.profession = profession
 
     -- reset table
-    abilitys = {}
+    perkDetails_LIST = {}
     return instance
 end
 
@@ -40,28 +44,34 @@ end
 function CharacterObj.currentCharacter(profession, perk, level, xp)
     initCharacterObj()
     instance.profession = profession
-    AbilityObj.new(perk, level, xp)
+    PerkDetailsObj.addPerkDetails(perk, level, xp)
     return instance
 end
 
----Add Ability
+---Add Perk Details ( list )
 ---@param perk PerkFactory.Perk
 ---@param level int
 ---@param xp float
-function CharacterObj.addAbility(perk, level, xp)
-    table.insert(abilitys, AbilityObj.new(perk, level, xp))
+function CharacterObj.addPerkDetails(perk, level, xp)
+    table.insert(perkDetails_LIST, PerkDetailsObj.addPerkDetails(perk, level, xp))
 end
 
----Get Abilitys
+---Remove Perk Details ( list )
+---@param value int
+function CharacterObj.removePerkDetails(value)
+    table.remove(perkDetails_LIST, value)
+end
+
+---Get Perk Details
 ---@return table perk, level, xp
-function CharacterObj.getAbilitys()
-    return abilitys
+function CharacterObj.getPerkDetails()
+    return perkDetails_LIST
 end
 
----Get Abilitys
----@return AbilityObj perk, level, xp
-function CharacterObj.getAbility()
-    return AbilityObj
+---Get object PerkDetailsObj
+---@return PerkDetailsObj
+function CharacterObj.getPerkDetailsObj()
+    return PerkDetailsObj
 end
 
 ---Set Profession
@@ -71,7 +81,7 @@ function CharacterObj.setProfession(profession)
 end
 
 ---Get Profession
----return string profession
+---@return string profession
 function CharacterObj.getProfession()
     return instance.profession
 end
