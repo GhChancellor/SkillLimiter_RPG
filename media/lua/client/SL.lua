@@ -58,7 +58,7 @@ function key36(character, key)
 
 
         -- PROVA AD ATTIVARLO i valore di characterObjCreation cambieranno
-        -- local characterObjAllSkills = getCharacterAllSkills(character)
+        local characterObjAllSkills = getCharacterAllSkills(character)
 
         for i1, v1 in pairs(characterObjCreation.getPerkDetails()) do
             print("characterObjCreation " .. tostring(v1.perk))

@@ -25,6 +25,7 @@ local function professionsTable(perk, level)
 end
 
 function getCharacterTraits(character)
+    -- TODO characterTraitsTable_ = { perk, level } > characterTraitsTable_ = {}
     characterTraitsTable_ = { perk, level }
 
     local traits_PZ = getTraits_PZ(character)
@@ -41,7 +42,9 @@ function getCharacterTraits(character)
     return characterTraitsTable_
 end
 
+
 function getCharacterProfession(character)
+    -- TODO professionsTable_ = { perk, level } > professionsTable_ = {}
     professionsTable_ = { perk, level }
 
     local characterProfession_PZ = getCharacterProfession_PZ(character)

@@ -1,10 +1,13 @@
 
 ---@class CharacterCreation
 
-local characterCreationsTable_ = { trait }
+local characterCreationsTable_ = { perk, level }
 
-local function characterCreationTable(trait)
-    table.insert(characterCreationsTable_, trait)
+local function characterCreationTable(perk, level)
+    table.insert(characterCreationsTable_, {
+        perk = perk,
+        level = level
+    })
 end
 
 local function initCharacterCreation(character)
@@ -19,41 +22,39 @@ end
 ---@param character IsoGameCharacter
 ---@return CharacterObj -- CharacterObj.lua = String Perk, int Level
 function getCharacterCreation(character)
-    local characterProfessions = {}
+    characterCreationsTable_ = {}
+
+    local characterProfession = {}
+    characterProfession = getCharacterProfession(character)
+
     local characterTraits = {}
-
-    characterProfessions = getCharacterProfession(character)
     characterTraits = getCharacterTraits(character)
-    characterCreationsTable_ = characterProfessions
 
-    local found = false
-    for i, _ in pairs(characterTraits) do
-        for j, _ in pairs(characterCreationsTable_) do
-            if characterCreationsTable_[j].perk == characterTraits[i].perk then
-                characterCreationsTable_[j].level =
-                characterCreationsTable_[j].level:intValue() + characterTraits[i].level:intValue()
-                found = true
+    for _, v1 in pairs(characterTraits) do
+        characterCreationTable(v1.perk, v1.level)
+    end
+
+    for _, v1 in pairs(characterCreationsTable_) do
+        for i2, v2 in pairs(characterProfession) do
+            if  v1.perk == v2.perk then
+                v1.level = v1.level:intValue() + v2.level:intValue()
+                table.remove(characterProfession, i2)
             end
-        end
-
-        if not found then
-            characterCreationTable(characterTraits[i])
-            found = false
         end
     end
 
+    for _, v1 in pairs(characterProfession) do
+        characterCreationTable(v1.perk, v1.level)
+    end
+
+    -- add to CharacterObj
     local CharacterObj = require("objects/CharacterObj")
 
-    for i, v in pairs(characterCreationsTable_) do
+    for _, v in pairs(characterCreationsTable_) do
         CharacterObj.addPerkDetails(v.perk, v.level)
     end
 
-    ---- TODO dbg
-    --for i, v in pairs(CharacterObj.getPerkDetails()) do
-    --    print("CharacterCreation " .. tostring(v.perk))
-    --end
-    --
-    --print("----------------------------------------------------\n")
-
     return CharacterObj
+
+    --return characterCreationsTable_
 end
