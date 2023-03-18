@@ -6,6 +6,7 @@
 
 ---@class ProjectZomboidLibs
 
+require("media.lua.shared.objects.CharacterObj001")
 
 local characterTraitsTable_ = { perk, level }
 local professionsTable_ = { perk, level }
@@ -85,47 +86,48 @@ end
 ---Get character and get current skill/trait
 ---@param character IsoGameCharacter
 ---@param perk PerkFactory.Perk
----@return CharacterObj -- CharacterObj.lua = String Perk, int Level
+---@return CharacterObj -- CharacterObj001.lua = String Perk, int Level
 function getCharacterCurrentSkill(character, perk)
     if not character then
         return nil
     end
 
-    local CharacterObj = require("objects/CharacterObj")
+    local CharacterObj01 = CharacterObj:newObject(nil)
 
     local profession = getCharacterProfession_PZ(character)
     local perk_ = getPerk_PZ(perk)
     local level = getPerkLevel_PZ(character, perk_)
     local xp = getXpPerk_PZ(character, perk_)
 
-    CharacterObj.currentCharacter(profession, perk_, level, xp)
-    return CharacterObj
+    CharacterObj01:currentCharacter(profession, perk_, level, xp)
+    return CharacterObj01
 end
 
 ---Get character and get All skills/traits
 ---@param character IsoGameCharacter
----@return CharacterObj -- CharacterObj.lua = String Perk, int Level
+---@return CharacterObj -- CharacterObj001.lua = String Perk, int Level
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 function getCharacterAllSkills(character)
     if not character then
         return nil
     end
 
-    local CharacterObj = require("objects/CharacterObj")
+    local CharacterObj01 = CharacterObj:newObject(nil)
 
     local profession = getCharacterProfession_PZ(character)
 
     -- add profession e add Ability into table
-    CharacterObj.createCharacter(profession)
+    CharacterObj01:setProfession(profession)
 
     for i = 0, Perks.getMaxIndex() - 1 do
         local perk = getPerk_PZ(Perks.fromIndex(i))
         local level = getPerkLevel_PZ(character, perk)
         local xp = getXpPerk_PZ(character, perk)
         -- table
-        CharacterObj.addPerkDetails(perk, level, xp)
+        CharacterObj01:addPerkDetails(perk, level, xp)
     end
-    return CharacterObj
+
+    return CharacterObj01
 end
 
 --- Get Perk Level

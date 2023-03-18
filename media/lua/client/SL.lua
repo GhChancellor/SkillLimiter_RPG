@@ -45,78 +45,19 @@ end
 function key36(character, key)
     if key == 36 then -- <<<< j
         print("Key = J\n")
-
-        -- characterObjCreation funziona correttamente finchè non attivi characterObjAllSkills
-        -- poi " unifica " i valori
-
-        -- characterObjCreation funziona correttamente
-        local characterObjCreation = getCharacterCreation(character)
-
-        -- se attivi characterObjAllSkills allora characterObjAllSkills e characterObjAllSkills
-        -- diventano una cosa unica.
-        -- mi da l'idea che l'oggetto sia una valore global
-
-
-        -- PROVA AD ATTIVARLO i valore di characterObjCreation cambieranno
-        local characterObjAllSkills = getCharacterAllSkills(character)
-
-        for i1, v1 in pairs(characterObjCreation.getPerkDetails()) do
-            print("characterObjCreation " .. tostring(v1.perk))
-        end
-
-        print("----------------------------------------------------\n")
-
-        --for i2, v2 in pairs(characterObjAllSkills.getPerkDetails()) do
-        --    print("characterObjAllSkills " .. tostring(v2.perk))
-        --end
-
-        --for i1, v1 in pairs(characterObjAllSkills.getPerkDetails()) do
-        --    for i2, v2 in pairs(characterObjCreation.getPerkDetails()) do
-        --        if v1.perk == v2.perk then
-        --            v1 = v2
-        --            v1.flag = true
-        --
-        --            print(tostring(v1.flag))
-        --        end
-        --    end
-        --end
-
-
-
-        --for i, v in pairs(characterObjAllSkills.getPerkDetails()) do
-        --    if "Combat" == v.perk:getParent():getName()  then -- < da creare un metodo
-        --        calculateCombatMaxLevel(v.perk, v.level)
-        --    else
-        --        calculateCharacterMaxPerk(v.perk, v.level)
-        --    end
-        --end
-
-
-
-        --  DBG_display_SLExample(false, true, true)
-
-        --print(tostring(v.getPerkDetails().getLevel()))
-
-        --print(tostring(i) .. " " .. tostring(characterCreation[i]))
-
+        dbg001()
     end
 end
 
 function key34(character, key)
     if key == 34 then -- <<<< g
-        require("CharacterCreation.lua")
-
-        local characterCreation = {}
-        characterCreation = getCharacterCreation(character)
-        for perk, level in pairs(characterCreation) do
-            print(tostring(characterCreation[perk].perk) .. " " .. tostring(characterCreation[perk].level))
-        end
-        print("\n")
+        print("Key = g\n")
     end
 end
 
 function key35(character, key)
     if key == 35 then -- <<< h
+        print("Key = h\n")
         -- reset tables
         characterMaxLevelPerks = {}
         characterMaxLevelCombats = {}
@@ -140,18 +81,18 @@ function checkLevelMax(character, perk, _)
 
     -- if per andare direttamente al secondo ciclo
 
-    for perk_, level in pairs(characterMaxLevelPerks) do
+    for _, v in pairs(characterMaxLevelPerks) do
         -- if true
-        if (characterMaxLevelPerks[perk_].perk == CharacterObj.getPerkDetails().getPerk()) then
-            if (CharacterObj.getPerkDetails().getLevel() >= level.maxLevel ) then
-                blockLevel(character, perk, level.maxLevel, CharacterObj)
+        if (v.perk == CharacterOb:getPerkDetails():getPerk()) then
+            if (CharacterObj:getPerkDetails():getLevel() >= v.maxLevel ) then
+                blockLevel(character, perk, v.maxLevel, CharacterObj)
             end
         end
     end
 
-    for perk_, level in pairs(characterMaxLevelCombats) do
-        if (characterMaxLevelCombats[perk_].perk == CharacterObj.getPerkDetails().getPerk()) then
-            if (CharacterObj.getPerkDetails().getLevel() >= level.maxLevel ) then
+    for _, level in pairs(characterMaxLevelCombats) do
+        if (v.perk == CharacterObj:getPerkDetails():getPerk()) then
+            if (CharacterObj:getPerkDetails():getLevel() >= level.maxLevel ) then
                 blockLevel(character, perk, level.maxLevel, CharacterObj)
             end
         end
@@ -169,7 +110,7 @@ function blockLevel(character, perk, maxLevel, characterObj)
         convertLevelToXp_ = convertLevelToXp_ + convertLevelToXp(perk, level_)
     end
 
-    local totalXp = ( convertLevelToXp_ - characterObj.getPerkDetails().getXp()) * 2
+    local totalXp = ( convertLevelToXp_ - characterObj:getPerkDetails():getXp()) * 2
     if totalXp == 0 then
         return
     end
@@ -187,7 +128,7 @@ function createCharacter(character)
 
     local CharacterObj = getCharacterAllSkills(character)
 
-    for i, v in pairs(CharacterObj.getPerkDetails()) do
+    for _, v in pairs(CharacterObj:getPerkDetails()) do
         if "Combat" == v.perk:getParent():getName()  then -- < da creare un metodo
             calculateCombatMaxLevel(v.perk, v.level)
         else
@@ -263,15 +204,15 @@ end
 function DBG_display_SLExample(profession, perk, weapon)
     if perk then
         print("\n Perk")
-        for perk, level in pairs(characterMaxLevelPerks) do
-            print( tostring(characterMaxLevelPerks[perk].perk:getName()) .. " " .. tostring(level.maxLevel) )
+    for _, v in pairs(characterMaxLevelPerks) do
+            print( tostring(v.perk:getName()) .. " " .. tostring(v.maxLevel) )
         end
     end
 
     if weapon then
         print("\n weapon")
-        for perk, level in pairs(characterMaxLevelCombats) do
-            print( tostring(characterMaxLevelCombats[perk].perk:getName()) .. " " .. tostring(level.maxLevel) )
+        for _, v in pairs(characterMaxLevelCombats) do
+            print( tostring(v.perk:getName()) .. " " .. tostring(v.maxLevel) )
         end
     end
 
@@ -293,30 +234,7 @@ local function OnGameStart()
     --init()
 end
 
-Events.OnCustomUIKeyPressed.Add(onCustomUIKeyPressed)
---Events.OnGameStart.Add(OnGameStart)
--- Events.AddXP.Add(AddXP)
 
-
-
--- Todo DBGMode_Init
-function DBGMode_Init(key, debugMode)
-    --if not debugMode then
-    --    return
-    --end
-    --
-    --local character = getPlayer()
-    --
-    --if ( key == 49 ) then
-    --    -- reset tables
-    --    characterMaxLevelPerks = {}
-    --    characterMaxLevelCombats = {}
-    --
-    --    local characterObj = getCharacterAllSkills(character)
-    --
-    --
-    --end
-end
 
 
 --[[
@@ -336,3 +254,45 @@ local function AddXP(character, perk, level)
 end
 
 Events.AddXP.Add(AddXP)]]
+
+
+function dbg001()
+    local character = getPlayer()
+
+    print("------------------------------------")
+    local characterCurrentSkill01 =
+    getCharacterCurrentSkill(character, Perks.Maintenance)
+
+    print("Oggetto 1 " .. tostring(characterCurrentSkill01:getProfession()))
+    print("Oggetto 1 " .. tostring(characterCurrentSkill01:getPerkDetailsObj():getPerk()))
+    print("------------------------------------")
+
+    print("------------------------------------")
+    local characterCurrentSkill02 =
+    getCharacterCurrentSkill(character, Perks.Doctor)
+
+    print("Oggetto 2 " .. tostring(characterCurrentSkill02:getProfession()))
+    print("Oggetto 2 " .. tostring(characterCurrentSkill02:getPerkDetailsObj():getPerk()))
+    print("------------------------------------")
+
+    print("------------------------------------")
+    local characterCreation = getCharacterCreation(character)
+
+    for _, v in pairs(characterCreation:getPerkDetails()) do
+        print("Oggetto 3 " .. tostring(v:getPerk()) .. " " .. tostring(v:getLevel()))
+    end
+    print("------------------------------------")
+
+    print("------------------------------------")
+    local characterAllSkills =
+    getCharacterAllSkills(character)
+
+    --for _, v in pairs(characterAllSkills:getPerkDetails()) do
+    --    print("Oggetto 4 " .. tostring(v:getPerk()))
+    --end
+    print("------------------------------------")
+end
+
+Events.OnCustomUIKeyPressed.Add(onCustomUIKeyPressed)
+--Events.OnGameStart.Add(OnGameStart)
+--Events.AddXP.Add(AddXP)

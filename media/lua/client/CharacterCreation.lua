@@ -1,6 +1,8 @@
 
 ---@class CharacterCreation
 
+require("media.lua.shared.objects.CharacterObj001")
+
 local characterCreationsTable_ = { perk, level }
 
 local function characterCreationTable(perk, level)
@@ -34,7 +36,7 @@ function getCharacterCreation(character)
         characterCreationTable(v1.perk, v1.level)
     end
 
-    for _, v1 in pairs(characterCreationsTable_) do
+    for i1, v1 in pairs(characterCreationsTable_) do
         for i2, v2 in pairs(characterProfession) do
             if  v1.perk == v2.perk then
                 v1.level = v1.level:intValue() + v2.level:intValue()
@@ -48,13 +50,12 @@ function getCharacterCreation(character)
     end
 
     -- add to CharacterObj
-    local CharacterObj = require("objects/CharacterObj")
-
+    local CharacterObj01 = CharacterObj:newObject(nil)
     for _, v in pairs(characterCreationsTable_) do
-        CharacterObj.addPerkDetails(v.perk, v.level)
+        CharacterObj01:addPerkDetails(v.perk, v.level)
     end
 
-    return CharacterObj
+    return CharacterObj01
 
     --return characterCreationsTable_
 end
