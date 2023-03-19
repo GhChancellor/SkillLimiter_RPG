@@ -292,7 +292,7 @@ function dbg001()
     characterCurrentSkill02 = nil
     characterCreation = nil
     characterAllSkills = nil
-
+ -- prova di commit
 end
 
 Events.OnCustomUIKeyPressed.Add(onCustomUIKeyPressed)
