@@ -6,7 +6,7 @@
 
 ---@class ProjectZomboidLibs
 
-require("media.lua.shared.objects.CharacterObj001")
+require("media.lua.shared.objects.CharacterObj")
 
 local characterTraitsTable_ = { perk, level }
 local professionsTable_ = { perk, level }
@@ -25,9 +25,12 @@ local function professionsTable(perk, level)
     })
 end
 
+---Get Character Traits
+---@return table perk, level
 function getCharacterTraits(character)
     -- TODO characterTraitsTable_ = { perk, level } > characterTraitsTable_ = {}
-    characterTraitsTable_ = { perk, level }
+    --characterTraitsTable_ = { perk, level }
+    characterTraitsTable_ = {}
 
     local traits_PZ = getTraits_PZ(character)
 
@@ -43,10 +46,12 @@ function getCharacterTraits(character)
     return characterTraitsTable_
 end
 
-
+---Get Character Profession
+---@return table perk, level
 function getCharacterProfession(character)
     -- TODO professionsTable_ = { perk, level } > professionsTable_ = {}
-    professionsTable_ = { perk, level }
+    --professionsTable_ = { perk, level }
+    professionsTable_ = {}
 
     local characterProfession_PZ = getCharacterProfession_PZ(character)
     local professionMap = ProfessionFactory.getProfession(characterProfession_PZ):getXPBoostMap()

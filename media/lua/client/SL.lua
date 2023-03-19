@@ -5,13 +5,9 @@
 --- function ISSkillProgressBar:renderPerkRect()
 --- ISSkillProgressBar:updateTooltip(lvlSelected)
 
-local characterMaxLevelCombats = { perk, maxLevel}
-local characterMaxLevelPerks = { perk, maxLevel}
+local characterMaxLevelCombats = { perk, maxLevel }
+local characterMaxLevelPerks = { perk, maxLevel }
 -- local getPlayer = getPlayer -- projectZombieLib 52 error
-
--- ---------------------------
-local flag_onCustomUIKeyPressed = true
--- ---------------------------
 
 ---Add value to table characterMaxCombat
 ---@param perk PerkFactory.Perk
@@ -255,7 +251,7 @@ end
 
 Events.AddXP.Add(AddXP)]]
 
-
+-- TODO oggetto 3 non svuotato correttamente
 function dbg001()
     local character = getPlayer()
 
@@ -291,6 +287,12 @@ function dbg001()
     --    print("Oggetto 4 " .. tostring(v:getPerk()))
     --end
     print("------------------------------------")
+
+    characterCurrentSkill01 = nil
+    characterCurrentSkill02 = nil
+    characterCreation = nil
+    characterAllSkills = nil
+
 end
 
 Events.OnCustomUIKeyPressed.Add(onCustomUIKeyPressed)

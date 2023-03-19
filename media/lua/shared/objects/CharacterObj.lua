@@ -6,12 +6,11 @@
 
 ---@class CharacterObj
 
---require("media.lua.shared.objects.PerkDetailsObj001")
-require("media.lua.shared.objects.PerkDetailsObj001")
+require("media.lua.shared.objects.PerkDetailsObj")
 
 CharacterObj = {
     profession = "",
-    perkDetails_LIST = {PerkDetailsObj_}
+    perkDetails_LIST = { PerkDetailsObj_ }
 }
 
 function CharacterObj:newObject(t)
@@ -32,6 +31,11 @@ function CharacterObj:currentCharacter(profession, perk, level, xp)
     PerkDetailsObj:addPerkDetails(perk, level, xp)
 end
 
+---Add Perk Details ( in to list )
+---@param profession string
+---@param perk PerkFactory.Perk
+---@param level int
+---@param xp float
 function CharacterObj:addPerkDetails(perk, level, xp)
     PerkDetailsObj = PerkDetailsObj:newObject(nil)
 
@@ -51,10 +55,14 @@ function CharacterObj:getPerkDetails()
     return self.perkDetails_LIST
 end
 
+---Set profession
+---@param profession string
 function CharacterObj:setProfession(profession)
     self.profession = profession
 end
 
+---Get profession
+---@return string profession
 function CharacterObj:getProfession()
     return self.profession
 end
