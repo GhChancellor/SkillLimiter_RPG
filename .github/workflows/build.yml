@@ -32,16 +32,13 @@ jobs:
       - name: build
         run:  |
           ls
-          echo "TEST 1"
-          find "$GITHUB_WORKSPACE/media/lua/" -type f -name "*.lua" ! -path "*/lua/*"
-          echo "----------------"
-          echo "TEST 2"
-          find "$GITHUB_WORKSPACE/media/lua/" -type f -name "*.lua" ! -path "*/lua/*" -print
-          echo "----------------"
-          echo "running script.."
-          find "$GITHUB_WORKSPACE/media/lua/" -type f -name "*.lua" -not -path "*/lua/*" -print0 | while read -d '' file; do
-            echo "Compiling $file ..."
-            luac $file
-            echo "Compiled $file"
+          echo "starting compiling"
+          shopt -s globstar
+          for file in **/*.lua; do
+              if [[ ! "$file" =~ lua\/ ]]; then
+                  echo "Compiling $file ..."
+                  luac "$file"
+                  echo "Compiled $file"
+              fi
           done
 
