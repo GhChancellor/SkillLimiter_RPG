@@ -31,5 +31,9 @@ jobs:
       # build with luarocks       
       - name: build
         run:  |
-          find . -type f -name "*.lua" -not -path "*/lua/*" | xargs -I {} luac {}
+          find . -type f -name "*.lua" -not -path "*/lua/*" | while read file; do
+            echo "Compiling $file ..."
+            luac $file
+            echo "Compiled $file"
+          done
 
