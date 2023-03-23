@@ -31,7 +31,16 @@ jobs:
       # build with luarocks       
       - name: build
         run:  |
+          echo "eseguo ls"
           ls
+          echo "-------------------------"
+          echo "mi sposto in media/lua"
+          cd media/lua"
+          echo "-------------------------"
+          echo "eseguo ls"
+          ls
+          echo "-------------------------"
+          
           echo "starting compiling"
           shopt -s globstar
           for file in **/*.lua; do
@@ -41,4 +50,5 @@ jobs:
                   echo "Compiled $file"
               fi
           done
+          echo "compiled phase ended succesfully"
 
