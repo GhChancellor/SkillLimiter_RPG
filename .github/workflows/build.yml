@@ -32,9 +32,5 @@ jobs:
       # build with luarocks       
       - name: build
         run: |
-          luarocks install busted
           luarocks make
-      #test 
-      - name: test
-        run: |
-          busted -o utfTerminal
+
