@@ -30,5 +30,8 @@ jobs:
 
       # build with luarocks       
       - name: build
-        run: lua *.lua
+        run:  |
+          for file in $(find . -name "*.lua"); do
+            luac $file
+          done
 
