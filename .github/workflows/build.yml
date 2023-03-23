@@ -27,10 +27,8 @@ jobs:
 
       # load the last version of lua
       - uses: leafo/gh-actions-lua@v10
-      - uses: leafo/gh-actions-luarocks@v4
 
       # build with luarocks       
       - name: build
-        run: |
-          luarocks make
+        run: lua -o build *.lua
 
