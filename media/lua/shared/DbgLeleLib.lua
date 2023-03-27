@@ -7,12 +7,15 @@
 ---@param displayName string
 ---@param perk
 ---@param level
-function DBG_displayPerk(displayName, perk, level)
+function DBG_displayPerk(displayName, perk, level, xp)
     local dbg1 = perk
     local dbg2 = level
+    local dbg3 = xp
     print("--------------------------------")
     print("DBG_displayPerk ".. displayName .. " - "
-            .. tostring(perk).. " - " .. tostring(level) )
+            .. tostring(perk).. " - "
+            .. tostring(level).. " - "
+            .. tostring(xp))
     print("--------------------------------")
     local dbg
 end
@@ -22,7 +25,7 @@ end
 ---@param perk_ PerkFactory.Perk
 ---@param perk PerkFactory.Perk
 ---@param level int
-function DGB_GetCheckPerk(displayName, perk_, perk, level )
+function DBG_GetCheckPerk(displayName, perk_, perk, level )
     -- Perks.Maintenance
     local dbg1
     local dbg2
@@ -44,12 +47,12 @@ end
 
 ---@param displayName string
 ---@param table
-function DGB_displayListPerks(displayName, perks_list)
+function DBG_displayListPerks(displayName, perks_list)
     print("--------------------------------")
     for i, v in pairs(perks_list) do
         print("dbg_displayName ".. displayName ..
                 " " .. tostring(v.perk) .. " - " .. tostring(v.level))
-        DGB_GetCheckPerk(v.perk, v.level, Perks.Maintenance )
+        DBG_GetCheckPerk("DBG_GetCheckPerk", v.perk_, v.perk, _ )
     end
     print("--------------------------------")
 end

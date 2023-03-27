@@ -78,7 +78,7 @@ end
 ---@param character IsoGameCharacter
 ---@param perk PerkFactory.Perk
 ---@param xp float
-function addXP_PZ(character, perk, xp )
+function addXP_PZ(character, perk, xp)
     if not character then
         return nil
     end

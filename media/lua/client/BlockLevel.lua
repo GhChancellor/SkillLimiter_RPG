@@ -10,15 +10,17 @@
 ---@param perk PerkFactory
 ---@param maxLevel int
 ---@param CharacterTableX CharacterTableX
-local function blockLevel(character, perk, maxLevel)
+local function blockLevel(character, currentPerkLevel , perk, maxLevel)
     local convertLevelToXp_ = 0.0
 
-    for level_ = 1, maxLevel do
-        convertLevelToXp_ = convertLevelToXp_ + convertLevelToXp(perk, level_)
+    if currentPerkLevel >= maxLevel then
+        for level_ = 1, maxLevel do
+            convertLevelToXp_ = convertLevelToXp_ + convertLevelToXp(perk, level_)
+        end
     end
 
     local totalXp = ( convertLevelToXp_ -
-            getXpPerk_PZ( character, perk ) ) * 2
+            getXpPerk_PZ( character, perk ) ) -- * 2
 
     if totalXp == 0 then
         return
@@ -31,12 +33,12 @@ end
 ---@param perk PerkFactory.Perk
 ---@param tables --- perk level
 local function calculateBlockLevel(character, perk, tables)
-    local perkLevel = getPerkLevel_PZ(character, perk)
+    local currentPerkLevel = getPerkLevel_PZ(character, perk)
 
     for _, v in pairs(tables) do
         if v.perk == perk then
-            if v.level >= perkLevel then
-                blockLevel(character, v.perk, v.level)
+            if currentPerkLevel >= v.level then
+                blockLevel(character, currentPerkLevel, v.perk, v.level)
             end
         end
     end
