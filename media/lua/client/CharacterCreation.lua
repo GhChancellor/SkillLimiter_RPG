@@ -1,57 +1,81 @@
 
 ---@class CharacterCreation
 
-require("media.lua.shared.objects.CharacterObj")
+require("media.lua.shared.objects.CharacterTableX")
 
-local characterCreationsTable_ = { perk, level }
+local characterCreationsTable_ = { perk, level, flag }
+local removeValueFromTable_ = { values }
 
+---Add value to table CreationsTable
+---@param perk PerkFactory.Perk
+---@param level int
 local function characterCreationTable(perk, level)
     table.insert(characterCreationsTable_, {
         perk = perk,
-        level = level
+        level = level,
     })
+end
+
+---Destroy characterCreationsTable_
+local function characterCreation_DestroyTable()
+    characterCreationsTable_ = { perk, level }
+end
+
+---@param int
+local function addValueFromTable(value)
+    table.insert(removeValueFromTable_, value)
+end
+
+---Remove elements from characterProfession_
+---@param table
+local function removeValueFromTable(characterProfession_)
+    for i, v in pairs(removeValueFromTable_) do
+        table.remove(characterProfession_, v)
+    end
 end
 
 ---Get character and get All skills/traits
 ---@param character IsoGameCharacter
----@return CharacterObj -- CharacterObj.lua = String Perk, int Level
+---@return table string profession, PerkFactory.Perk perk, int level, float xp, boolean flag
 function getCharacterCreation(character)
     if not character then
         return nil
     end
 
-    local CharacterObj01 = CharacterObj:newObject(nil)
+    characterCreation_DestroyTable()
 
-    characterCreationsTable_ = {}
-
-    local characterProfession_ = {}
+    local characterProfession_ = { perk, level }
     characterProfession_ = getCharacterProfession(character)
 
-    local characterTraits_ = {}
+    local characterTraits_ = { perk, level }
     characterTraits_ = getCharacterTraits(character)
 
     for _, v1 in pairs(characterTraits_) do
         characterCreationTable(v1.perk, v1.level)
     end
 
-    for i1, v1 in pairs(characterCreationsTable_) do
+    for _, v1 in pairs(characterCreationsTable_) do
         for i2, v2 in pairs(characterProfession_) do
             if  v1.perk == v2.perk then
                 v1.level = v1.level:intValue() + v2.level:intValue()
-                table.remove(characterProfession_, i2)
+                addValueFromTable(i2)
             end
         end
+
     end
 
-    for _, v1 in pairs(characterProfession_) do
-        characterCreationTable(v1.perk, v1.level)
+    removeValueFromTable(characterProfession_)
+
+    for _, v in pairs(characterProfession_) do
+        characterCreationTable(v.perk, v.level)
     end
+
+    characterTableX_DestroyTable()
 
     -- add to CharacterObj
-
-    for _, v in pairs(characterCreationsTable_) do
-        CharacterObj01:addPerkDetails(v.perk, v.level)
+    for i, v in pairs(characterCreationsTable_) do
+        characterTableX_addPerkDetails(_, v.perk, v.level, _)
     end
 
-    return CharacterObj01
+    return characterTableX_getPerkDetails()
 end

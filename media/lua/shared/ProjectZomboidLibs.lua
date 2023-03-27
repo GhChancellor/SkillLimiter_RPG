@@ -6,11 +6,14 @@
 
 ---@class ProjectZomboidLibs
 
-require("media.lua.shared.objects.CharacterObj")
+require("media.lua.shared.objects.CharacterTableX")
 
 local characterTraitsTable_ = { perk, level }
 local professionsTable_ = { perk, level }
 
+---Add character Trait Table
+---@param perk PerkFactory.Perk
+---@param level int
 local function characterTraitTable(perk, level)
     table.insert(characterTraitsTable_,{
         perk = perk,
@@ -18,6 +21,9 @@ local function characterTraitTable(perk, level)
     })
 end
 
+---Add professions Table
+---@param perk PerkFactory.Perk
+---@param level int
 local function professionsTable(perk, level)
     table.insert(professionsTable_,{
         perk = perk,
@@ -28,9 +34,7 @@ end
 ---Get Character Traits
 ---@return table perk, level
 function getCharacterTraits(character)
-    -- TODO characterTraitsTable_ = { perk, level } > characterTraitsTable_ = {}
-    --characterTraitsTable_ = { perk, level }
-    characterTraitsTable_ = {}
+    characterTraitsTable_ = { perk, level }
 
     local traits_PZ = getTraits_PZ(character)
 
@@ -49,9 +53,7 @@ end
 ---Get Character Profession
 ---@return table perk, level
 function getCharacterProfession(character)
-    -- TODO professionsTable_ = { perk, level } > professionsTable_ = {}
-    --professionsTable_ = { perk, level }
-    professionsTable_ = {}
+    professionsTable_ = { perk, level }
 
     local characterProfession_PZ = getCharacterProfession_PZ(character)
     local professionMap = ProfessionFactory.getProfession(characterProfession_PZ):getXPBoostMap()
@@ -84,6 +86,8 @@ function addXP_PZ(character, perk, xp )
     character:getXp():AddXP(perk, xp );
 end
 
+---@param value double
+---@return int
 function trunkFloatTo2Decimal(value)
     return tonumber(string.format("%.2f", value)) + 0.0
 end
@@ -91,48 +95,46 @@ end
 ---Get character and get current skill/trait
 ---@param character IsoGameCharacter
 ---@param perk PerkFactory.Perk
----@return CharacterObj -- CharacterObj001.lua = String Perk, int Level
+---@return CharacterTableX -- ---@return table string profession, PerkFactory.Perk perk, int level, float xp, boolean flag
 function getCharacterCurrentSkill(character, perk)
+    -- Perks.Maintenance
+    -- Perks.Carpentry
+    -- Perks.Agility
     if not character then
         return nil
     end
-
-    local CharacterObj01 = CharacterObj:newObject(nil)
 
     local profession = getCharacterProfession_PZ(character)
     local perk_ = getPerk_PZ(perk)
     local level = getPerkLevel_PZ(character, perk_)
     local xp = getXpPerk_PZ(character, perk_)
 
-    CharacterObj01:currentCharacter(profession, perk_, level, xp)
-    return CharacterObj01
+    return characterTableX_getCurrentCharacter(profession, perk_, level, xp)
 end
 
 ---Get character and get All skills/traits
 ---@param character IsoGameCharacter
----@return CharacterObj -- CharacterObj001.lua = String Perk, int Level
+---@return table string profession, PerkFactory.Perk perk, int level, float xp, boolean flag
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 function getCharacterAllSkills(character)
     if not character then
         return nil
     end
 
-    local CharacterObj01 = CharacterObj:newObject(nil)
+    characterTableX_DestroyTable()
 
     local profession = getCharacterProfession_PZ(character)
-
-    -- add profession e add Ability into table
-    CharacterObj01:setProfession(profession)
 
     for i = 0, Perks.getMaxIndex() - 1 do
         local perk = getPerk_PZ(Perks.fromIndex(i))
         local level = getPerkLevel_PZ(character, perk)
         local xp = getXpPerk_PZ(character, perk)
         -- table
-        CharacterObj01:addPerkDetails(perk, level, xp)
+        characterTableX_addPerkDetails(profession, perk, level, xp)
+        profession = nil
     end
 
-    return CharacterObj01
+    return characterTableX_getPerkDetails()
 end
 
 --- Get Perk Level
@@ -311,5 +313,3 @@ end
 function getParent_PZ(character)
 
 end
-
--- ----------------------
