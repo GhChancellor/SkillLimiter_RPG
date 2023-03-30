@@ -47,8 +47,7 @@ local function characterMaxSkill_DestroyTable()
     characterMaxLevelPerksMajors_ = { perk, level }
 end
 
---- Prende il livello massimo che il personaggio può raggiungere.
---- Aggiungere un try catch
+---Defines maximum character level
 ---@param levelCurrentPerk int
 ---@return int
 local function getCharacterMaxPerk(levelCurrentPerk)
@@ -70,7 +69,6 @@ local function getCharacterMaxPerk(levelCurrentPerk)
 end
 
 ---Get Combat Max Level
----Aggiungere un try catch
 ---@param combatCurrentPerk int
 ---@return int Combat Max Level
 local function getCombatMaxLevel(combatCurrentPerk)

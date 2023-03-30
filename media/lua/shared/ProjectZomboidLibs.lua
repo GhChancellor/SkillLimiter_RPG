@@ -98,7 +98,7 @@ end
 ---@return CharacterTableX -- ---@return table string profession, PerkFactory.Perk perk, int level, float xp, boolean flag
 function getCharacterCurrentSkill(character, perk)
     -- Perks.Maintenance
-    -- Perks.Carpentry
+    -- Perks.Woodwork
     -- Perks.Agility
     if not character then
         return nil
