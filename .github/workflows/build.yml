@@ -34,8 +34,8 @@ jobs:
           echo "eseguo ls"
           ls
           echo "-------------------------"
-          echo "mi sposto in media/lua"
-          cd ./media/lua
+          echo "mi sposto in src/media/lua"
+          cd ./src/media/lua
           echo "-------------------------"
           echo "eseguo ls"
           ls
