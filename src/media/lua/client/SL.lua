@@ -8,6 +8,7 @@
 local characterMaxLevelCombats, characterMaxLevelPerks = {}
 
 local function OnGameStart()
+    print("Tables")
     local character = getPlayer()
 
     characterMaxLevelCombats, characterMaxLevelPerks =

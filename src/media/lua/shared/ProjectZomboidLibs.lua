@@ -66,32 +66,6 @@ function getCharacterProfession(character)
     return professionsTable_
 end
 
---- Get Perk
----@param perk PerkFactory
----@return PerkFactory.Perk perk
---- - zombie.characters.skills.PerkFactory
-function getPerk_PZ(perk)
-    return PerkFactory.getPerk(perk)
-end
-
----Add XP
----@param character IsoGameCharacter
----@param perk PerkFactory.Perk
----@param xp float
-function addXP_PZ(character, perk, xp)
-    if not character then
-        return nil
-    end
-
-    character:getXp():AddXP(perk, xp );
-end
-
----@param value double
----@return int
-function trunkFloatTo2Decimal(value)
-    return tonumber(string.format("%.2f", value)) + 0.0
-end
-
 ---Get character and get current skill/trait
 ---@param character IsoGameCharacter
 ---@param perk PerkFactory.Perk
@@ -109,7 +83,7 @@ function getCharacterCurrentSkill(character, perk)
     local level = getPerkLevel_PZ(character, perk_)
     local xp = getXpPerk_PZ(character, perk_)
 
-    return characterTableX_getCurrentCharacter(profession, perk_, level, xp)
+    return characterTableX_getCurrentCharacter(profession, perk_, level:intValue(), xp)
 end
 
 ---Get character and get All skills/traits
@@ -130,11 +104,52 @@ function getCharacterAllSkills(character)
         local level = getPerkLevel_PZ(character, perk)
         local xp = getXpPerk_PZ(character, perk)
         -- table
-        characterTableX_addPerkDetails(profession, perk, level, xp)
+        characterTableX_addPerkDetails(profession, perk, level, xp )
         profession = nil
     end
 
     return characterTableX_getPerkDetails()
+end
+
+--- Get Perk
+---@param perk PerkFactory
+---@return PerkFactory.Perk perk
+--- - zombie.characters.skills.PerkFactory
+function getPerk_PZ(perk)
+    return PerkFactory.getPerk(perk)
+end
+
+--- Get Perk from name
+---@param perk string
+---@return PerkFactory.Perk perk
+--- - zombie.characters.skills.PerkFactory
+function getPerkFromName_PZ(perk)
+    return PerkFactory.getPerkFromName(perk)
+end
+
+---Add XP
+---@param character IsoGameCharacter
+---@param perk PerkFactory.Perk
+---@param xp float
+---@param flag1 boolean default false
+---@param flag2 boolean default false
+---@param flag3 boolean default true
+function addXP_PZ(character, perk, xp, flag1, flag2, flag3)
+    if not character or not perk then
+        return nil
+    end
+
+    flag1 = flag1 or false -- is the default
+    flag2 = flag2 or false -- is the default
+    flag3 = flag3 or true -- is the default
+
+    character:getXp():AddXP(perk, xp, flag1, flag2, flag3);
+end
+
+---@param value double
+---@return int
+function trunkFloatTo2Decimal(value)
+    return tonumber(string.format("%.2f", value)) + 0.0
 end
 
 --- Get Perk Level
@@ -195,18 +210,18 @@ function getXpPerk_PZ(character, perk)
     return trunkFloatTo2Decimal( character:getXp():getXP(perk) ) -- Perks.Maintenance
 end
 
-ENUM = {
-    Zero = 0,
-    One = 1,
-    Two = 2,
-    Three = 3,
-    Four = 4,
-    Five = 5,
-    Six = 6,
-    Seven = 7,
-    Eight = 8,
-    Nine = 9,
-    Ten = 10,
+EnumNumbers = {
+    ZERO = 0,
+    ONE = 1,
+    TWO = 2,
+    THREE = 3,
+    FOUR = 4,
+    FIVE = 5,
+    SIX = 6,
+    SEVEN = 7,
+    EIGHT = 8,
+    NINE = 9,
+    TEN = 10,
 }
 
 --- Convert Level To Xp
@@ -215,36 +230,106 @@ ENUM = {
 ---@return float Xp
 function convertLevelToXp(perk, level)
     -- Perks.Sprinting:getXp1()
+    local result
+
     if not perk or not level then
         return nil
     end
 
-    if level == ENUM.One then
-        return getPerk_PZ(perk):getXp1()
-    elseif level == ENUM.Two then
-        return getPerk_PZ(perk):getXp2()
-    elseif level == ENUM.Three then
-        return getPerk_PZ(perk):getXp3()
-    elseif level == ENUM.Four then
-        return getPerk_PZ(perk):getXp4()
-    elseif level == ENUM.Five then
-        return getPerk_PZ(perk):getXp5()
-    elseif level == ENUM.Six then
-        return getPerk_PZ(perk):getXp6()
-    elseif level == ENUM.Seven then
-        return getPerk_PZ(perk):getXp7()
-    elseif level == ENUM.Eight then
-        return getPerk_PZ(perk):getXp8()
-    elseif level == ENUM.Nine then
-        return getPerk_PZ(perk):getXp9()
-    elseif level == ENUM.Ten then
-        return getPerk_PZ(perk):getXp10()
+    if level == EnumNumbers.ONE then
+        result = getPerk_PZ(perk):getXp1()
+    elseif level == EnumNumbers.TWO then
+        result = getPerk_PZ(perk):getXp2()
+    elseif level == EnumNumbers.THREE then
+        result = getPerk_PZ(perk):getXp3()
+    elseif level == EnumNumbers.FOUR then
+        result = getPerk_PZ(perk):getXp4()
+    elseif level == EnumNumbers.FIVE then
+        result = getPerk_PZ(perk):getXp5()
+    elseif level == EnumNumbers.SIX then
+        result = getPerk_PZ(perk):getXp6()
+    elseif level == EnumNumbers.SEVEN then
+        result = getPerk_PZ(perk):getXp7()
+    elseif level == EnumNumbers.EIGHT then
+        result = getPerk_PZ(perk):getXp8()
+    elseif level == EnumNumbers.NINE then
+        result = getPerk_PZ(perk):getXp9()
+    elseif level == EnumNumbers.TEN then
+        result = getPerk_PZ(perk):getXp10()
     end
 
-    return nil
+    return result
 end
 
--- ----------------------
+---Set Perk Level and level
+---@param character IsoGameCharacter
+---@param perk PerkFactory.Perk
+---@param levelPerk int
+--- - IsoGameCharacter.XP : zombie.characters.IsoGameCharacter.XP
+function setPerkLevel(character, perk, levelPerk, xp)
+    if not character or not perk or not levelPerk then
+        return nil
+    end
+
+    if xp == 0 then
+        return
+    end
+
+    addXP_PZ(character, perk, xp,
+            false, false, true )
+
+end
+
+--[[
+    Utilizza removePerkLevel(character, Perks.Maintenance, _)
+    funziona ma può dare valori negativi se si
+    selezione il numero di livelli da togliere. Sistemare
+]]
+---Set Perk Level and level
+---@param character IsoGameCharacter
+---@param perk PerkFactory.Perk
+---@param levelPerk int
+--- ISPlayerStatsUI.lua 635
+--- - IsoGameCharacter.XP : zombie.characters.IsoGameCharacter.XP
+function removePerkLevel(character, perk, levelPerk)
+    if not character or not perk then
+        return nil
+    end
+
+    local currentLevelPerk = getPerkLevel_PZ(character, perk)
+
+    if levelPerk == true then
+        if levelPerk > currentLevelPerk then
+            levelPerk = currentLevelPerk
+        end
+    end
+
+    levelPerk = levelPerk or currentLevelPerk
+
+    for i = 0, levelPerk  do
+        character:LoseLevel(perk)
+    end
+
+    local xpPerk = getXpPerk_PZ(character, perk)
+    xpPerk = -xpPerk
+
+    if xpPerk == 0 then
+        return
+    end
+
+    addXP_PZ(character, perk, xpPerk,
+            false, false, true )
+
+end
+
+---Get Parent_PZ
+---@param perk PerkFactory.Perk
+---@return PerkFactory.Perk
+function getParent_PZ(perk)
+    return perk:getParent():getName()
+end
+
+--- --------------------------------------------------------------------------------------------------------------
 
 -- TODO resetChart
 ---Reset Character
@@ -258,16 +343,6 @@ function resetChart(character)
     --local perk_ = getPerk_PZ(perk)
     --local level = getPerkLevel_PZ(character, perk_)
     --local xp = getXpPerk_PZ(character, perk_)
-end
-
--- TODO setPerkLevel
----Set Perk Level and level
----@param character IsoGameCharacter
----@param perk PerkFactory.Perk
----@return float xp
---- - IsoGameCharacter.XP : zombie.characters.IsoGameCharacter.XP
-function setPerkLevel(character, perk, levelPerk)
-    --character:setPerkLevelDebug(perk, levelPerk)  -- Perks.Maintenance
 end
 
 -- TODO setCharacterProfession_PZ
@@ -298,7 +373,7 @@ end
 ---@param character IsoGameCharacter
 ---@param perk PerkFactory.Perk
 ---@return float xp
---- ISPlayerStatsUI.lua 635
+--- ISPlayerStatsUI.media.lua 635
 --- - IsoGameCharacter.XP : zombie.characters.IsoGameCharacter.XP
 function setPerkLevel_PZ(character, perk, levelPerk)
     --local character = getPlayer()
@@ -306,10 +381,4 @@ function setPerkLevel_PZ(character, perk, levelPerk)
     --character:level0(perk)
     --character:LoseLevel(perk)
     --character:LevelPerk(perk)  -- Perks.Maintenance
-end
-
--- TODO getParent_PZ
----@param character IsoGameCharacter
-function getParent_PZ(character)
-
 end

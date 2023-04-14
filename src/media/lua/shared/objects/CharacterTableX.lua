@@ -43,7 +43,7 @@ end
 ---@param xp float
 ---@param flag boolean
 function characterTableX_addPerkDetails(profession, perk, level, xp)
-    addPerkDetailsX(profession, perk, level, xp, _)
+    addPerkDetailsX(profession, perk, level, xp, nil)
 end
 
 ---get Current Character
@@ -53,7 +53,7 @@ end
 ---@param xp float
 function characterTableX_getCurrentCharacter(profession, perk, level, xp)
     characterTableX_DestroyTable()
-    currentCharacter(profession, perk, level, xp, _)
+    currentCharacter(profession, perk, level, xp, nil)
     return perkDetails_
 end
 
@@ -62,84 +62,3 @@ end
 function characterTableX_getPerkDetails()
     return perkDetails_
 end
-
---[[
----Set profession
----@param profession string
-function setProfession(profession_)
-    profession = profession_
-end
-
----Get profession
----@return string profession
-function getProfession()
-    return profession
-end
-]]
-
-
-
-
--- ------------------------------------------------
-
---[[
----Add Perk Details
----@param perk PerkFactory.Perk
----@param level int
----@param xp float
-local function addPerkDetails(perk, level, xp)
-    --perk = perk
-    --level = level
-    --xp = xp
-end
-
----Set Flag
----@param flag
-local function setFlag(flag)
-    --flag = flag
-end
-
----Get Flag
----@return boolean
-local function getFlag()
-    --return flag
-end
-
----Set level
----@param level int
-local function setLevel(level)
-    --level = level
-end
-
---- Get Level
----@return int Level
-local function getLevel()
-    --return level
-end
-
----Set Level
----@param xp float
-local function setXp(xp)
-    --xp = xp
-end
-
----Get XP
----@return float xp
-local function getXp()
-    --return xp
-end
-
----Set perk
----@param perk PerkFactory.Perk
-local function setPerk(perk)
-    --perk = perk
-end
-
----Get Perk
----@return PerkFactory.Perk perk
-local function getPerk()
-    --return perk
-end
-]]
-
--- ------------------------------------------------

@@ -55,17 +55,19 @@ local function getCharacterMaxPerk(levelCurrentPerk)
         return nil
     end
 
-    if levelCurrentPerk == ENUM.Zero then -- 0
-        return ENUM.Four -- max levelPerk 4
-    elseif levelCurrentPerk == ENUM.One then -- 1
-        return ENUM.Six -- 6
-    elseif levelCurrentPerk == ENUM.Two then -- 2
-        return ENUM.Eight -- 8
-    elseif levelCurrentPerk >= ENUM.Three then -- 3
-        return ENUM.Ten -- 10
+    local result
+
+    if levelCurrentPerk == EnumNumbers.ZERO then -- 0
+        result = EnumNumbers.Four -- max levelPerk 4
+    elseif levelCurrentPerk == EnumNumbers.ONE then -- 1
+        result =  EnumNumbers.Six -- 6
+    elseif levelCurrentPerk == EnumNumbers.TWO then -- 2
+        result =  EnumNumbers.Eight -- 8
+    elseif levelCurrentPerk >= EnumNumbers.THREE then -- 3
+        result =  EnumNumbers.Ten -- 10
     end
 
-    return nil
+    return result
 end
 
 ---Get Combat Max Level
@@ -76,15 +78,17 @@ local function getCombatMaxLevel(combatCurrentPerk)
         return nil
     end
 
-    if combatCurrentPerk == ENUM.Zero then -- 0
-        return ENUM.Five -- 5
-    elseif combatCurrentPerk == ENUM.One then -- 1
-        return ENUM.Seven -- 7
-    elseif combatCurrentPerk >= ENUM.Two then -- 2
-        return ENUM.Ten -- 10
+    local result
+
+    if combatCurrentPerk == EnumNumbers.ZERO then -- 0
+        result =  EnumNumbers.Five -- 5
+    elseif combatCurrentPerk == EnumNumbers.ONE then -- 1
+        result =  EnumNumbers.Seven -- 7
+    elseif combatCurrentPerk >= EnumNumbers.TWO then -- 2
+        result =  EnumNumbers.Ten -- 10
     end
 
-    return nil
+    return result
 end
 
 --- Calculate Character Max Perks Major - table

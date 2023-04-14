@@ -29,7 +29,7 @@ end
 ---Remove elements from characterProfession_
 ---@param table
 local function removeValueFromTable(characterProfession_)
-    for i, v in pairs(removeValueFromTable_) do
+    for _, v in pairs(removeValueFromTable_) do
         table.remove(characterProfession_, v)
     end
 end
@@ -73,8 +73,8 @@ function getCharacterCreation(character)
     characterTableX_DestroyTable()
 
     -- add to CharacterObj
-    for i, v in pairs(characterCreationsTable_) do
-        characterTableX_addPerkDetails(_, v.perk, v.level, _)
+    for _, v in pairs(characterCreationsTable_) do
+        characterTableX_addPerkDetails( nil, v.perk, v.level, nil)
     end
 
     return characterTableX_getPerkDetails()

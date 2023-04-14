@@ -27,7 +27,7 @@ local function blockLevel(character, currentPerkLevel , perk, maxLevel)
         return
     end
 
-    addXP_PZ(character, perk, totalXp )
+    addXP_PZ(character, perk, totalXp, false, false, true)
 end
 
 ---Calculate Block Level
@@ -46,8 +46,6 @@ local function calculateBlockLevel(character, perk, tables)
     end
 end
 
-
-
 ---Check Level Max
 ---@param character IsoGameCharacter
 ---@param perk PerkFactory.Perk
@@ -60,24 +58,3 @@ function checkLevelMax(character, perk, characterMaxLevelCombats, characterMaxLe
     calculateBlockLevel(character, perk, characterMaxLevelCombats)
     calculateBlockLevel(character, perk, characterMaxLevelPerks)
 end
-
-
---[[
----Check Level Max
----@param character IsoGameCharacter
----@param perk PerkFactory.Perk
----@param _ --- unused
-function checkLevelMax(character, perk, _)
-    if not character or not perk then
-        return nil
-    end
-
-    local characterMaxLevelCombats, characterMaxLevelPerks = {}
-
-    characterMaxLevelCombats, characterMaxLevelPerks =
-        getCreateCharacterMaxSkill(character)
-
-    calculateBlockLevel(character, perk, characterMaxLevelCombats)
-    calculateBlockLevel(character, perk, characterMaxLevelPerks)
-end
-]]
