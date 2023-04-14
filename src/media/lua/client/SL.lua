@@ -8,6 +8,7 @@
 local characterMaxLevelCombats, characterMaxLevelPerks = {}
 
 local function OnGameStart()
+    print("master")
     local character = getPlayer()
 
     characterMaxLevelCombats, characterMaxLevelPerks =
@@ -20,3 +21,4 @@ end
 
 Events.AddXP.Add(AddXP)
 Events.OnGameStart.Add(OnGameStart)
+
