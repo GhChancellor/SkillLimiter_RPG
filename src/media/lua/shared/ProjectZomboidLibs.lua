@@ -264,10 +264,10 @@ end
 ---Set Perk Level and level
 ---@param character IsoGameCharacter
 ---@param perk PerkFactory.Perk
----@param levelPerk int
+---@param xp float
 --- - IsoGameCharacter.XP : zombie.characters.IsoGameCharacter.XP
-function setPerkLevel(character, perk, levelPerk, xp)
-    if not character or not perk or not levelPerk then
+function setPerkLevel(character, perk, xp)
+    if not character or not perk then
         return nil
     end
 
@@ -280,33 +280,19 @@ function setPerkLevel(character, perk, levelPerk, xp)
 
 end
 
---[[
-    Utilizza removePerkLevel(character, Perks.Maintenance, _)
-    funziona ma può dare valori negativi se si
-    selezione il numero di livelli da togliere. Sistemare
-]]
 ---Set Perk Level and level
 ---@param character IsoGameCharacter
 ---@param perk PerkFactory.Perk
----@param levelPerk int
 --- ISPlayerStatsUI.lua 635
 --- - IsoGameCharacter.XP : zombie.characters.IsoGameCharacter.XP
-function removePerkLevel(character, perk, levelPerk)
+function removePerkLevel(character, perk)
     if not character or not perk then
         return nil
     end
 
     local currentLevelPerk = getPerkLevel_PZ(character, perk)
 
-    if levelPerk == true then
-        if levelPerk > currentLevelPerk then
-            levelPerk = currentLevelPerk
-        end
-    end
-
-    levelPerk = levelPerk or currentLevelPerk
-
-    for i = 0, levelPerk  do
+    for i = 0, currentLevelPerk  do
         character:LoseLevel(perk)
     end
 
@@ -331,20 +317,6 @@ end
 
 --- --------------------------------------------------------------------------------------------------------------
 
--- TODO resetChart
----Reset Character
----@param character IsoGameCharacter
-function resetChart(character)
-    --if not character then
-    --    return nil
-    --end
-    --
-    --local profession = getCharacterProfession_PZ(character)
-    --local perk_ = getPerk_PZ(perk)
-    --local level = getPerkLevel_PZ(character, perk_)
-    --local xp = getXpPerk_PZ(character, perk_)
-end
-
 -- TODO setCharacterProfession_PZ
 --- Get Charater profession
 ---@param character IsoGameCharacter
@@ -356,29 +328,4 @@ function setCharacterProfession_PZ(character, profession)
     --end
     --
     --character:getDescriptor().setProfession(profession)
-end
-
--- TODO setProfessionSkills_PZ
-function setProfessionSkills_PZ()
-
-end
-
--- TODO setXpLevelToZero
-function setXpLevelToZero()
-
-end
-
--- TODO LoseLevel
----Set Perk Level and level
----@param character IsoGameCharacter
----@param perk PerkFactory.Perk
----@return float xp
---- ISPlayerStatsUI.media.lua 635
---- - IsoGameCharacter.XP : zombie.characters.IsoGameCharacter.XP
-function setPerkLevel_PZ(character, perk, levelPerk)
-    --local character = getPlayer()
-    --local perk = PerkFactory.getPerk(Perks.Cooking)
-    --character:level0(perk)
-    --character:LoseLevel(perk)
-    --character:LevelPerk(perk)  -- Perks.Maintenance
 end
