@@ -3,22 +3,70 @@
 --- Created by lele.
 --- DateTime: 01/02/23 19:11
 --- function ISSkillProgressBar:renderPerkRect()
---- ISSkillProgressBar:updateTooltip(lvlSelected)--- event add Xp
+--- ISSkillProgressBar:updateTooltip(lvlSelected)
+-- -----------------------------------------------------------------
 
-local characterMaxLevelCombats, characterMaxLevelPerks = {}
+local dbgLeleLib = require("lib/DbgLeleLib")
+local characterPz = require("lib/CharacterPZ")
+local perkFactoryPZ = require("lib/PerkFactoryPZ")
+local isoPlayerPZ = require("lib/IsoPlayerPZ")
+local modDataX = require("lib/ModDataX")
+local characterLib = require("CharacterLib")
+
+local CreateCharacterMaxSkillObj = CharacterObj:new()
+
+-- Create Character Max Skill and create ModData
+---@return CharacterObj
+--- - IsoGameCharacter : zombie.characters.IsoGameCharacter
+function initCharacter()
+    local characterMaxSkillModData = "characterMaxSkill"
+    local characterMaxSkillTable = {}
+
+    if modDataX.isExists(characterMaxSkillModData) then
+        characterMaxSkillTable =
+            modDataX.readModData(characterMaxSkillModData)
+
+        CreateCharacterMaxSkillObj =
+            characterLib.decodePerkDetails(characterMaxSkillTable)
+    else
+        CreateCharacterMaxSkillObj =
+            getCreateCharacterMaxSkill( getPlayer() )
+
+        characterMaxSkillTable =
+            characterLib.encodePerkDetails(CreateCharacterMaxSkillObj)
+
+        modDataX.saveModData(characterMaxSkillModData, characterMaxSkillTable )
+    end
+
+    return CreateCharacterMaxSkillObj
+end
+
+local function OnCreatePlayer(playerIndex, player)
+    -- initCharacter()
+end
 
 local function OnGameStart()
-    print("master")
-    local character = getPlayer()
+    initCharacter()
+end
 
-    characterMaxLevelCombats, characterMaxLevelPerks =
-    getCreateCharacterMaxSkill(character)
+-- Delete modData whem character is death
+local function OnCharacterDeath(character)
+    local characterMaxSkillModData = "characterMaxSkill"
+    modDataX.remove(characterMaxSkillModData)
 end
 
 local function AddXP(character, perk, level)
-    checkLevelMax(character, perk, characterMaxLevelCombats, characterMaxLevelPerks)
+    checkLevelMax(character, perk, CreateCharacterMaxSkillObj)
 end
 
+
+local function OnLoad()
+  --  initCharacter()
+end
+
+Events.OnLoad.Add(OnLoad)
+Events.OnCreatePlayer.Add(OnCreatePlayer)
 Events.AddXP.Add(AddXP)
 Events.OnGameStart.Add(OnGameStart)
-
+Events.OnCharacterDeath.Add(OnCharacterDeath)
+-- Events.OnCustomUIKeyPressed.Add(onCustomUIKeyPressed)

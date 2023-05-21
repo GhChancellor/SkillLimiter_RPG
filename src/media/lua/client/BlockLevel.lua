@@ -6,6 +6,9 @@
 
 ---@class BlockLevel
 
+local characterPz = require("lib/CharacterPZ")
+local perkFactoryPZ = require("lib/PerkFactoryPZ")
+
 ---Block Level
 ---@param character IsoGameCharacter
 ---@param currentPerkLevel int
@@ -16,68 +19,49 @@ local function blockLevel(character, currentPerkLevel , perk, maxLevel)
 
     if currentPerkLevel >= maxLevel then
         for level_ = 1, maxLevel do
-            convertLevelToXp_ = convertLevelToXp_ + convertLevelToXp(perk, level_)
+            convertLevelToXp_ = convertLevelToXp_ +
+                    perkFactoryPZ.convertLevelToXp(perk, level_)
         end
     end
 
     local totalXp = ( convertLevelToXp_ -
-            getXpPerk_PZ( character, perk ) ) -- * 2
+            characterPz.getXp(character, perk))
 
     if totalXp == 0 then
         return
     end
 
-    addXP_PZ(character, perk, totalXp )
+    characterPz.addXP_PZ(character, perk, totalXp, false, false, true)
 end
 
 ---Calculate Block Level
 ---@param character IsoGameCharacter
 ---@param perk PerkFactory.Perk
----@param tables --- perk level
-local function calculateBlockLevel(character, perk, tables)
-    local currentPerkLevel = getPerkLevel_PZ(character, perk)
+---@param CreateCharacterMaxSkillObj CharacterObj
+local function calculateBlockLevel(character, CreateCharacterMaxSkillObj, perk)
+    local currentPerkLevel = characterPz.getPerkLevel_PZ(character, perk)
 
-    for _, v in pairs(tables) do
-        if v.perk == perk then
-            if currentPerkLevel >= v.level then
-                blockLevel(character, currentPerkLevel, v.perk, v.level)
+    for _, v in pairs(CreateCharacterMaxSkillObj:getPerkDetails()) do
+        if v:getPerk() == perk then
+            local dbg1 = v:getPerk()
+            local dbg2 = perk
+            local dbg
+            if currentPerkLevel >= v:getLevel() then
+                blockLevel(character, currentPerkLevel, v:getPerk() , v:getLevel())
             end
         end
     end
 end
 
-
-
 ---Check Level Max
 ---@param character IsoGameCharacter
 ---@param perk PerkFactory.Perk
----@param _ --- unused
-function checkLevelMax(character, perk, characterMaxLevelCombats, characterMaxLevelPerks)
+---@param nil
+function checkLevelMax(character, perk, CreateCharacterMaxSkillObj)
     if not character or not perk then
         return nil
     end
 
-    calculateBlockLevel(character, perk, characterMaxLevelCombats)
-    calculateBlockLevel(character, perk, characterMaxLevelPerks)
+    calculateBlockLevel(character, CreateCharacterMaxSkillObj, perk)
 end
 
-
---[[
----Check Level Max
----@param character IsoGameCharacter
----@param perk PerkFactory.Perk
----@param _ --- unused
-function checkLevelMax(character, perk, _)
-    if not character or not perk then
-        return nil
-    end
-
-    local characterMaxLevelCombats, characterMaxLevelPerks = {}
-
-    characterMaxLevelCombats, characterMaxLevelPerks =
-        getCreateCharacterMaxSkill(character)
-
-    calculateBlockLevel(character, perk, characterMaxLevelCombats)
-    calculateBlockLevel(character, perk, characterMaxLevelPerks)
-end
-]]

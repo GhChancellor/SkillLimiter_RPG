@@ -1,81 +1,63 @@
 
 ---@class CharacterCreation
 
-require("media.lua.shared.objects.CharacterTableX")
+local dbgLeleLib = require("lib/DbgLeleLib")
+local characterLib = require("CharacterLib")
+require("lib/CharacterObj")
 
-local characterCreationsTable_ = { perk, level, flag }
-local removeValueFromTable_ = { values }
+local mergeTraitsPerks_ = {}
 
----Add value to table CreationsTable
----@param perk PerkFactory.Perk
----@param level int
-local function characterCreationTable(perk, level)
-    table.insert(characterCreationsTable_, {
-        perk = perk,
-        level = level,
-    })
-end
-
----Destroy characterCreationsTable_
-local function characterCreation_DestroyTable()
-    characterCreationsTable_ = { perk, level }
-end
-
----@param int
-local function addValueFromTable(value)
-    table.insert(removeValueFromTable_, value)
-end
-
----Remove elements from characterProfession_
----@param table
-local function removeValueFromTable(characterProfession_)
-    for i, v in pairs(removeValueFromTable_) do
-        table.remove(characterProfession_, v)
+local function mergeTraitsPerks(key, value)
+    if not mergeTraitsPerks_[key] then
+        mergeTraitsPerks_[key] = value
     end
 end
 
----Get character and get All skills/traits
 ---@param character IsoGameCharacter
----@return table string profession, PerkFactory.Perk perk, int level, float xp, boolean flag
+---@return CharacterObj getPerkDetails() -- table PerkFactory.Perk perk, int level, float xp
+--- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 function getCharacterCreation(character)
     if not character then
         return nil
     end
 
-    characterCreation_DestroyTable()
+    local unusedValue = -10
+    local CharacterProfessionObj = CharacterObj:new()
+    CharacterProfessionObj = characterLib.getPerkProfession(character)
 
-    local characterProfession_ = { perk, level }
-    characterProfession_ = getCharacterProfession(character)
+    local CharacterTraitsPerkObj = CharacterObj:new()
+    CharacterTraitsPerkObj = characterLib.getTraitsPerk(character)
 
-    local characterTraits_ = { perk, level }
-    characterTraits_ = getCharacterTraits(character)
+    local CharacterAllPerksObj = CharacterObj:new()
+    CharacterAllPerksObj = characterLib.getAllPerks(character)
 
-    for _, v1 in pairs(characterTraits_) do
-        characterCreationTable(v1.perk, v1.level)
+    local CharacterMergeObj = CharacterObj:new()
+
+    for _, v in pairs(CharacterProfessionObj:getPerkDetails()) do
+        mergeTraitsPerks(v:getPerk(), unusedValue)
     end
 
-    for _, v1 in pairs(characterCreationsTable_) do
-        for i2, v2 in pairs(characterProfession_) do
-            if  v1.perk == v2.perk then
-                v1.level = v1.level:intValue() + v2.level:intValue()
-                addValueFromTable(i2)
-            end
+    for _, v in pairs(CharacterTraitsPerkObj:getPerkDetails()) do
+        mergeTraitsPerks(v:getPerk(), unusedValue)
+    end
+
+    for i, v in pairs(mergeTraitsPerks_) do
+        CharacterMergeObj:addPerkDetails(i, nil, nil)
+    end
+
+    mergeTraitsPerks_ = {}
+
+    for _, v1 in pairs(CharacterAllPerksObj:getPerkDetails()) do
+        if v1:getPerk() == Perks.Fitness or v1:getPerk() == Perks.Strength then
+           v1:setFlag(true)
         end
 
+        for _, v2 in pairs(CharacterMergeObj:getPerkDetails()) do
+            if v1:getPerk() == v2:getPerk() then
+                v1:setFlag(true)
+            end
+        end
     end
 
-    removeValueFromTable(characterProfession_)
-
-    for _, v in pairs(characterProfession_) do
-        characterCreationTable(v.perk, v.level)
-    end
-
-    characterTableX_DestroyTable()
-
-    -- add to CharacterObj
-    for i, v in pairs(characterCreationsTable_) do
-        characterTableX_addPerkDetails(_, v.perk, v.level, _)
-    end
-
-    return characterTableX_getPerkDetails()
+    return CharacterAllPerksObj
 end

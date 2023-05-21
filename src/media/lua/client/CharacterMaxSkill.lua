@@ -6,163 +6,83 @@
 
 ---@class CharacterMaxSkill
 
-local characterMaxLevelCombats_ = { perk, level }
-local characterMaxLevelPerks_ = { perk, level }
-local characterMaxLevelPerksMajors_ = { perk, level}
-
----Add value to table characterMaxLevelPerksTemp
----@param perk PerkFactory.Perk
----@param level int
-local function characterMaxLevelPerksMajor(perk, level)
-    table.insert(characterMaxLevelPerksMajors_,{
-        perk = perk,
-        level = level,
-    })
-end
-
----Add value to table characterMaxCombat
----@param perk PerkFactory.Perk
----@param level int
-local function characterMaxLevelCombat(perk, level)
-    table.insert(characterMaxLevelCombats_,{
-        perk = perk,
-        level = level
-    })
-end
-
----Add value to table characterMaxPerks
----@param perk PerkFactory.Perk
----@param level int
-local function characterMaxLevelPerk(perk, level)
-    table.insert(characterMaxLevelPerks_,{
-        perk = perk,
-        level = level
-    })
-end
-
---- Destroy and init all tables
-local function characterMaxSkill_DestroyTable()
-    characterMaxLevelCombats_ = { perk, level }
-    characterMaxLevelPerks_ = { perk, level }
-    characterMaxLevelPerksMajors_ = { perk, level }
-end
+local characterPz = require("lib/CharacterPZ")
+local perkFactoryPZ = require("lib/PerkFactoryPZ")
+require("lib/CharacterObj")
 
 ---Defines maximum character level
 ---@param levelCurrentPerk int
 ---@return int
-local function getCharacterMaxPerk(levelCurrentPerk)
+local function getCharacterMaxLevelPerkObj(levelCurrentPerk)
     if not levelCurrentPerk then
         return nil
     end
 
-    if levelCurrentPerk == ENUM.Zero then -- 0
-        return ENUM.Four -- max levelPerk 4
-    elseif levelCurrentPerk == ENUM.One then -- 1
-        return ENUM.Six -- 6
-    elseif levelCurrentPerk == ENUM.Two then -- 2
-        return ENUM.Eight -- 8
-    elseif levelCurrentPerk >= ENUM.Three then -- 3
-        return ENUM.Ten -- 10
+    local result
+
+    if levelCurrentPerk == characterPz.EnumNumbers.ZERO then -- 0
+        result = characterPz.EnumNumbers.FIVE -- max levelPerk 5
+    elseif levelCurrentPerk == characterPz.EnumNumbers.ONE then -- 1
+        result = characterPz.EnumNumbers.SIX -- max levelPerk 6
+    elseif levelCurrentPerk == characterPz.EnumNumbers.TWO then -- 2
+        result = characterPz.EnumNumbers.EIGHT -- max levelPerk 8
+    elseif levelCurrentPerk >= characterPz.EnumNumbers.THREE then -- 3
+        result = characterPz.EnumNumbers.TEN -- max levelPerk 10
     end
 
-    return nil
+    return result
 end
 
 ---Get Combat Max Level
 ---@param combatCurrentPerk int
 ---@return int Combat Max Level
-local function getCombatMaxLevel(combatCurrentPerk)
+local function getCharacterMaxLevelCombatObj(combatCurrentPerk)
     if not combatCurrentPerk then
         return nil
     end
 
-    if combatCurrentPerk == ENUM.Zero then -- 0
-        return ENUM.Five -- 5
-    elseif combatCurrentPerk == ENUM.One then -- 1
-        return ENUM.Seven -- 7
-    elseif combatCurrentPerk >= ENUM.Two then -- 2
-        return ENUM.Ten -- 10
+    local result
+
+    if combatCurrentPerk == characterPz.EnumNumbers.ZERO then -- 0
+        result = characterPz.EnumNumbers.FIVE -- max levelPerk 5
+    elseif combatCurrentPerk == characterPz.EnumNumbers.ONE then -- 1
+        result = characterPz.EnumNumbers.SEVEN -- max levelPerk 7
+    elseif combatCurrentPerk >= characterPz.EnumNumbers.TWO then -- 2
+        result = characterPz.EnumNumbers.TEN -- max levelPerk 10
     end
 
-    return nil
-end
-
---- Calculate Character Max Perks Major - table
----@param perk PerkFactory.Perk
----@param level int
-local function calculateCharacterMaxLevelPerksMajor(perk, level)
-    if not perk or not level then
-        return nil
-    end
-
-    characterMaxLevelPerksMajor(perk, level)
-end
-
---- Calculate Character Max Perk - table
----@param perk PerkFactory.Perk
----@param level int
-local function calculateCharacterMaxPerk(perk, level)
-    if not perk or not level then
-        return nil
-    end
-
-    characterMaxLevelPerk(perk, getCharacterMaxPerk(level))
-end
-
---- Calculate Max Level Combat - table
----@param perk PerkFactory.Perk
----@param level int
-local function calculateCombatMaxLevel(perk, level)
-    if not perk or not level then
-        return nil
-    end
-
-    characterMaxLevelCombat(perk, getCombatMaxLevel(level) )
+    return result
 end
 
 --- Get Create Character Max Skill
 ---@param character IsoGameCharacter
----@return table characterMaxLevelCombats_ perk level, characterMaxLevelPerks_ perk levelMax
+---@return CharacterObj getPerkDetails() -- table PerkFactory.Perk perk, int level, float xp
+--- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 function getCreateCharacterMaxSkill(character)
     if not character then
         return nil
     end
 
-    characterMaxSkill_DestroyTable()
+    local combat = "Combat"
 
-    local characterCreation = { perk, level }
-    characterCreation = getCharacterCreation(character)
-    local characterAllSkills = {}
-    characterAllSkills = getCharacterAllSkills(character)
+    local CharacterCreationObj = CharacterObj:new()
+    CharacterCreationObj = getCharacterCreation(character)
 
-    for _, v in pairs(characterCreation) do
-        calculateCharacterMaxLevelPerksMajor(v.perk, v.level:intValue())
-    end
-
-    for i1, v1 in pairs(characterAllSkills) do
-        for i2, v2 in pairs(characterMaxLevelPerksMajors_) do
-            if v1.perk == v2.perk then
-                characterAllSkills[i1].level = v2.level
-                characterAllSkills[i1].flag = true
-            end
-        end
-    end
-
-    for _, v in pairs(characterAllSkills) do
-        if v.flag == true then
-            if "Combat" == v.perk:getParent():getName()  then -- < da creare un metodo
-                calculateCombatMaxLevel(v.perk, v.level:intValue())
+    for _, v in pairs(CharacterCreationObj:getPerkDetails()) do
+        if v:getFlag() == true then
+            if combat == perkFactoryPZ.getParent_PZ(v:getPerk()) then
+                v:setLevel( getCharacterMaxLevelCombatObj(v:getLevel()))
             else
-                calculateCharacterMaxPerk(v.perk, v.level:intValue())
+                v:setLevel( getCharacterMaxLevelPerkObj(v:getLevel()))
             end
         else
-            if "Combat" == v.perk:getParent():getName()  then -- < da creare un metodo
-                calculateCombatMaxLevel(v.perk, 0)
+            if combat == perkFactoryPZ.getParent_PZ( v:getPerk() )  then
+                v:setLevel( getCharacterMaxLevelCombatObj(0))
             else
-                calculateCharacterMaxPerk(v.perk, 0)
+                v:setLevel( getCharacterMaxLevelPerkObj(0))
             end
         end
     end
 
-    return characterMaxLevelCombats_, characterMaxLevelPerks_
+    return CharacterCreationObj
 end
