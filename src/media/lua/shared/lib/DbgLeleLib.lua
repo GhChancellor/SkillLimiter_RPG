@@ -30,8 +30,6 @@ function DbgLeleLib.checkTest(value1, value2, nameTest)
     end
 end
 
-
-
 DbgLeleLib.EnumProfession = {
     UNEMPLOYED = "",
     BURGER_FLIPPER = "burgerflipper",
@@ -148,18 +146,15 @@ end
 ---@param perk_ PerkFactory.Perk
 ---@param perk PerkFactory.Perk
 ---@param level int
-function DbgLeleLib.checkPerk(displayName, perk_, perk, level )
+function DbgLeleLib.checkPerk(displayName, perk_, perk )
     -- Perks.Maintenance
-    local dbg1
-    local dbg2
-    local dbg3 = perk
-    local dbg4 = perk_
-    local dbg5 = level
-    if perk_ == perk then
-        dbg1 = perk_
-        dbg2 = level
+    local dbg1 = perk
+    local dbg2 = perk_
+
+    if dbg1 == dbg2 then
+
         DbgLeleLib.printLine()
-        DbgLeleLib.display(displayName, nil, perk, level, nil)
+        DbgLeleLib.display(displayName, nil, dbg1, dbg2, nil)
         DbgLeleLib.printLine()
 
         local dbg
@@ -189,6 +184,16 @@ function DbgLeleLib.displayListPerks(displayName, perks_list)
         -- DBG_GetCheckPerk("DBG_GetCheckPerk", v.perk_, v.perk, _ )
     end
     DbgLeleLib.printLine()
+end
+
+
+
+function DbgLeleLib.timesCount(count, coount2)
+    if count == coount2 then
+        return true
+    end
+
+    return false
 end
 
 return DbgLeleLib

@@ -54,6 +54,10 @@ local function getCharacterMaxLevelCombatObj(combatCurrentPerk)
     return result
 end
 
+local function getCharacterProfessionMaxLevel( levelCurrentPerk )
+    return getCharacterMaxLevelPerkObj(levelCurrentPerk)
+end
+
 --- Get Create Character Max Skill
 ---@param character IsoGameCharacter
 ---@return CharacterObj getPerkDetails() -- table PerkFactory.Perk perk, int level, float xp
@@ -70,11 +74,7 @@ function getCreateCharacterMaxSkill(character)
 
     for _, v in pairs(CharacterCreationObj:getPerkDetails()) do
         if v:getFlag() == true then
-            if combat == perkFactoryPZ.getParent_PZ(v:getPerk()) then
-                v:setLevel( getCharacterMaxLevelCombatObj(v:getLevel()))
-            else
-                v:setLevel( getCharacterMaxLevelPerkObj(v:getLevel()))
-            end
+            v:setLevel( getCharacterProfessionMaxLevel(v:getLevel()))
         else
             if combat == perkFactoryPZ.getParent_PZ( v:getPerk() )  then
                 v:setLevel( getCharacterMaxLevelCombatObj(0))

@@ -6,10 +6,8 @@
 --- ISSkillProgressBar:updateTooltip(lvlSelected)
 -- -----------------------------------------------------------------
 
-local dbgLeleLib = require("lib/DbgLeleLib")
-local characterPz = require("lib/CharacterPZ")
-local perkFactoryPZ = require("lib/PerkFactoryPZ")
-local isoPlayerPZ = require("lib/IsoPlayerPZ")
+---@class SkillLimier
+
 local modDataX = require("lib/ModDataX")
 local characterLib = require("CharacterLib")
 
@@ -41,32 +39,35 @@ function initCharacter()
     return CreateCharacterMaxSkillObj
 end
 
-local function OnCreatePlayer(playerIndex, player)
-    -- initCharacter()
-end
-
-local function OnGameStart()
-    initCharacter()
-end
-
--- Delete modData whem character is death
+---Delete modData when character is death -
+---Triggered when a character or zombie is killed
+---@param character IsoGameCharacter
 local function OnCharacterDeath(character)
-    local characterMaxSkillModData = "characterMaxSkill"
-    modDataX.remove(characterMaxSkillModData)
+    if getPlayer():isDead() then
+        local characterMaxSkillModData = "characterMaxSkill"
+        modDataX.remove(characterMaxSkillModData)
+    end
 end
 
+---Check Level Max
+---Triggered when a player gains XP.
 local function AddXP(character, perk, level)
     checkLevelMax(character, perk, CreateCharacterMaxSkillObj)
 end
 
-
-local function OnLoad()
-  --  initCharacter()
+---Init Character -
+---Triggered after the start of a new game, and after a saved game has been loaded.
+local function OnGameStart()
+    initCharacter()
 end
 
-Events.OnLoad.Add(OnLoad)
-Events.OnCreatePlayer.Add(OnCreatePlayer)
+---Init Character -
+---Triggered when a player is being created.
+local function OnCreatePlayer(playerIndex, player)
+    initCharacter()
+end
+
+Events.OnCharacterDeath.Add(OnCharacterDeath)
 Events.AddXP.Add(AddXP)
 Events.OnGameStart.Add(OnGameStart)
-Events.OnCharacterDeath.Add(OnCharacterDeath)
--- Events.OnCustomUIKeyPressed.Add(onCustomUIKeyPressed)
+Events.OnCreatePlayer.Add(OnCreatePlayer)

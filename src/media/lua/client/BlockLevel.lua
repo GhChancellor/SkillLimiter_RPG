@@ -20,7 +20,7 @@ local function blockLevel(character, currentPerkLevel , perk, maxLevel)
     if currentPerkLevel >= maxLevel then
         for level_ = 1, maxLevel do
             convertLevelToXp_ = convertLevelToXp_ +
-                    perkFactoryPZ.convertLevelToXp(perk, level_)
+                perkFactoryPZ.convertLevelToXp(perk, level_)
         end
     end
 
@@ -56,9 +56,9 @@ end
 ---Check Level Max
 ---@param character IsoGameCharacter
 ---@param perk PerkFactory.Perk
----@param nil
+---@param CreateCharacterMaxSkillObj CharacterObj
 function checkLevelMax(character, perk, CreateCharacterMaxSkillObj)
-    if not character or not perk then
+    if not character or not perk or not CreateCharacterMaxSkillObj then
         return nil
     end
 

@@ -1,12 +1,14 @@
 
 ---@class CharacterCreation
 
-local dbgLeleLib = require("lib/DbgLeleLib")
 local characterLib = require("CharacterLib")
 require("lib/CharacterObj")
 
 local mergeTraitsPerks_ = {}
 
+---Merge Traits and Perks into a table
+---@param key
+---@param value
 local function mergeTraitsPerks(key, value)
     if not mergeTraitsPerks_[key] then
         mergeTraitsPerks_[key] = value
@@ -41,6 +43,7 @@ function getCharacterCreation(character)
         mergeTraitsPerks(v:getPerk(), unusedValue)
     end
 
+    -- mergeTraitsPerks_ > Trait and Perk of the profession
     for i, v in pairs(mergeTraitsPerks_) do
         CharacterMergeObj:addPerkDetails(i, nil, nil)
     end
@@ -52,6 +55,7 @@ function getCharacterCreation(character)
            v1:setFlag(true)
         end
 
+        -- CharacterMergeObj > Profession trait and Perk are marked as "true" to indicate bonus in the next step
         for _, v2 in pairs(CharacterMergeObj:getPerkDetails()) do
             if v1:getPerk() == v2:getPerk() then
                 v1:setFlag(true)

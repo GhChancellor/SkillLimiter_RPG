@@ -38,8 +38,6 @@ function displayCharacterDetails(character)
 
     local CharacterMaxSkillObj = CharacterObj:new()
     CharacterMaxSkillObj = initCharacter()
-    -- CharacterMaxSkillObj = getCreateCharacterMaxSkill(character)
-
 
     characterCharacteristics(CharacterAllPerkObj, "All Perk")
 
@@ -52,7 +50,6 @@ end
 
 function checkModData()
     local characterMaxSkillModData = "characterMaxSkill"
-    local characterMaxSkillTable = {}
 
     if modDataX.isExists(characterMaxSkillModData) then
         dbgLeleLib.checkTest(true, true, "Character MaxS kill ModData" )
@@ -69,8 +66,8 @@ end
 local function key34(character, key)
     if key == 34 then -- <<<< g
         print("Key = g > displayCharacterDetails \n")
-        -- displayCharacterDetails(character)
-        -- checkModData()
+         checkModData()
+         displayCharacterDetails(character)
     end
 end
 
@@ -86,8 +83,7 @@ end
 local function key36(character, key)
     if key == 36 then -- <<<< j
         print("Key = j > delete \n")
-        -- removeMoData()
-        -- setZombieKills_PZ(character, 15)
+
     end
 end
 
@@ -108,13 +104,32 @@ local function onCustomUIKeyPressed(key)
     key37(character, key)
 end
 
--- ------------------------------------------------------------
-
--- ------------------------------------------------------------
-
-local function OnGameStart()
-
+---Delete modData when character is death -
+---Triggered when a character or zombie is killed
+---@param character IsoGameCharacter
+local function OnCharacterDeath(character)
+    if getPlayer():isDead() then
+        print("Character killed")
+        local characterMaxSkillModData = "characterMaxSkill"
+        modDataX.remove(characterMaxSkillModData)
+    else
+        print("Zombi is killed")
+    end
 end
 
--- Events.OnGameStart.Add(OnGameStart)
+---Init Character -
+---Triggered after the start of a new game, and after a saved game has been loaded.
+local function OnGameStart()
+    print("Triggered after the start of a new game, and after a saved game has been loaded.")
+end
+
+---Init Character -
+---Triggered when a player is being created.
+local function OnCreatePlayer(playerIndex, player)
+    print("Triggered when a player is being created.")
+end
+
+--Events.OnCharacterDeath.Add(OnCharacterDeath)
+--Events.OnGameStart.Add(OnGameStart)
+--Events.OnCreatePlayer.Add(OnCreatePlayer)
 Events.OnCustomUIKeyPressed.Add(onCustomUIKeyPressed)
