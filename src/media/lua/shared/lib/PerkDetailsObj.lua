@@ -19,6 +19,7 @@ function PerkDetailsObj:new()
     o.boostLevel = ""
     o.multiplier = ""
     o.flag = false
+    o.idGroup = ""
     return o
 end
 
@@ -31,18 +32,6 @@ function PerkDetailsObj:addPerkDetails(perk, level, xp)
     self.perk = perk
     self.level = level
     self.xp = xp
-end
-
----Set Flag
----@param flag boolean
-function PerkDetailsObj:setFlag(flag)
-    self.flag = flag
-end
-
----Get Flag
----@return boolean
-function PerkDetailsObj:getFlag()
-    return self.flag
 end
 
 ---Set level
@@ -107,6 +96,26 @@ function PerkDetailsObj:getMultiplier()
     return self.multiplier
 end
 
+---Set Flag
+---@param flag boolean
+function PerkDetailsObj:setFlag(flag)
+    self.flag = flag
+end
 
+---Get Flag
+---@return boolean flag
+function PerkDetailsObj:getFlag()
+    return self.flag
+end
 
+---Set idGroup
+---@param idGroup int
+function PerkDetailsObj:setIdGroup(idGroup)
+    self.idGroup = idGroup
+end
 
+---Get idGroup
+---@return int idGroup
+function PerkDetailsObj:getIdGroup()
+    return self.idGroup
+end

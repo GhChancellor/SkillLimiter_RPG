@@ -7,8 +7,7 @@
 ---@class CharacterMaxSkill
 
 local characterPz = require("lib/CharacterPZ")
-local perkFactoryPZ = require("lib/PerkFactoryPZ")
-require("lib/CharacterObj")
+require("lib/CharacterBaseObj")
 
 ---Defines maximum character level
 ---@param levelCurrentPerk int
@@ -55,21 +54,79 @@ local function getCharacterMaxLevelCombatObj(combatCurrentPerk)
 end
 
 local function getCharacterProfessionMaxLevel( levelCurrentPerk )
+    if not levelCurrentPerk then
+        return nil
+    end
+
     return getCharacterMaxLevelPerkObj(levelCurrentPerk)
 end
 
 --- Get Create Character Max Skill
 ---@param character IsoGameCharacter
----@return CharacterObj getPerkDetails() -- table PerkFactory.Perk perk, int level, float xp
+---@return CharacterBaseObj getPerkDetails() -- table PerkFactory.Perk perk, int level, float xp
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 function getCreateCharacterMaxSkill(character)
     if not character then
         return nil
     end
 
+    local CharacterCreationObj = CharacterBaseObj:new()
+    CharacterCreationObj = getCharacterCreation(character)
+
+    for _, v in pairs(CharacterCreationObj:getPerkDetails()) do
+        -- IdGroup add perk to list " no limits "
+        if v:getIdGroup() == characterPz.EnumNumbers.ZERO then
+            v:setLevel( characterPz.EnumNumbers.TEN )
+        end
+
+        -- IdGroup add perk to list " Profession trait and Perk  "
+        if v:getIdGroup() == characterPz.EnumNumbers.ONE then
+            v:setLevel( getCharacterProfessionMaxLevel(v:getLevel()))
+        end
+
+        -- IdGroup add perk to list " combat "
+        -- Flag add perk to list " combat "
+        if v:getIdGroup() == characterPz.EnumNumbers.TWO then
+            v:setLevel( getCharacterMaxLevelCombatObj(0))
+        end
+
+        -- IdGroup add perk to list " Generic "
+        if v:getIdGroup() == characterPz.EnumNumbers.THREE then
+            v:setLevel( getCharacterMaxLevelPerkObj(0))
+        end
+
+    end
+
+    return CharacterCreationObj
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------
+
+--[[
+--- Get Create Character Max Skill
+---@param character IsoGameCharacter
+---@return CharacterBaseObj getPerkDetails() -- table PerkFactory.Perk perk, int level, float xp
+--- - IsoGameCharacter : zombie.characters.IsoGameCharacter
+local function getCreateCharacterMaxSkill02(character)
+    if not character then
+        return nil
+    end
+
     local combat = "Combat"
 
-    local CharacterCreationObj = CharacterObj:new()
+    local CharacterCreationObj = CharacterBaseObj:new()
     CharacterCreationObj = getCharacterCreation(character)
 
     for _, v in pairs(CharacterCreationObj:getPerkDetails()) do
@@ -85,4 +142,4 @@ function getCreateCharacterMaxSkill(character)
     end
 
     return CharacterCreationObj
-end
+end]]

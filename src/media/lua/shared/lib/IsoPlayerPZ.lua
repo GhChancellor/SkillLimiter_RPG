@@ -8,6 +8,18 @@
 
 local IsoPlayerPZ = {}
 
+---Set Username
+---@param username string
+function IsoPlayerPZ.setUserName(username)
+    IsoPlayer.getInstance():setUsername(username)
+end
+
+---Get Username
+---@return string username
+function IsoPlayerPZ.getUserName()
+    return IsoPlayer.getInstance():getUsername()
+end
+
 ---Set Life Time in hours
 ---@param lifeTime double
 --- - IsoPlayer : zombie.characters.IsoPlayer

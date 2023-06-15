@@ -24,19 +24,19 @@ local function characterCharacteristics(CharacterObj, displayName)
 end
 
 function displayCharacterDetails(character)
-    local CharacterCreationObj = CharacterObj:new()
+    local CharacterCreationObj = CharacterBaseObj:new()
     CharacterCreationObj = getCharacterCreation(character)
 
-    local CharacterProfessionObj = CharacterObj:new()
+    local CharacterProfessionObj = CharacterBaseObj:new()
     CharacterProfessionObj = characterLib.getPerkProfession(character)
 
-    local CharacterTraitsPerkObj = CharacterObj:new()
+    local CharacterTraitsPerkObj = CharacterBaseObj:new()
     CharacterTraitsPerkObj = characterLib.getTraitsPerk(character)
 
-    local CharacterAllPerkObj = CharacterObj:new()
+    local CharacterAllPerkObj = CharacterBaseObj:new()
     CharacterAllPerkObj = characterLib.getAllPerks(character)
 
-    local CharacterMaxSkillObj = CharacterObj:new()
+    local CharacterMaxSkillObj = CharacterBaseObj:new()
     CharacterMaxSkillObj = initCharacter()
 
     characterCharacteristics(CharacterAllPerkObj, "All Perk")

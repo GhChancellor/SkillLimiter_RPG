@@ -186,8 +186,6 @@ function DbgLeleLib.displayListPerks(displayName, perks_list)
     DbgLeleLib.printLine()
 end
 
-
-
 function DbgLeleLib.timesCount(count, coount2)
     if count == coount2 then
         return true

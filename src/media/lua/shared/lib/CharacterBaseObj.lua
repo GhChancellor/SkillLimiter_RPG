@@ -4,13 +4,13 @@
 ----- DateTime: 16/03/23 17:44
 -----
 
----@class CharacterObj
+---@class CharacterBaseObj
 
 require("lib/BaseObject")
 require("lib/PerkDetailsObj")
-CharacterObj = BaseObject:derive("CharacterObj")
+CharacterBaseObj = BaseObject:derive("CharacterBaseObj")
 
-function CharacterObj:new()
+function CharacterBaseObj:new()
     local o = {}
     setmetatable(o, self)
     self.__index = self
@@ -28,7 +28,7 @@ end
 ---@param perk PerkFactory.Perk
 ---@param level int
 ---@param xp float
-function CharacterObj:currentCharacter(profession, perk, level, xp)
+function CharacterBaseObj:currentCharacter(profession, perk, level, xp)
     self.profession = profession
 
     local PerkDetailsObj01 = PerkDetailsObj:new()
@@ -39,7 +39,7 @@ end
 ---@param perk PerkFactory.Perk
 ---@param level int
 ---@param xp double
-function CharacterObj:addPerkDetails(perk, level, xp)
+function CharacterBaseObj:addPerkDetails(perk, level, xp)
     local PerkDetailsObj01 = PerkDetailsObj:new()
     PerkDetailsObj01:addPerkDetails(perk, level, xp)
 
@@ -47,74 +47,74 @@ function CharacterObj:addPerkDetails(perk, level, xp)
 end
 
 ---Get Perk Details
----@return CharacterObj table - PerkFactory.Perk perk, int level, float xp
-function CharacterObj:getPerkDetails()
+---@return CharacterBaseObj table - PerkFactory.Perk perk, int level, float xp
+function CharacterBaseObj:getPerkDetails()
     return self.perkDetails_LIST
 end
 
 ---Add Trait
 ---@param recipe string
-function CharacterObj:addRecipe(recipe)
+function CharacterBaseObj:addRecipe(recipe)
     table.insert(self.recipes_List, recipe)
 end
 
 ---Get recipes list
----@return CharacterObj table string
-function CharacterObj:getRecipes()
+---@return CharacterBaseObj table string
+function CharacterBaseObj:getRecipes()
     return self.recipes_List
 end
 
 ---Add Trait
 ---@param trait String
-function CharacterObj:addTrait(trait)
+function CharacterBaseObj:addTrait(trait)
     table.insert(self.traits_List, trait)
 end
 
 ---Get Traits list
----@return CharacterObj table string
-function CharacterObj:getTraits()
+---@return CharacterBaseObj table string
+function CharacterBaseObj:getTraits()
     return self.traits_List
 end
 
 ---Get object PerkDetailsObj
 ---@return PerkDetailsObj
-function CharacterObj:getPerkDetailsObj()
+function CharacterBaseObj:getPerkDetailsObj()
     return PerkDetailsObj
 end
 
 ---Set profession
 ---@param profession string
-function CharacterObj:setProfession(profession)
+function CharacterBaseObj:setProfession(profession)
     self.profession = profession
 end
 
 ---Get profession
 ---@return string profession
-function CharacterObj:getProfession()
+function CharacterBaseObj:getProfession()
     return self.profession
 end
 
 ---Set calories
 ---@param calories double
-function CharacterObj:setCalories(calories)
+function CharacterBaseObj:setCalories(calories)
     self.calories = calories
 end
 
 ---Get Calories
 ---@return double
-function CharacterObj:getCalories()
+function CharacterBaseObj:getCalories()
     return self.calories
 end
 
 ---Set Weight
 ---@param weight double
-function CharacterObj:setWeight(weight)
+function CharacterBaseObj:setWeight(weight)
     self.weight = weight
 end
 
 ---Get Weight
 ---@return double weight
-function CharacterObj:getWeight()
+function CharacterBaseObj:getWeight()
     return self.weight
 end
 

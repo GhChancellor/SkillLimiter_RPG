@@ -6,7 +6,7 @@
 
 ---@class CharacterLib
 
-require("lib/CharacterObj")
+require("CharacterBaseObj")
 local characterPz = require("lib/CharacterPZ")
 local perkFactoryPZ = require("lib/PerkFactoryPZ")
 
@@ -21,7 +21,7 @@ function CharacterLib.getTraitsPerk(character)
         return nil
     end
 
-    local CharacterObj01 = CharacterObj:new()
+    local CharacterObj01 = CharacterBaseObj:new()
 
     local traits_PZ = characterPz.getTraitsPerk_PZ(character)
 
@@ -55,7 +55,7 @@ function CharacterLib.getPerkProfession(character)
         return nil
     end
 
-    local CharacterObj01 = CharacterObj:new()
+    local CharacterObj01 = CharacterBaseObj:new()
 
     ---@type SurvivorDesc
     local profession = characterPz.getProfession_PZ(character)
@@ -90,7 +90,7 @@ function CharacterLib.getCurrentSkill(character, perk)
         return nil
     end
 
-    local CharacterObj01 = CharacterObj:new()
+    local CharacterObj01 = CharacterBaseObj:new()
 
     ---@type SurvivorDesc
     local profession = characterPz.getProfession_PZ(character)
@@ -118,7 +118,7 @@ function CharacterLib.getAllPerks(character)
         return nil
     end
 
-    local CharacterObj01 = CharacterObj:new()
+    local CharacterObj01 = CharacterBaseObj:new()
 
     for i = 0, Perks.getMaxIndex() - 1 do
 
@@ -149,7 +149,7 @@ function CharacterLib.getMultiplier(character)
         return nil
     end
 
-    local CharacterObj01 = CharacterObj:new()
+    local CharacterObj01 = CharacterBaseObj:new()
     CharacterObj01 = CharacterLib.getAllPerks(character)
 
     for _, v in pairs(CharacterObj01:getPerkDetails()) do
@@ -170,7 +170,7 @@ function CharacterLib.getPerksBoost(character)
         return nil
     end
 
-    local CharacterObj01 = CharacterObj:new()
+    local CharacterObj01 = CharacterBaseObj:new()
     CharacterObj01 = CharacterLib.getAllPerks(character)
 
     for _, v in pairs(CharacterObj01:getPerkDetails()) do
@@ -190,7 +190,7 @@ function CharacterLib.getKnownRecipes(character)
         return nil
     end
 
-    local CharacterObj01 = CharacterObj:new()
+    local CharacterObj01 = CharacterBaseObj:new()
     local knowRecipes = characterPz.getKnownRecipes_PZ(character)
 
     for i = 0, knowRecipes:size() - 1 do
@@ -231,7 +231,7 @@ function CharacterLib.decodePerkDetails(characterPerkDetails)
         return nil
     end
 
-    local CharacterObj01 = CharacterObj:new()
+    local CharacterObj01 = CharacterBaseObj:new()
 
     local lines = {}
 
@@ -259,7 +259,7 @@ function CharacterLib.resetCharacter(character)
 
     character = CharacterLib.charaterUpdate()
 
-    local CharacterObj01 = CharacterObj:new()
+    local CharacterObj01 = CharacterBaseObj:new()
     CharacterObj01 = CharacterLib.getAllPerks(character)
 
     characterPz.removeProfession(character)

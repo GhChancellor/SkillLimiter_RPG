@@ -1,0 +1,8 @@
+
+PERKS_PASSIV = {"Fitness", "Strength"}
+PERKS_AGILITY = {"Sprinting", "Lightfoot", "Nimble", "Sneak"}
+PERKS_FIREARM = {"Aiming", "Reloading"}
+PERKS_COMBAT = {"Blunt", "Axe", "Spear", "Maintenance", "SmallBlade", "LongBlade", "SmallBlunt"}
+PERKS_CRAFTING = {"Cooking", "Woodwork", "Farming", "Electricity", "Blacksmith", "MetalWelding", "Mechanics", "Tailoring", "Melting", "Doctor", "Mansonry"}
+PERKS_SURVIVALIST = {"Fishing", "Trapping", "PlantScavenging"}
+PERKS_OTHERPERKS = {}

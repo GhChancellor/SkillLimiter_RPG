@@ -6,15 +6,15 @@
 --- ISSkillProgressBar:updateTooltip(lvlSelected)
 -- -----------------------------------------------------------------
 
----@class SkillLimier
+---@class SkillLimiter
 
 local modDataX = require("lib/ModDataX")
 local characterLib = require("CharacterLib")
 
-local CreateCharacterMaxSkillObj = CharacterObj:new()
+local CreateCharacterMaxSkillObj = CharacterBaseObj:new()
 
 -- Create Character Max Skill and create ModData
----@return CharacterObj
+---@return CharacterBaseObj
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 function initCharacter()
     local characterMaxSkillModData = "characterMaxSkill"
@@ -44,6 +44,7 @@ end
 ---@param character IsoGameCharacter
 local function OnCharacterDeath(character)
     if getPlayer():isDead() then
+        print("ucciso umano")
         local characterMaxSkillModData = "characterMaxSkill"
         modDataX.remove(characterMaxSkillModData)
     end

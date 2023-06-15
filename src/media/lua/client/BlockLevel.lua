@@ -37,8 +37,32 @@ end
 ---Calculate Block Level
 ---@param character IsoGameCharacter
 ---@param perk PerkFactory.Perk
----@param CreateCharacterMaxSkillObj CharacterObj
+---@param CreateCharacterMaxSkillObj CharacterBaseObj
 local function calculateBlockLevel(character, CreateCharacterMaxSkillObj, perk)
+    local currentPerkLevel = characterPz.getPerkLevel_PZ(character, perk)
+    local maxLevel = characterPz.EnumNumbers.TEN
+
+    for _, v in pairs(CreateCharacterMaxSkillObj:getPerkDetails()) do
+        if v:getPerk() == perk then
+            if maxLevel == v:getLevel() then
+                return
+            end
+
+            local dbg1 = v:getPerk()
+            local dbg2 = perk
+            local dbg
+            if currentPerkLevel >= v:getLevel() then
+                blockLevel(character, currentPerkLevel, v:getPerk() , v:getLevel())
+            end
+        end
+    end
+end
+
+---Calculate Block Level
+---@param character IsoGameCharacter
+---@param perk PerkFactory.Perk
+---@param CreateCharacterMaxSkillObj CharacterBaseObj
+local function calculateBlockLevel_Back(character, CreateCharacterMaxSkillObj, perk)
     local currentPerkLevel = characterPz.getPerkLevel_PZ(character, perk)
 
     for _, v in pairs(CreateCharacterMaxSkillObj:getPerkDetails()) do
@@ -56,7 +80,7 @@ end
 ---Check Level Max
 ---@param character IsoGameCharacter
 ---@param perk PerkFactory.Perk
----@param CreateCharacterMaxSkillObj CharacterObj
+---@param CreateCharacterMaxSkillObj CharacterBaseObj
 function checkLevelMax(character, perk, CreateCharacterMaxSkillObj)
     if not character or not perk or not CreateCharacterMaxSkillObj then
         return nil

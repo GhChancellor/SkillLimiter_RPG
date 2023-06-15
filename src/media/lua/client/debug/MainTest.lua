@@ -268,7 +268,7 @@ local function traitsPerk()
 
     charaterUpdate()
 
-    local CharacterObj01 = CharacterObj:new()
+    local CharacterObj01 = CharacterBaseObj:new()
     CharacterObj01 = characterLib.getTraitsPerk(character)
 
     local flag = false
@@ -294,7 +294,7 @@ end
 local function perkProfession()
     characterPz.setProfession_PZ(character, dbgLeleLib.EnumProfession.CHEF)
 
-    local CharacterObj01 = CharacterObj:new()
+    local CharacterObj01 = CharacterBaseObj:new()
 
     charaterUpdate()
 
@@ -315,7 +315,7 @@ end
 --- ------------------------------------------------------------
 
 local function characterLibAllPerks()
-    local CharacterObj01 = CharacterObj:new()
+    local CharacterObj01 = CharacterBaseObj:new()
     charaterUpdate()
     CharacterObj01 = characterLib.getAllPerks(character)
 
@@ -340,7 +340,7 @@ local function characterLibPerksBoost()
 
     charaterUpdate()
 
-    local CharacterObj01 = CharacterObj:new()
+    local CharacterObj01 = CharacterBaseObj:new()
 
     CharacterObj01 = characterLib.getPerksBoost(character)
 
@@ -367,7 +367,7 @@ local function characterLibKnownRecipes()
 
     charaterUpdate()
 
-    local CharacterObj01 = CharacterObj:new()
+    local CharacterObj01 = CharacterBaseObj:new()
     CharacterObj01 = characterLib.getKnownRecipes(character)
 
     ---@type boolean
@@ -391,7 +391,7 @@ local function characterLibMultiplier()
 
     charaterUpdate()
 
-    local CharacterObj01 = CharacterObj:new()
+    local CharacterObj01 = CharacterBaseObj:new()
     CharacterObj01 = characterLib.getMultiplier(character)
 
     for _, v in pairs(CharacterObj01:getPerkDetails()) do
@@ -409,8 +409,8 @@ local function characterLibDe_EncodePerkDetails(character)
     characterPz.setPerkLevel(character, dbgLeleLib.EnumPerk.Woodwork, 100.0)
     charaterUpdate()
 
-    local CharacterObj01 = CharacterObj:new()
-    local CharacterObj02 = CharacterObj:new()
+    local CharacterObj01 = CharacterBaseObj:new()
+    local CharacterObj02 = CharacterBaseObj:new()
 
     local perk = perkFactoryPZ.getPerk_PZ(dbgLeleLib.EnumPerk.Woodwork)
     local level = characterPz.getPerkLevel_PZ(character, perk)
