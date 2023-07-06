@@ -8,8 +8,9 @@
 
 ---@class SkillLimiter
 
-local modDataX = require("lib/ModDataX")
+local modDataManager = require("lib/ModDataManager")
 local characterLib = require("CharacterLib")
+require("lib/CharacterBaseObj")
 
 local CreateCharacterMaxSkillObj = CharacterBaseObj:new()
 
@@ -20,9 +21,9 @@ function initCharacter()
     local characterMaxSkillModData = "characterMaxSkill"
     local characterMaxSkillTable = {}
 
-    if modDataX.isExists(characterMaxSkillModData) then
+    if modDataManager.isExists(characterMaxSkillModData) then
         characterMaxSkillTable =
-            modDataX.readModData(characterMaxSkillModData)
+            modDataManager.read(characterMaxSkillModData)
 
         CreateCharacterMaxSkillObj =
             characterLib.decodePerkDetails(characterMaxSkillTable)
@@ -33,7 +34,7 @@ function initCharacter()
         characterMaxSkillTable =
             characterLib.encodePerkDetails(CreateCharacterMaxSkillObj)
 
-        modDataX.saveModData(characterMaxSkillModData, characterMaxSkillTable )
+        modDataManager.save(characterMaxSkillModData, characterMaxSkillTable )
     end
 
     return CreateCharacterMaxSkillObj
@@ -46,7 +47,7 @@ local function OnCharacterDeath(character)
     if getPlayer():isDead() then
         print("ucciso umano")
         local characterMaxSkillModData = "characterMaxSkill"
-        modDataX.remove(characterMaxSkillModData)
+        modDataManager.remove(characterMaxSkillModData)
     end
 end
 
@@ -59,13 +60,13 @@ end
 ---Init Character -
 ---Triggered after the start of a new game, and after a saved game has been loaded.
 local function OnGameStart()
-    initCharacter()
+    CreateCharacterMaxSkillObj = initCharacter()
 end
 
 ---Init Character -
 ---Triggered when a player is being created.
 local function OnCreatePlayer(playerIndex, player)
-    initCharacter()
+    CreateCharacterMaxSkillObj = initCharacter()
 end
 
 Events.OnCharacterDeath.Add(OnCharacterDeath)

@@ -48,28 +48,6 @@ local function calculateBlockLevel(character, CreateCharacterMaxSkillObj, perk)
                 return
             end
 
-            local dbg1 = v:getPerk()
-            local dbg2 = perk
-            local dbg
-            if currentPerkLevel >= v:getLevel() then
-                blockLevel(character, currentPerkLevel, v:getPerk() , v:getLevel())
-            end
-        end
-    end
-end
-
----Calculate Block Level
----@param character IsoGameCharacter
----@param perk PerkFactory.Perk
----@param CreateCharacterMaxSkillObj CharacterBaseObj
-local function calculateBlockLevel_Back(character, CreateCharacterMaxSkillObj, perk)
-    local currentPerkLevel = characterPz.getPerkLevel_PZ(character, perk)
-
-    for _, v in pairs(CreateCharacterMaxSkillObj:getPerkDetails()) do
-        if v:getPerk() == perk then
-            local dbg1 = v:getPerk()
-            local dbg2 = perk
-            local dbg
             if currentPerkLevel >= v:getLevel() then
                 blockLevel(character, currentPerkLevel, v:getPerk() , v:getLevel())
             end
@@ -89,3 +67,25 @@ function checkLevelMax(character, perk, CreateCharacterMaxSkillObj)
     calculateBlockLevel(character, CreateCharacterMaxSkillObj, perk)
 end
 
+-------------------------------------------------------------------------------------------
+
+--[[
+---Calculate Block Level
+---@param character IsoGameCharacter
+---@param perk PerkFactory.Perk
+---@param CreateCharacterMaxSkillObj CharacterBaseObj
+local function calculateBlockLevel_Back(character, CreateCharacterMaxSkillObj, perk)
+    local currentPerkLevel = characterPz.getPerkLevel_PZ(character, perk)
+
+    for _, v in pairs(CreateCharacterMaxSkillObj:getPerkDetails()) do
+        if v:getPerk() == perk then
+            local dbg1 = v:getPerk()
+            local dbg2 = perk
+            local dbg
+            if currentPerkLevel >= v:getLevel() then
+                blockLevel(character, currentPerkLevel, v:getPerk() , v:getLevel())
+            end
+        end
+    end
+end
+]]

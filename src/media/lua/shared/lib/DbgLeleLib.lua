@@ -7,12 +7,15 @@
 ---@class DbgLeleLib
 
 local DbgLeleLib = {}
+local characterPz = require("lib/CharacterPZ")
+local isoPlayerPZ = require("lib/IsoPlayerPZ")
+local characterLib = require("CharacterLib")
+local perkFactoryPZ = require("lib/PerkFactoryPZ")
 
 local test_ = "Test - "
 local fail_ = " >>>>>>>>>>>>>> FAIL"
 local ok_ = " >>>>>>>>>>>>>> Ok"
 
-local perkFactoryPZ = require("lib/PerkFactoryPZ")
 
 local function fail(value)
     print(test_ .. value .. fail_)
@@ -30,7 +33,9 @@ function DbgLeleLib.checkTest(value1, value2, nameTest)
     end
 end
 
-DbgLeleLib.EnumProfession = {
+---Get Profession ENUM
+---@return string
+DbgLeleLib.Profession = {
     UNEMPLOYED = "",
     BURGER_FLIPPER = "burgerflipper",
     BURGLAR = "burglar",
@@ -55,56 +60,70 @@ DbgLeleLib.EnumProfession = {
     VETERAN = "veteran"
 }
 
---- Get Perk from name
+--- Get Perk ENUM
 ---@return PerkFactory.Perk perk
 --- - PerkFactory.Perk : zombie.characters.skills.PerkFactory
-DbgLeleLib.EnumPerk = {
-    --local myPerk = Perks.Blacksmith
-    --print(myPerk:getType())
-    --print(myPerk:getId())
-    --print(myPerk:getName())
-
-    None = perkFactoryPZ.getPerkByName_PZ("None"),
-    Agility = perkFactoryPZ.getPerkByName_PZ("Agility"),
-    Aiming = perkFactoryPZ.getPerkByName_PZ("Aiming"),
-    Axe = perkFactoryPZ.getPerkByName_PZ("Axe"),
-    -- Blacksmith = perkFactoryPZ.getPerkByName_PZ("Blacksmith"),  -- ???
-    Blunt = perkFactoryPZ.getPerkByName_PZ("Blunt"),
-    Combat = perkFactoryPZ.getPerkByName_PZ("Combat"),
-    Cooking = perkFactoryPZ.getPerkByName_PZ("Cooking"),
-    Crafting = perkFactoryPZ.getPerkByName_PZ("Crafting"),
-    Doctor = perkFactoryPZ.getPerkByName_PZ("Doctor"),
-    Electricity = perkFactoryPZ.getPerkByName_PZ("Electricity"),
-    Farming = perkFactoryPZ.getPerkByName_PZ("Farming"),
-    Firearm = perkFactoryPZ.getPerkByName_PZ("Firearm"),
-    Fishing = perkFactoryPZ.getPerkByName_PZ("Fishing"),
-    Fitness = perkFactoryPZ.getPerkByName_PZ("Fitness"),
-    Lightfoot = perkFactoryPZ.getPerkByName_PZ("Lightfoot"),
-    LongBlade = perkFactoryPZ.getPerkByName_PZ("Long Blade"), -- LongBlade
-    Maintenance = perkFactoryPZ.getPerkByName_PZ("Maintenance"),
-    -- MAX = perkFactoryPZ.getPerkByName_PZ("MAX"), -- ???
-    Mechanics = perkFactoryPZ.getPerkByName_PZ("Mechanics"),
-    -- Melee = perkFactoryPZ.getPerkByName_PZ("Melee"), -- ???
-    -- Melting = perkFactoryPZ.getPerkByName_PZ("Melting"), -- ???
-    MetalWelding = perkFactoryPZ.getPerkByName_PZ("Metalworking"), -- MetalWelding
-    Nimble = perkFactoryPZ.getPerkByName_PZ("Nimble"),
-    Passiv = perkFactoryPZ.getPerkByName_PZ("Passive"), -- Passiv
-    PlantScavenging = perkFactoryPZ.getPerkByName_PZ("Foraging"), -- PlantScavenging
-    Reloading = perkFactoryPZ.getPerkByName_PZ("Reloading"),
-    SmallBlade = perkFactoryPZ.getPerkByName_PZ("Short Blade"), -- SmallBlade
-    SmallBlunt = perkFactoryPZ.getPerkByName_PZ("Short Blunt"), -- SmallBlunt
-    Sneak = perkFactoryPZ.getPerkByName_PZ("Sneaking"), -- Sneak
-    Spear = perkFactoryPZ.getPerkByName_PZ("Spear"),
-    Sprinting = perkFactoryPZ.getPerkByName_PZ("Sprinting"),
-    Strength = perkFactoryPZ.getPerkByName_PZ("Strength"),
-    Survivalist = perkFactoryPZ.getPerkByName_PZ("Survivalist"),
-    Tailoring = perkFactoryPZ.getPerkByName_PZ("Tailoring"),
-    Trapping = perkFactoryPZ.getPerkByName_PZ("Trapping"),
-    Woodwork = perkFactoryPZ.getPerkByName_PZ("Carpentry"),  -- Woodwork
+DbgLeleLib.Perks = {
+    AGILITY = Perks.Agility,
+    AIMING = Perks.Aiming,
+    AXE = Perks.Axe,
+    BLACKSMITH = Perks.Blacksmith,
+    COMBAT = Perks.Combat,
+    COOKING = Perks.Cooking,
+    CRAFTING = Perks.Crafting,
+    DOCTOR = Perks.Doctor,
+    ELECTRICITY = Perks.Electricity,
+    FARMING = Perks.Farming,
+    FIREARM = Perks.Firearm,
+    FISHING = Perks.Fishing,
+    FITNESS = Perks.Fitness,
+    LIGHTFOOT = Perks.Lightfoot,
+    LONGBLADE = Perks.LongBlade,
+    LONGBLUNT = Perks.Blunt,
+    MAINTENANCE = Perks.Maintenance,
+    MECHANICS = Perks.Mechanics,
+    MELEE = Perks.Melee,
+    MELTING = Perks.Melting,
+    METALWELDING = Perks.MetalWelding,
+    NIMBLE = Perks.Nimble,
+    NONE = Perks.None,
+    PASSIV = Perks.Passiv,
+    PLANTSCAVENGING = Perks.PlantScavenging,
+    RELOADING = Perks.Reloading,
+    SMALLBLADE = Perks.SmallBlade,
+    SMALLBLUNT = Perks.SmallBlunt,
+    SNEAK = Perks.Sneak,
+    SPEAR = Perks.Spear,
+    SPRINTING = Perks.Sprinting,
+    STRENGTH = Perks.Strength,
+    SURVIVALIST = Perks.Survivalist,
+    TAILORING = Perks.Tailoring,
+    TRAPPING = Perks.Trapping,
+    WOODWORK = Perks.Woodwork,
 }
 
 function DbgLeleLib.printLine()
     print("---------------------------------------------------------------------")
+end
+
+---Set Perk Level
+---@param character IsoGameCharacter
+---@param perk PerkFactory.Perk
+---@param level int
+--- - IsoGameCharacter : zombie.characters.IsoGameCharacter
+--- - PerkFactory.Perk : zombie.characters.skills.PerkFactory
+--- - IsoGameCharacter.XP : zombie.characters.IsoGameCharacter.XP
+function DbgLeleLib.setPerkLevel(character, perk, level)
+    characterPz.removePerkLevel(character, perk)
+
+    local convertLevelToXp = 0.0
+
+    for level_ = 1, level do
+        convertLevelToXp = convertLevelToXp +
+                perkFactoryPZ.convertLevelToXp(perk, level_)
+    end
+
+    characterPz.addXP_PZ(character, perk, convertLevelToXp, false, false, true)
 end
 
 ---display
@@ -146,21 +165,17 @@ end
 ---@param perk_ PerkFactory.Perk
 ---@param perk PerkFactory.Perk
 ---@param level int
-function DbgLeleLib.checkPerk(displayName, perk_, perk )
+function DbgLeleLib.checkPerk(displayName, perk, perk_ )
     -- Perks.Maintenance
     local dbg1 = perk
     local dbg2 = perk_
 
-    if dbg1 == dbg2 then
-
+    if perk == perk_ then
         DbgLeleLib.printLine()
-        DbgLeleLib.display(displayName, nil, dbg1, dbg2, nil)
+        DbgLeleLib.display(displayName, nil, perk, perk_, nil)
         DbgLeleLib.printLine()
-
         local dbg
     end
-
-    local dbg
 end
 
 function DbgLeleLib.displayCharacterObj(displayName, CharacterObj )
@@ -186,12 +201,108 @@ function DbgLeleLib.displayListPerks(displayName, perks_list)
     DbgLeleLib.printLine()
 end
 
-function DbgLeleLib.timesCount(count, coount2)
-    if count == coount2 then
+function DbgLeleLib.timesCount(count, count2)
+    if count == count2 then
         return true
     end
 
     return false
+end
+
+function DbgLeleLib.deleteCharacter()
+    local character = getPlayer()
+    local zero = 0.0
+    local CharacterDeleteObj = CharacterBaseObj:new()
+
+    -- remove all Perk Boosts
+    CharacterDeleteObj = characterLib.getAllPerks(character)
+
+    for _, v in pairs(CharacterDeleteObj:getPerkDetails()) do
+        characterPz.removePerkBoost(character, v:getPerk())
+    end
+
+    -- remove Zombie Kills
+    characterPz.setZombieKills_PZ(character, characterPz.EnumNumbers.ZERO)
+
+    -- remove Hours Survived
+    isoPlayerPZ.setHoursSurvived_PZ(zero)
+
+    -- remove Multiplier
+    for _, v in pairs(CharacterDeleteObj:getPerkDetails()) do
+        characterPz.removeMultiplier(character, v:getPerk())
+    end
+
+    -- remove Calories
+    isoPlayerPZ.setCalories_PZ(zero)
+
+    -- remove Weight
+    isoPlayerPZ.setWeight_PZ(zero)
+
+    -- remove Perk Level
+    for _, v in pairs(CharacterDeleteObj:getPerkDetails()) do
+        characterPz.removePerkLevel(character, v:getPerk())
+    end
+
+    -- remove Profession
+    characterPz.removeProfession(character)
+
+    -- remove Know Recipe
+    CharacterDeleteObj = characterLib.getKnownRecipes(character)
+
+    for _, v in pairs(CharacterDeleteObj:getRecipes()) do
+        characterPz.removeKnowRecipe_PZ(character, v)
+    end
+
+    -- remove All Traits
+    characterPz.removeAllTraits_PZ(character)
+
+    character = getPlayer()
+end
+
+function DbgLeleLib.createCharacter()
+    local character = getPlayer()
+
+    -- set profession
+    characterPz.setProfession_PZ(character, DbgLeleLib.Profession.CARPENTER)
+
+    -- set level
+    characterPz.setPerkLevelFromXp(character, Perks.Fitness, 37500)
+    characterPz.setPerkLevelFromXp(character, Perks.Strength, 37500)
+    characterPz.setPerkLevelFromXp(character, Perks.Woodwork, 1275)
+    characterPz.setPerkLevelFromXp(character, Perks.Maintenance, 75)
+    characterPz.setPerkLevelFromXp(character, Perks.SmallBlunt, 75)
+
+    -- set boost
+    characterPz.setPerkBoost_PZ(character, Perks.Fitness, 3)
+    characterPz.setPerkBoost_PZ(character, Perks.Strength, 3)
+    characterPz.setPerkBoost_PZ(character, Perks.Woodwork, 3)
+
+    -- set trait
+    characterPz.setTraitsPerk_PZ(character,"HardOfHearing" )
+    characterPz.setTraitsPerk_PZ(character,"SlowReader" )
+    characterPz.setTraitsPerk_PZ(character,"Handy" )
+
+    -- set zombie kills
+    characterPz.setZombieKills_PZ(character, 15)
+
+    -- set multiplier
+    characterPz.addXpMultiplier_PZ(character, Perks.Cooking, 1.0,
+            characterPz.EnumNumbers.ONE, characterPz.EnumNumbers.ONE)
+
+    -- set recipe
+    local recipe = "Make Pizza"
+    characterPz.addKnownRecipe(character, recipe)
+
+    -- set Hours Survived
+    isoPlayerPZ.setHoursSurvived_PZ(10)
+
+    -- set Calories
+    isoPlayerPZ.setCalories_PZ(1500)
+
+    -- set Weight
+    isoPlayerPZ.setWeight_PZ(92)
+
+    character = getPlayer()
 end
 
 return DbgLeleLib

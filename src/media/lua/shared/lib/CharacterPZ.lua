@@ -116,14 +116,14 @@ CharacterPz.EnumNumbers = {
     TEN = 10,
 }
 
----Set Perk Level and level
+---Set Perk Level from XP 75 - 150 ......
 ---@param character IsoGameCharacter
 ---@param perk PerkFactory.Perk
 ---@param xp float
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 --- - PerkFactory.Perk : zombie.characters.skills.PerkFactory
 --- - IsoGameCharacter.XP : zombie.characters.IsoGameCharacter.XP
-function CharacterPz.setPerkLevel(character, perk, xp)
+function CharacterPz.setPerkLevelFromXp(character, perk, xp)
     if not character or not perk then
         return nil
     end
@@ -258,7 +258,6 @@ end
 --    return character:getCharacterTraits()
 --end
 
--- TODO check
 ---Remove Trait
 ---@param character IsoGameCharacter
 ---@param trait String
@@ -337,10 +336,9 @@ function CharacterPz.getMultiplier_PZ(character, perk)
     return character:getXp():getMultiplier(perk)
 end
 
----Get Multiplier
+---Remove Multiplier
 ---@param character IsoGameCharacter
 ---@param perk PerkFactory.Perk
----@return float
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 --- - PerkFactory.Perk : zombie.characters.skills.PerkFactory
 function CharacterPz.removeMultiplier(character, perk)
@@ -348,14 +346,8 @@ function CharacterPz.removeMultiplier(character, perk)
         return nil
     end
 
-    local multiplier = character:getXp():getMultiplier(perk)
-
-    if multiplier == 0.0 or multiplier == nil then
-        return
-    end
-
-    CharacterPz.addXpMultiplier_PZ(character, perk, -multiplier,
-            1, 1)
+    CharacterPz.addXpMultiplier_PZ(character, perk, CharacterPz.EnumNumbers.ZERO,
+            CharacterPz.EnumNumbers.ONE, CharacterPz.EnumNumbers.ONE)
 
 end
 

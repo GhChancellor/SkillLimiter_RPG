@@ -6,7 +6,7 @@
 
 ---@class CharacterLib
 
-require("CharacterBaseObj")
+require("lib/CharacterBaseObj")
 local characterPz = require("lib/CharacterPZ")
 local perkFactoryPZ = require("lib/PerkFactoryPZ")
 
@@ -14,7 +14,7 @@ local CharacterLib = {}
 
 ---Get Character Traits Perk
 ---@param character IsoGameCharacter
----@return CharacterObj table - PerkFactory.Perk perk, int level
+---@return CharacterBaseObj table - PerkFactory.Perk perk, int level
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 function CharacterLib.getTraitsPerk(character)
     if not character then
@@ -48,7 +48,7 @@ end
 
 ---Get Character Profession
 ---@param character IsoGameCharacter
----@return CharacterObj getPerkDetails() -- table PerkFactory.Perk perk, int level, float xp
+---@return CharacterBaseObj getPerkDetails() -- table PerkFactory.Perk perk, int level, float xp
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 function CharacterLib.getPerkProfession(character)
     if not character then
@@ -111,7 +111,7 @@ end
 
 ---Get character and get All skills/traits
 ---@param character IsoGameCharacter
----@return CharacterObj getPerkDetails() -- table PerkFactory.Perk perk, int level, float xp
+---@return CharacterBaseObj getPerkDetails() -- table PerkFactory.Perk perk, int level, float xp
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 function CharacterLib.getAllPerks(character)
     if not character then
@@ -142,7 +142,7 @@ end
 
 ---Get character Multiplier
 ---@param character IsoGameCharacter
----@return CharacterObj getPerkDetails() -- table PerkFactory.Perk perk, int level, float xp
+---@return CharacterBaseObj getPerkDetails() -- table PerkFactory.Perk perk, int level, float xp
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 function CharacterLib.getMultiplier(character)
     if not character then
@@ -154,7 +154,7 @@ function CharacterLib.getMultiplier(character)
 
     for _, v in pairs(CharacterObj01:getPerkDetails()) do
         local multiplier = characterPz.getMultiplier_PZ(character, v:getPerk())
-        v:setMultiplier(multiplier)
+        v:setMultiplier(characterPz.trunkFloatTo2Decimal(multiplier))
     end
 
     return CharacterObj01
@@ -163,7 +163,7 @@ end
 
 ---Get character Perks Boosts
 ---@param character IsoGameCharacter
----@return CharacterObj getPerkDetails() -- table PerkFactory.Perk perk, int level, float xp
+---@return CharacterBaseObj getPerkDetails() -- table PerkFactory.Perk perk, int level, float xp
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 function CharacterLib.getPerksBoost(character)
     if not character then
@@ -183,7 +183,7 @@ end
 
 ---Get Character Known Recipes
 ---@param character IsoGameCharacter
----@return CharacterObj getRecipes()
+---@return CharacterBaseObj getRecipes()
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 function CharacterLib.getKnownRecipes(character)
     if not character then
@@ -201,7 +201,7 @@ function CharacterLib.getKnownRecipes(character)
 end
 
 ---Encode Perk Details convert the CharaterObj into a table. The ModData only accepts a table
----@param characterObj CharacterObj
+---@param characterObj CharacterBaseObj
 ---@return table
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 function CharacterLib.encodePerkDetails(characterObj)
@@ -224,7 +224,7 @@ end
 
 ---Decode Perk Details convert a table into CharacterObj
 ---@param characterPerkDetails table
----@return CharacterObj getPerkDetails()
+---@return CharacterBaseObj getPerkDetails()
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 function CharacterLib.decodePerkDetails(characterPerkDetails)
     if not characterPerkDetails then
@@ -249,25 +249,6 @@ function CharacterLib.decodePerkDetails(characterPerkDetails)
     end
 
     return CharacterObj01
-end
-
---- TODO uncompleted
-function CharacterLib.resetCharacter(character)
-    if not character then
-        return nil
-    end
-
-    character = CharacterLib.charaterUpdate()
-
-    local CharacterObj01 = CharacterBaseObj:new()
-    CharacterObj01 = CharacterLib.getAllPerks(character)
-
-    characterPz.removeProfession(character)
-
-    -- remove perk, level, Xp
-    for i, v in pairs(CharacterObj01:getPerkDetails()) do
-        characterPz.removePerkLevel(character, v:getPerk())
-    end
 end
 
 ---Update all the characteristics of the character

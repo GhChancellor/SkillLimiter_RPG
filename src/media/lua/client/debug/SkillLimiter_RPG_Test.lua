@@ -4,11 +4,46 @@
 --- DateTime: 16/05/23 12:39
 ---
 local dbgLeleLib = require("lib/DbgLeleLib")
+local modDataManager = require("lib/ModDataManager")
 local characterPz = require("lib/CharacterPZ")
 local perkFactoryPZ = require("lib/PerkFactoryPZ")
 local isoPlayerPZ = require("lib/IsoPlayerPZ")
-local modDataX = require("lib/ModDataX")
 local characterLib = require("CharacterLib")
+require("lib/CharacterBaseObj")
+require("SL")
+
+local test_ = "Test - "
+local fail_ = " >>>>>>>>>>>>>> FAIL"
+local ok_ = " >>>>>>>>>>>>>> Ok"
+
+local function fail(value)
+    print(test_ .. value .. fail_)
+end
+
+local function ok(value)
+    print(test_ .. value .. ok_)
+end
+
+---Check Test
+---@param character IsoGameCharacter
+---@param perk PerkFactory.Perk
+---@param xp double
+---@param nameTest string
+---@return boolean
+--- - IsoGameCharacter : zombie.characters.IsoGameCharacter
+local function checkTest(character, perk, xp, nameTest)
+    local xp_ = characterPz.getXp(character, perk)
+
+    if xp_ ~= xp then
+        fail(nameTest)
+        return false
+    end
+
+    return true
+end
+
+
+local CreateCharacterMaxSkillObj = CharacterBaseObj:new()
 
 local function characterCharacteristics(CharacterObj, displayName)
     dbgLeleLib.printLine()
@@ -23,7 +58,10 @@ local function characterCharacteristics(CharacterObj, displayName)
     dbgLeleLib.printLine()
 end
 
-function displayCharacterDetails(character)
+---Display Character Details
+---@param character IsoGameCharacter
+--- - IsoGameCharacter : zombie.characters.IsoGameCharacter
+local function displayCharacterDetails(character)
     local CharacterCreationObj = CharacterBaseObj:new()
     CharacterCreationObj = getCharacterCreation(character)
 
@@ -48,14 +86,241 @@ function displayCharacterDetails(character)
 
 end
 
-function checkModData()
+local function modData_TDD()
     local characterMaxSkillModData = "characterMaxSkill"
 
-    if modDataX.isExists(characterMaxSkillModData) then
-        dbgLeleLib.checkTest(true, true, "Character MaxS kill ModData" )
-    else
-        dbgLeleLib.checkTest(false, true, "Character MaxS kill ModData" )
+    modDataManager.save(characterMaxSkillModData, "value")
+
+    dbgLeleLib.checkTest(modDataManager.isExists(characterMaxSkillModData),
+            true, "Save moddata" )
+
+    modDataManager.remove(characterMaxSkillModData)
+
+    dbgLeleLib.checkTest(modDataManager.isExists(characterMaxSkillModData),
+            false, "Remove moddata" )
+end
+
+---Set Level
+---@param character IsoGameCharacter
+--- - IsoGameCharacter : zombie.characters.IsoGameCharacter
+local function setLevelperk(character)
+    local five = 5
+    local seven = 7
+    local ten = 10
+
+    -- Passive
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.FITNESS, ten)
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.STRENGTH, ten)
+
+    -- Agility
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.SPRINTING, five)
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.LIGHTFOOT, five)
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.NIMBLE, five)
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.SNEAK, five)
+
+    -- Combat
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.AXE, five)
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.LONGBLUNT, five)
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.SMALLBLUNT, seven)
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.LONGBLADE, five)
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.SMALLBLADE, five)
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.SPEAR, five)
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.MAINTENANCE, seven)
+
+    -- Crafting
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.WOODWORK, ten)
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.COOKING, five)
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.FARMING, five)
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.DOCTOR, five)
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.ELECTRICITY, five)
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.METALWELDING, five)
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.MECHANICS, five)
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.TAILORING, five)
+
+    -- Firearm
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.AIMING, five)
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.RELOADING, five)
+
+    -- Survivalist
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.FISHING, five)
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.TRAPPING, five)
+    dbgLeleLib.setPerkLevel(character, dbgLeleLib.Perks.PLANTSCAVENGING, five)
+end
+
+---Rremove Excess XP
+---@param character IsoGameCharacter
+--- - IsoGameCharacter : zombie.characters.IsoGameCharacter
+local function removeExcessXP(character, perk)
+    checkLevelMax(character, perk, CreateCharacterMaxSkillObj)
+end
+
+---Add XP
+---@param character IsoGameCharacter
+--- - IsoGameCharacter : zombie.characters.IsoGameCharacter
+local function addXp(character)
+    local value = 2
+    -- Passive
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.FITNESS, value)
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.STRENGTH, value)
+
+    -- Agility
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.SPRINTING, value)
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.LIGHTFOOT, value)
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.NIMBLE, value)
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.SNEAK, value)
+
+    -- Combat
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.AXE, value)
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.LONGBLUNT, value)
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.SMALLBLUNT, value)
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.LONGBLADE, value)
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.SMALLBLADE, value)
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.SPEAR, value)
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.MAINTENANCE, value)
+
+    -- Crafting
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.WOODWORK, value)
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.COOKING, value)
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.FARMING, value)
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.DOCTOR, value)
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.ELECTRICITY, value)
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.METALWELDING, value)
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.MECHANICS, value)
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.TAILORING, value)
+
+    -- Firearm
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.AIMING, value)
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.RELOADING, value)
+
+    -- Survivalist
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.FISHING, value)
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.TRAPPING, value)
+    characterPz.setPerkLevelFromXp(character, dbgLeleLib.Perks.PLANTSCAVENGING, value)
+
+end
+
+---Remove Xp
+---@param character IsoGameCharacter
+--- - IsoGameCharacter : zombie.characters.IsoGameCharacter
+local function removeXp(character)
+
+    -- Passive
+    removeExcessXP(character, dbgLeleLib.Perks.FITNESS)
+    removeExcessXP(character, dbgLeleLib.Perks.STRENGTH)
+
+    -- Agility
+    removeExcessXP(character, dbgLeleLib.Perks.SPRINTING)
+    removeExcessXP(character, dbgLeleLib.Perks.LIGHTFOOT)
+    removeExcessXP(character, dbgLeleLib.Perks.NIMBLE)
+    removeExcessXP(character, dbgLeleLib.Perks.SNEAK)
+
+    -- Combat
+    removeExcessXP(character, dbgLeleLib.Perks.AXE)
+    removeExcessXP(character, dbgLeleLib.Perks.LONGBLUNT)
+    removeExcessXP(character, dbgLeleLib.Perks.SMALLBLUNT)
+    removeExcessXP(character, dbgLeleLib.Perks.LONGBLADE)
+    removeExcessXP(character, dbgLeleLib.Perks.SMALLBLADE)
+    removeExcessXP(character, dbgLeleLib.Perks.SPEAR)
+    removeExcessXP(character, dbgLeleLib.Perks.MAINTENANCE)
+
+    -- Crafting
+    removeExcessXP(character, dbgLeleLib.Perks.WOODWORK)
+    removeExcessXP(character, dbgLeleLib.Perks.COOKING)
+    removeExcessXP(character, dbgLeleLib.Perks.FARMING)
+    removeExcessXP(character, dbgLeleLib.Perks.DOCTOR)
+    removeExcessXP(character, dbgLeleLib.Perks.ELECTRICITY)
+    removeExcessXP(character, dbgLeleLib.Perks.METALWELDING)
+    removeExcessXP(character, dbgLeleLib.Perks.MECHANICS)
+    removeExcessXP(character, dbgLeleLib.Perks.TAILORING)
+
+    -- Firearm
+    removeExcessXP(character, dbgLeleLib.Perks.AIMING)
+    removeExcessXP(character, dbgLeleLib.Perks.RELOADING)
+
+    -- Survivalist
+    removeExcessXP(character, dbgLeleLib.Perks.FISHING)
+    removeExcessXP(character, dbgLeleLib.Perks.TRAPPING)
+    removeExcessXP(character, dbgLeleLib.Perks.PLANTSCAVENGING)
+end
+
+---
+---@param character IsoGameCharacter
+--- - IsoGameCharacter : zombie.characters.IsoGameCharacter
+local function checkAllPerks(character)
+    local flag01 = true
+
+    local five = 37500 -- level 5
+    local seven = 127500 -- level 7
+    local ten = 487500 -- level 10
+
+    -- Passive
+    flag01 = checkTest(character, dbgLeleLib.Perks.FITNESS, ten, "FITNESS")
+    flag01 = checkTest(character, dbgLeleLib.Perks.STRENGTH, ten, "STRENGTH")
+
+
+    local xp_ = characterPz.getXp(character, dbgLeleLib.Perks.FITNESS)
+    print(xp_)
+
+    local xp_ = characterPz.getXp(character, dbgLeleLib.Perks.SPRINTING)
+    print(xp_)
+
+
+--[[
+
+   -- Agility
+    flag01 = checkTest(character, dbgLeleLib.Perks.SPRINTING, five, "SPRINTING")
+    flag01 = checkTest(character, dbgLeleLib.Perks.LIGHTFOOT, five, "LIGHTFOOT")
+    flag01 = checkTest(character, dbgLeleLib.Perks.NIMBLE, five, "NIMBLE")
+    flag01 = checkTest(character, dbgLeleLib.Perks.SNEAK, five, "SNEAK")
+
+    -- Combat
+    flag01 = checkTest(character, dbgLeleLib.Perks.AXE, five, "AXE")
+    flag01 = checkTest(character, dbgLeleLib.Perks.LONGBLUNT, five, "LONGBLUNT")
+    flag01 = checkTest(character, dbgLeleLib.Perks.SMALLBLUNT, seven, "SMALLBLUNT")
+    flag01 = checkTest(character, dbgLeleLib.Perks.LONGBLADE, five, "LONGBLADE")
+    flag01 = checkTest(character, dbgLeleLib.Perks.SMALLBLADE, five, "SMALLBLADE")
+    flag01 = checkTest(character, dbgLeleLib.Perks.SPEAR, five, "SPEAR")
+    flag01 = checkTest(character, dbgLeleLib.Perks.MAINTENANCE, seven, "MAINTENANCE")
+
+    -- Crafting
+    flag01 = checkTest(character, dbgLeleLib.Perks.WOODWORK, ten, "WOODWORK")
+    flag01 = checkTest(character, dbgLeleLib.Perks.COOKING, five, "COOKING")
+    flag01 = checkTest(character, dbgLeleLib.Perks.FARMING, five, "FARMING")
+    flag01 = checkTest(character, dbgLeleLib.Perks.DOCTOR, five, "DOCTOR")
+    flag01 = checkTest(character, dbgLeleLib.Perks.ELECTRICITY, five, "ELECTRICITY")
+    flag01 = checkTest(character, dbgLeleLib.Perks.METALWELDING, five, "METALWELDING")
+    flag01 = checkTest(character, dbgLeleLib.Perks.MECHANICS, five, "MECHANICS")
+    flag01 = checkTest(character, dbgLeleLib.Perks.TAILORING, five, "TAILORING")
+
+    -- Firearm
+    flag01 = checkTest(character, dbgLeleLib.Perks.AIMING, five, "AIMING")
+    flag01 = checkTest(character, dbgLeleLib.Perks.RELOADING, five, "RELOADING")
+
+    -- Survivalist
+    flag01 = checkTest(character, dbgLeleLib.Perks.FISHING, five, "FISHING")
+    flag01 = checkTest(character, dbgLeleLib.Perks.TRAPPING, five, "TRAPPING")
+    flag01 = checkTest(character, dbgLeleLib.Perks.PLANTSCAVENGING, five, "PLANTSCAVENGING")
+
+    if flag01 then
+        ok("All check test are true")
     end
+
+    ]]
+
+end
+
+---Block Level TDD
+---@param character IsoGameCharacter
+--- - IsoGameCharacter : zombie.characters.IsoGameCharacter
+local function blockLevel_TDD(character)
+    dbgLeleLib.deleteCharacter()
+    dbgLeleLib.createCharacter()
+    CreateCharacterMaxSkillObj = initCharacter()
+
+    setLevelperk(character)
+    addXp(character)
+    removeXp(character)
+    checkAllPerks(character)
 end
 
 -- Perks.Maintenance
@@ -63,31 +328,47 @@ end
 -- Perks.Sprinting
 -- Todo 		self.character:playSound("CloseBook")
 ---@param character IsoGameCharacter
+--- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 local function key34(character, key)
     if key == 34 then -- <<<< g
-        print("Key = g > displayCharacterDetails \n")
-         checkModData()
-         displayCharacterDetails(character)
+        print("Key = g > TDD \n")
+        modData_TDD()
+        blockLevel_TDD(character)
     end
 end
 
 ---@param character IsoGameCharacter
+--- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 local function key35(character, key)
     if key == 35 then -- <<< h
-        print("Key = h > read \n")
-
+        print("Key = h > displayCharacterDetails \n")
+        displayCharacterDetails(character)
     end
 end
 
 ---@param character IsoGameCharacter
+--- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 local function key36(character, key)
     if key == 36 then -- <<<< j
-        print("Key = j > delete \n")
-
+        print("Key = j > XP Perk \n")
+        --local perk = dbgLeleLib.Perks.FITNESS
+        --
+        --local five = 5 -- 37500
+        --local seven = 7 -- 127500
+        --local ten = 10  -- 487500
+        --
+        --local convertLevelToXp = 0.0
+        --
+        --for level_ = 1, five do
+        --    convertLevelToXp = convertLevelToXp +
+        --            perkFactoryPZ.convertLevelToXp(perk, level_)
+        --end
+        --print(convertLevelToXp)
     end
 end
 
 ---@param character IsoGameCharacter
+--- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 local function key37(character, key)
     if key == 37 then -- <<<< k
         print("Key = k > delete \n")
@@ -99,19 +380,20 @@ local function onCustomUIKeyPressed(key)
     local character = getPlayer()
 
     key34(character, key)
-    --key35(character, key)
-    --key36(character, key)
+    key35(character, key)
+    key36(character, key)
     key37(character, key)
 end
 
 ---Delete modData when character is death -
 ---Triggered when a character or zombie is killed
 ---@param character IsoGameCharacter
+--- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 local function OnCharacterDeath(character)
     if getPlayer():isDead() then
         print("Character killed")
         local characterMaxSkillModData = "characterMaxSkill"
-        modDataX.remove(characterMaxSkillModData)
+        modDataManager.remove(characterMaxSkillModData)
     else
         print("Zombi is killed")
     end
@@ -129,7 +411,12 @@ local function OnCreatePlayer(playerIndex, player)
     print("Triggered when a player is being created.")
 end
 
+local function AddXP(character, perk, level)
+    checkLevelMax(character, perk, CreateCharacterMaxSkillObj)
+end
+
 --Events.OnCharacterDeath.Add(OnCharacterDeath)
 --Events.OnGameStart.Add(OnGameStart)
 --Events.OnCreatePlayer.Add(OnCreatePlayer)
-Events.OnCustomUIKeyPressed.Add(onCustomUIKeyPressed)
+--Events.OnCustomUIKeyPressed.Add(onCustomUIKeyPressed)
+--Events.AddXP.Add(AddXP)
