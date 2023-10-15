@@ -6,13 +6,14 @@
 
 ---@class CharacterLib
 
-require("lib/CharacterBaseObj")
 local characterPz = require("lib/CharacterPZ")
 local perkFactoryPZ = require("lib/PerkFactoryPZ")
+local dataValidator = require("lib/DataValidator")
+require("lib/CharacterBaseObj")
 
 local CharacterLib = {}
 
----Get Character Traits Perk
+--- **Get Character Traits Perk**
 ---@param character IsoGameCharacter
 ---@return CharacterBaseObj table - PerkFactory.Perk perk, int level
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
@@ -21,8 +22,10 @@ function CharacterLib.getTraitsPerk(character)
         return nil
     end
 
+    ---@type CharacterBaseObj
     local CharacterObj01 = CharacterBaseObj:new()
 
+    ---@type List
     local traits_PZ = characterPz.getTraitsPerk_PZ(character)
 
     for i = 0, traits_PZ:size() - 1 do
@@ -46,7 +49,7 @@ function CharacterLib.getTraitsPerk(character)
     return CharacterObj01
 end
 
----Get Character Profession
+--- **Get Character Profession**
 ---@param character IsoGameCharacter
 ---@return CharacterBaseObj getPerkDetails() -- table PerkFactory.Perk perk, int level, float xp
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
@@ -55,6 +58,7 @@ function CharacterLib.getPerkProfession(character)
         return nil
     end
 
+    ---@type CharacterBaseObj
     local CharacterObj01 = CharacterBaseObj:new()
 
     ---@type SurvivorDesc
@@ -76,12 +80,12 @@ function CharacterLib.getPerkProfession(character)
 end
 
 ---@deprecated
----Get character and get current skill/trait
+--- **Get character and get current skill/trait**
 ---@param character IsoGameCharacter
 ---@param perk PerkFactory.Perk
 ---@return PerkDetailsObj getPerkDetailsObj()
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
---- - PerkFactory.Perk : zombie.characters.skills.PerkFactory
+--- - PerkFactory.Perk : zombie.characters.skills.PerkFactory.Perk
 function CharacterLib.getCurrentSkill(character, perk)
     -- Perks.Maintenance
     -- Perks.Woodwork
@@ -90,6 +94,7 @@ function CharacterLib.getCurrentSkill(character, perk)
         return nil
     end
 
+    ---@type CharacterBaseObj
     local CharacterObj01 = CharacterBaseObj:new()
 
     ---@type SurvivorDesc
@@ -109,7 +114,7 @@ function CharacterLib.getCurrentSkill(character, perk)
     return CharacterObj01
 end
 
----Get character and get All skills/traits
+--- **Get character and get All skills/traits**
 ---@param character IsoGameCharacter
 ---@return CharacterBaseObj getPerkDetails() -- table PerkFactory.Perk perk, int level, float xp
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
@@ -118,6 +123,7 @@ function CharacterLib.getAllPerks(character)
         return nil
     end
 
+    ---@type CharacterBaseObj
     local CharacterObj01 = CharacterBaseObj:new()
 
     for i = 0, Perks.getMaxIndex() - 1 do
@@ -140,7 +146,7 @@ function CharacterLib.getAllPerks(character)
     return CharacterObj01
 end
 
----Get character Multiplier
+--- **Get character Multiplier**
 ---@param character IsoGameCharacter
 ---@return CharacterBaseObj getPerkDetails() -- table PerkFactory.Perk perk, int level, float xp
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
@@ -149,19 +155,19 @@ function CharacterLib.getMultiplier(character)
         return nil
     end
 
+    ---@type CharacterBaseObj
     local CharacterObj01 = CharacterBaseObj:new()
     CharacterObj01 = CharacterLib.getAllPerks(character)
 
     for _, v in pairs(CharacterObj01:getPerkDetails()) do
         local multiplier = characterPz.getMultiplier_PZ(character, v:getPerk())
-        v:setMultiplier(characterPz.trunkFloatTo2Decimal(multiplier))
+        v:setMultiplier(dataValidator.trunkFloatTo2Decimal(multiplier))
     end
 
     return CharacterObj01
 end
 
-
----Get character Perks Boosts
+--- **Get character Perks Boosts**
 ---@param character IsoGameCharacter
 ---@return CharacterBaseObj getPerkDetails() -- table PerkFactory.Perk perk, int level, float xp
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
@@ -170,10 +176,12 @@ function CharacterLib.getPerksBoost(character)
         return nil
     end
 
+    ---@type CharacterBaseObj
     local CharacterObj01 = CharacterBaseObj:new()
     CharacterObj01 = CharacterLib.getAllPerks(character)
 
     for _, v in pairs(CharacterObj01:getPerkDetails()) do
+        ---@type int
         local boost = characterPz.getPerkBoost_PZ(character, v:getPerk())
         v:setBoostLevel(boost)
     end
@@ -181,7 +189,7 @@ function CharacterLib.getPerksBoost(character)
     return CharacterObj01
 end
 
----Get Character Known Recipes
+--- **Get Character Known Recipes**
 ---@param character IsoGameCharacter
 ---@return CharacterBaseObj getRecipes()
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
@@ -190,7 +198,9 @@ function CharacterLib.getKnownRecipes(character)
         return nil
     end
 
+    ---@type CharacterBaseObj
     local CharacterObj01 = CharacterBaseObj:new()
+    ---@type List
     local knowRecipes = characterPz.getKnownRecipes_PZ(character)
 
     for i = 0, knowRecipes:size() - 1 do
@@ -200,7 +210,7 @@ function CharacterLib.getKnownRecipes(character)
     return CharacterObj01
 end
 
----Encode Perk Details convert the CharaterObj into a table. The ModData only accepts a table
+--- **Encode Perk Details convert the CharaterObj into a table. The ModData only accepts a table**
 ---@param characterObj CharacterBaseObj
 ---@return table
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
@@ -209,8 +219,12 @@ function CharacterLib.encodePerkDetails(characterObj)
         return nil
     end
 
+    ---@type table
     local lines = {}
 
+    ---@param perk PerkFactory.Perk
+    ---@param level int
+    ---@param xp float
     for _, v in pairs(characterObj:getPerkDetails()) do
         local value = ( v.perk:getName() .. "-" ..
                 tostring(v:getLevel())  .. "-" ..
@@ -222,7 +236,7 @@ function CharacterLib.encodePerkDetails(characterObj)
     return lines
 end
 
----Decode Perk Details convert a table into CharacterObj
+--- **Decode Perk Details convert a table into CharacterObj**
 ---@param characterPerkDetails table
 ---@return CharacterBaseObj getPerkDetails()
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
@@ -231,8 +245,10 @@ function CharacterLib.decodePerkDetails(characterPerkDetails)
         return nil
     end
 
+    ---@type CharacterBaseObj
     local CharacterObj01 = CharacterBaseObj:new()
 
+    ---@type table
     local lines = {}
 
     for _, v in pairs(characterPerkDetails) do
@@ -249,11 +265,6 @@ function CharacterLib.decodePerkDetails(characterPerkDetails)
     end
 
     return CharacterObj01
-end
-
----Update all the characteristics of the character
-function CharacterLib.charaterUpdate()
-    return getPlayer()
 end
 
 return CharacterLib

@@ -6,76 +6,104 @@
 
 ---@class ModDataManager
 
-local modDataManager = {}
+local dataValidator = require("lib/DataValidator")
+local debugDiagnostics = require("lib/DebugDiagnostics")
+local errHandler = require("lib/ErrHandler")
 
----Save ModData
+local ModDataManager = {}
+
+--- **Save ModData to Harddisk**
 ---@param nameFile String
----@param values string or table
-function modDataManager.save(nameFile, values)
+---@param values table
+---@return void
+--- - ModData : zombie.world.moddata.ModData
+function ModDataManager.save(nameFile, values)
     if not nameFile or not values then
+        errHandler.errMsg("ModDataManager.save(nameFile, values)",
+                errHandler.err.IS_NULL .. " or values " .. errHandler.err.IS_NULL)
         return nil
     end
 
-    if type(values) ~= "table" then
-        local conversionTotable = {}
-        table.insert(conversionTotable, values)
-        values = {}
-        values = conversionTotable
-        conversionTotable = nil
-    end
-
-    local lines = {}
-
-    for i, v in pairs(values) do
-        lines[i] = v
-        ModData.add(nameFile, lines)
-    end
+    ModData.create(nameFile)
+    ModData.add(nameFile, values)
 end
 
----Read ModData
+--- **Read ModData**
 ---@param nameFile String
 ---@return table
-function modDataManager.read(nameFile)
+--- - ModData : zombie.world.moddata.ModData
+function ModDataManager.read(nameFile)
     if not nameFile then
+        errHandler.errMsg("ModDataManager.read(nameFile)",
+                " nameFile " .. errHandler.err.IS_NULL)
         return nil
     end
 
     local lines = {}
     lines = ModData.get(nameFile)
 
-    if #lines >= 2 then
-        return lines
-    else
-        local conversionTotable ={}
+    ---@type table
+    local conversionTotable = {}
 
-        for _, v in pairs(lines) do
-            table.insert(conversionTotable, v)
-        end
-
-        return conversionTotable
+    for _, v in pairs(lines) do
+        table.insert(conversionTotable, v)
     end
+
+    return conversionTotable
 end
 
----Is modData Exists
+--- **Is modData Exists**
 ---@param nameFile String
---- - ModData : zombie.world.moddata.ModDa
-function modDataManager.isExists(nameFile)
+---@return boolean
+--- - ModData : zombie.world.moddata.ModData
+function ModDataManager.isExists(nameFile)
     if not nameFile then
+        errHandler.errMsg("ModDataManager.isExists(nameFile)",
+                " nameFile " .. errHandler.err.IS_NULL)
         return nil
     end
 
     return ModData.exists(nameFile)
 end
 
---- Remove modData
+--- **Remove modData**
 ---@param nameFile String
---- - ModData : zombie.world.moddata.ModDa
-function modDataManager.remove(nameFile)
+---@return void
+--- - ModData : zombie.world.moddata.ModData
+function ModDataManager.remove(nameFile)
     if not nameFile then
+        errHandler.errMsg("ModDataManager.remove(nameFile)",
+                " nameFile " .. errHandler.err.IS_NULL)
         return nil
     end
 
     ModData.remove(nameFile)
 end
 
-return modDataManager
+--- **Display all modData**
+---@return void
+function ModDataManager.displayAllTable()
+    ---@type List
+    local tableNames = ModData.getTableNames()
+
+    ---@type table
+    local moddatas =
+    dataValidator.transformArrayListToTable(tableNames)
+
+    print("------------------------displayModDatas-----------------------")
+    debugDiagnostics.printLine()
+    for _, v in pairs(moddatas) do
+        print("Name table - " .. v)
+
+        ---@type table
+        local reads = ModDataManager.read(v)
+        for _, v in pairs(reads) do
+            print("Value of Moddata - " .. v)
+        end
+
+        debugDiagnostics.printLine()
+    end
+    debugDiagnostics.printLine()
+end
+
+return ModDataManager

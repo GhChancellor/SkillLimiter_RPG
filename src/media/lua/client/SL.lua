@@ -8,18 +8,28 @@
 
 ---@class SkillLimiter
 
-local modDataManager = require("lib/ModDataManager")
+local SkillLimiter = {}
+
+local debugDiagnostics = require("lib/DebugDiagnostics")
+local blockLevel = require("BlockLevel")
+local characterMaxSkill = require("CharacterMaxSkill")
 local characterLib = require("CharacterLib")
+local modDataManager = require("lib/ModDataManager")
+-- local characterBaseObj = require("lib/CharacterBaseObj")
 require("lib/CharacterBaseObj")
 
+---@type CharacterBaseObj
 local CreateCharacterMaxSkillObj = CharacterBaseObj:new()
 
 -- Create Character Max Skill and create ModData
 ---@return CharacterBaseObj
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
-function initCharacter()
+function SkillLimiter.initCharacter()
+    ---
     local characterMaxSkillModData = "characterMaxSkill"
-    local characterMaxSkillTable = {}
+
+    ---@type table
+    local characterMaxSkillTable -- = {}
 
     if modDataManager.isExists(characterMaxSkillModData) then
         characterMaxSkillTable =
@@ -29,7 +39,7 @@ function initCharacter()
             characterLib.decodePerkDetails(characterMaxSkillTable)
     else
         CreateCharacterMaxSkillObj =
-            getCreateCharacterMaxSkill( getPlayer() )
+            characterMaxSkill.getCreateCharacterMaxSkill( debugDiagnostics.characterUpdate() )
 
         characterMaxSkillTable =
             characterLib.encodePerkDetails(CreateCharacterMaxSkillObj)
@@ -54,22 +64,24 @@ end
 ---Check Level Max
 ---Triggered when a player gains XP.
 local function AddXP(character, perk, level)
-    checkLevelMax(character, perk, CreateCharacterMaxSkillObj)
+    blockLevel.checkLevelMax(character, perk, CreateCharacterMaxSkillObj)
 end
 
 ---Init Character -
 ---Triggered after the start of a new game, and after a saved game has been loaded.
 local function OnGameStart()
-    CreateCharacterMaxSkillObj = initCharacter()
+    CreateCharacterMaxSkillObj = SkillLimiter.initCharacter()
 end
 
 ---Init Character -
 ---Triggered when a player is being created.
 local function OnCreatePlayer(playerIndex, player)
-    CreateCharacterMaxSkillObj = initCharacter()
+    CreateCharacterMaxSkillObj = SkillLimiter.initCharacter()
 end
 
-Events.OnCharacterDeath.Add(OnCharacterDeath)
-Events.AddXP.Add(AddXP)
-Events.OnGameStart.Add(OnGameStart)
-Events.OnCreatePlayer.Add(OnCreatePlayer)
+--Events.OnCharacterDeath.Add(OnCharacterDeath)
+--Events.AddXP.Add(AddXP)
+--Events.OnGameStart.Add(OnGameStart)
+--Events.OnCreatePlayer.Add(OnCreatePlayer)
+
+return SkillLimiter

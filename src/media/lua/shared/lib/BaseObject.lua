@@ -22,6 +22,7 @@ function BaseObject:derive(type)
     return o
 end
 
+--- **Create a new BaseObject**
 function BaseObject:new()
     local o = {}
     setmetatable(o, self)
