@@ -15,7 +15,9 @@ function PerkDetailsObj:new()
     setmetatable(o, self)
     self.__index = self
     o.perk = ""
-    o.level = ""
+    o.minLevel = ""
+    o.currentLevel = ""
+    o.maxLevel = ""
     o.xp = ""
     o.boostLevel = ""
     o.multiplier = ""
@@ -26,26 +28,52 @@ end
 
 --- **Add Perk Details**
 ---@param perk PerkFactory.Perk
----@param level int
+---@param currentLevel int
 ---@param xp float
 --- - PerkFactory.Perk : zombie.characters.skills.PerkFactory.Perk
-function PerkDetailsObj:addPerkDetails(perk, level, xp)
+function PerkDetailsObj:addPerkDetails(perk, currentLevel, xp)
     self.perk = perk
-    self.level = level
+    self.currentLevel = currentLevel
     self.xp = xp
 end
 
---- **Set level**
----@param level int
+--- **Set Minimum Level**
+---@param minLevel int
 ---@return void
-function PerkDetailsObj:setLevel(level)
-    self.level = level
+function PerkDetailsObj:setMinLevel(minLevel)
+    self.minLevel = minLevel
+end
+
+--- **Get Minimum Level**
+---@return int minLevel
+function PerkDetailsObj:getMinLevel()
+    return self.minLevel
+end
+
+--- **Set level**
+---@param currentLevel int
+---@return void
+function PerkDetailsObj:setCurrentLevel(currentLevel)
+    self.currentLevel = currentLevel
 end
 
 --- **Get Level**
 ---@return int Level
-function PerkDetailsObj:getLevel()
-    return self.level
+function PerkDetailsObj:getCurrentLevel()
+    return self.currentLevel
+end
+
+--- **Set Maximum Level**
+---@param maxLevel int
+---@return void
+function PerkDetailsObj:setMaxLevel(maxLevel)
+    self.maxLevel = maxLevel
+end
+
+--- **Get Maximum Level**
+---@return int maxLevel
+function PerkDetailsObj:getMaxLevel()
+    return self.maxLevel
 end
 
 --- **Set Level**

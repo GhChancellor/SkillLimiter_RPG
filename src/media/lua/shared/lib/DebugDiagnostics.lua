@@ -37,7 +37,7 @@ local advancedTest
 
 --- **Show more info about test**
 ---@param advancedTest_ boolean
----
+---@return void
 function DebugDiagnostics.setVerbose(advancedTest_)
     advancedTest = advancedTest_
 end
@@ -107,7 +107,7 @@ function DebugDiagnostics.checkTest(expectedValue, currentValue, nameTest)
     end
 end
 
---- **Show all metothod tested**
+--- **Show all method tested**
 ---@return void
 function DebugDiagnostics.displayTest()
     DebugDiagnostics.printLine()

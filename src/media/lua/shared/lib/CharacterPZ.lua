@@ -88,7 +88,7 @@ function CharacterPz.trunkFloatTo2Decimal(value)
     return tonumber(string.format("%.2f", value)) + 0.0
 end
 
---- **Get Charater profession**
+--- **Get Character profession**
 ---@param character IsoGameCharacter
 ---@param profession String
 ---@return void
@@ -199,7 +199,7 @@ end
 ---@param perk PerkFactory.Perk
 ---@return void
 --- ISPlayerStatsUI.lua 635
---- - IsoGameCharacter : zombie.characters.IsoGameCharact
+--- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 --- - PerkFactory.Perk : zombie.characters.skills.PerkFactory.Perk
 --- - IsoGameCharacter.XP : zombie.characters.IsoGameCharacter.XP
 function CharacterPz.removePerkLevel(character, perk)
@@ -309,7 +309,7 @@ function CharacterPz.getTraitsPerk_PZ(character)
 end
 
 ----- **Get Character Traits**
------@param character IsoGameCharacter
+-- ---@param character IsoGameCharacter
 -----@return List | TraitCollection
 ----- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 ----- - IsoGameCharacter.CharacterTraits : zombie.characters.IsoGameCharacter.CharacterTraits
@@ -361,7 +361,7 @@ end
 ---@param minLevel int
 ---@param maxLevel int
 ---@return void
---- - IsoGameCharacter : zombie.characters.IsoGameCharact
+--- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 --- - PerkFactory.Perk : zombie.characters.skills.PerkFactory.Perk
 function CharacterPz.addXpMultiplier_PZ(character, perk, multiplier, minLevel, maxLevel)
     if not character or not perk or not

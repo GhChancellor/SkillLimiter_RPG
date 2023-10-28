@@ -22,6 +22,8 @@ function ErrHandler.errMsg(sourceError, errorMessage)
     ---@type string
     local messageError = "\nERROR: >>>>>>>>>>>>> " .. srcErr .. " : "
             .. errMsg .. " <<<<<<<<<<<<<<\n"
+
+    print(messageError)
     return messageError
 end
 
@@ -30,7 +32,7 @@ end
 ---@param dataValidatorFn function
 ---@param errMsg string
 function ErrHandler.validateParam(value, dataValidatorFn, errMsg)
-    local success, err = pcall(function()
+    local success, _ = pcall(function()
         dataValidatorFn(value)
     end)
 

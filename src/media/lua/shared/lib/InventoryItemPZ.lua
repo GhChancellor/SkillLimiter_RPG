@@ -26,7 +26,7 @@ function InventoryItemPZ.removeItem(character, item)
         return nil
     end
 
-    character:getContainer():Remove(item)
+    character:getInventory():Remove(item)
 end
 
 return InventoryItemPZ

@@ -51,6 +51,14 @@ function CharacterBaseObj:addPerkDetails(perk, level, xp)
     table.insert(self.perkDetails_LIST, PerkDetailsObj01)
 end
 
+--- **Save Perk Details**
+---@param PerkDetailsObj01 PerkDetailsObj
+---@return void
+--- - PerkDetailsObj : PerkDetailsObj
+function CharacterBaseObj:savePerkDetails(PerkDetailsObj01)
+    table.insert(self.perkDetails_LIST, PerkDetailsObj01)
+end
+
 --- **Get Perk Details**
 ---@return CharacterBaseObj table - PerkFactory.Perk perk, int level, float xp
 function CharacterBaseObj:getPerkDetails()

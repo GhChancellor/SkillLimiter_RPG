@@ -123,14 +123,14 @@ end
 ---@return table
 function DataValidator.transformModDataToTable(kahluaTable)
     ---@type table
-    local conversionTotable ={}
+    local conversionToTable ={}
 
     ---@type table
     for _, v in pairs(kahluaTable) do
-        table.insert(conversionTotable, v)
+        table.insert(conversionToTable, v)
     end
 
-    return conversionTotable
+    return conversionToTable
 end
 
 return DataValidator

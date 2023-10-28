@@ -10,28 +10,33 @@
 
 local SkillLimiter = {}
 
-local debugDiagnostics = require("lib/DebugDiagnostics")
 local blockLevel = require("BlockLevel")
 local characterMaxSkill = require("CharacterMaxSkill")
 local characterLib = require("CharacterLib")
+local debugDiagnostics = require("lib/DebugDiagnostics")
 local modDataManager = require("lib/ModDataManager")
+
 -- local characterBaseObj = require("lib/CharacterBaseObj")
 require("lib/CharacterBaseObj")
 
----@type CharacterBaseObj
-local CreateCharacterMaxSkillObj = CharacterBaseObj:new()
+local CreateCharacterMaxSkillObj
 
--- Create Character Max Skill and create ModData
+-- **Create Character Max Skill and create ModData**
 ---@return CharacterBaseObj
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 function SkillLimiter.initCharacter()
-    ---
+    ---@type CharacterBaseObj
+    CreateCharacterMaxSkillObj = CharacterBaseObj:new()
+
+    ---@type string
     local characterMaxSkillModData = "characterMaxSkill"
 
     ---@type table
     local characterMaxSkillTable -- = {}
 
     if modDataManager.isExists(characterMaxSkillModData) then
+
+        --- **Read ModData, get all stats of the character**
         characterMaxSkillTable =
             modDataManager.read(characterMaxSkillModData)
 
@@ -39,7 +44,7 @@ function SkillLimiter.initCharacter()
             characterLib.decodePerkDetails(characterMaxSkillTable)
     else
         CreateCharacterMaxSkillObj =
-            characterMaxSkill.getCreateCharacterMaxSkill( debugDiagnostics.characterUpdate() )
+            characterMaxSkill.getCreateMaxSkill( debugDiagnostics.characterUpdate() )
 
         characterMaxSkillTable =
             characterLib.encodePerkDetails(CreateCharacterMaxSkillObj)
@@ -50,38 +55,47 @@ function SkillLimiter.initCharacter()
     return CreateCharacterMaxSkillObj
 end
 
----Delete modData when character is death -
----Triggered when a character or zombie is killed
+--- **Delete modData when character is death**
+--- - Triggered when a character or zombie is killed
 ---@param character IsoGameCharacter
+---@return void
+---
 local function OnCharacterDeath(character)
+    --- **kill player**
     if getPlayer():isDead() then
-        print("ucciso umano")
         local characterMaxSkillModData = "characterMaxSkill"
+        --- **Delete ModData**
         modDataManager.remove(characterMaxSkillModData)
     end
 end
 
----Check Level Max
----Triggered when a player gains XP.
+--- **Check Level Max**
+--- - Triggered when a player gains XP.
+---@param character IsoGameCharacter
+---@param perk PerkFactory.Perk
+---@param level int
+---@return void
+--- - IsoGameCharacter : zombie.characters.IsoGameCharacter
+--- - PerkFactory.Perk : zombie.characters.skills.PerkFactory.Perk
 local function AddXP(character, perk, level)
     blockLevel.checkLevelMax(character, perk, CreateCharacterMaxSkillObj)
 end
 
----Init Character -
----Triggered after the start of a new game, and after a saved game has been loaded.
+--- **Init Character**
+--- - Triggered after the start of a new game, and after a saved game has been loaded.
 local function OnGameStart()
     CreateCharacterMaxSkillObj = SkillLimiter.initCharacter()
 end
 
----Init Character -
----Triggered when a player is being created.
+--- **Init Character**
+--- - Triggered when a player is being created.
 local function OnCreatePlayer(playerIndex, player)
     CreateCharacterMaxSkillObj = SkillLimiter.initCharacter()
 end
 
---Events.OnCharacterDeath.Add(OnCharacterDeath)
---Events.AddXP.Add(AddXP)
---Events.OnGameStart.Add(OnGameStart)
---Events.OnCreatePlayer.Add(OnCreatePlayer)
+Events.OnCharacterDeath.Add(OnCharacterDeath)
+Events.AddXP.Add(AddXP)
+Events.OnGameStart.Add(OnGameStart)
+Events.OnCreatePlayer.Add(OnCreatePlayer)
 
 return SkillLimiter
