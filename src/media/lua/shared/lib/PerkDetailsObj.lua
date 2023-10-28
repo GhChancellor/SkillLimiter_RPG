@@ -9,12 +9,15 @@
 require("lib/BaseObject")
 PerkDetailsObj = BaseObject:derive("PerkDetailsObj")
 
+--- **Create a new PerkDetailsObj**
 function PerkDetailsObj:new()
     local o =  {}
     setmetatable(o, self)
     self.__index = self
     o.perk = ""
-    o.level = ""
+    o.minLevel = ""
+    o.currentLevel = ""
+    o.maxLevel = ""
     o.xp = ""
     o.boostLevel = ""
     o.multiplier = ""
@@ -23,98 +26,131 @@ function PerkDetailsObj:new()
     return o
 end
 
----Add Perk Details
+--- **Add Perk Details**
 ---@param perk PerkFactory.Perk
----@param level int
+---@param currentLevel int
 ---@param xp float
---- - PerkFactory.Perk : zombie.characters.skills.PerkFactor
-function PerkDetailsObj:addPerkDetails(perk, level, xp)
+--- - PerkFactory.Perk : zombie.characters.skills.PerkFactory.Perk
+function PerkDetailsObj:addPerkDetails(perk, currentLevel, xp)
     self.perk = perk
-    self.level = level
+    self.currentLevel = currentLevel
     self.xp = xp
 end
 
----Set level
----@param level int
-function PerkDetailsObj:setLevel(level)
-    self.level = level
+--- **Set Minimum Level**
+---@param minLevel int
+---@return void
+function PerkDetailsObj:setMinLevel(minLevel)
+    self.minLevel = minLevel
 end
 
---- Get Level
+--- **Get Minimum Level**
+---@return int minLevel
+function PerkDetailsObj:getMinLevel()
+    return self.minLevel
+end
+
+--- **Set level**
+---@param currentLevel int
+---@return void
+function PerkDetailsObj:setCurrentLevel(currentLevel)
+    self.currentLevel = currentLevel
+end
+
+--- **Get Level**
 ---@return int Level
-function PerkDetailsObj:getLevel()
-    return self.level
+function PerkDetailsObj:getCurrentLevel()
+    return self.currentLevel
 end
 
----Set Level
+--- **Set Maximum Level**
+---@param maxLevel int
+---@return void
+function PerkDetailsObj:setMaxLevel(maxLevel)
+    self.maxLevel = maxLevel
+end
+
+--- **Get Maximum Level**
+---@return int maxLevel
+function PerkDetailsObj:getMaxLevel()
+    return self.maxLevel
+end
+
+--- **Set Level**
 ---@param xp float
+---@return void
 function PerkDetailsObj:setXp(xp)
     self.xp = xp
 end
 
----Get XP
+--- **Get XP**
 ---@return float xp
 function PerkDetailsObj:getXp()
     return self.xp
 end
 
----Set perk
+--- **Set perk**
 ---@param perk PerkFactory.Perk
---- - PerkFactory.Perk : zombie.characters.skills.PerkFactor
+---
+--- - PerkFactory.Perk : zombie.characters.skills.PerkFactory.Perk.Perk
 function PerkDetailsObj:setPerk(perk)
     self.perk = perk
 end
 
----Get Perk
+--- **Get Perk**
 ---@return PerkFactory.Perk perk
 --- - PerkFactory.Perk : zombie.characters.skills.PerkFactor
 function PerkDetailsObj:getPerk()
     return self.perk
 end
 
----Set Boost
+--- **Set Boost**
 ---@param boostLevel int
+---
 function PerkDetailsObj:setBoostLevel(boostLevel)
     self.boostLevel = boostLevel
 end
 
----Get Boost
+--- **Get Boost**
 ---@return int boostLevel
 function PerkDetailsObj:getBoostLevel()
     return self.boostLevel
 end
 
----Set Multiplier
+--- **Set Multiplier**
 ---@param multiplier double
+---@return void
 function PerkDetailsObj:setMultiplier(multiplier)
     self.multiplier = multiplier
 end
 
----Get Multiplier
+--- **Get Multiplier**
 ---@return double multiplier
 function PerkDetailsObj:getMultiplier()
     return self.multiplier
 end
 
----Set Flag
+--- **Set Flag**
 ---@param flag boolean
+---
 function PerkDetailsObj:setFlag(flag)
     self.flag = flag
 end
 
----Get Flag
+--- **Get Flag**
 ---@return boolean flag
 function PerkDetailsObj:getFlag()
     return self.flag
 end
 
----Set idGroup
+--- **Set idGroup**
 ---@param idGroup int
+---
 function PerkDetailsObj:setIdGroup(idGroup)
     self.idGroup = idGroup
 end
 
----Get idGroup
+--- **Get idGroup**
 ---@return int idGroup
 function PerkDetailsObj:getIdGroup()
     return self.idGroup

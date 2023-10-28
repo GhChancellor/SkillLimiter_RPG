@@ -7,8 +7,6 @@
     </content>
     <orderEntry type="jdk" jdkName="Lua" jdkType="Lua SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="zdoc-lua" level="application" />
-    <orderEntry type="library" exported="" name="zomboid" level="application" />
-    <orderEntry type="library" name="zomboid-sources" level="project" />
+    <orderEntry type="library" exported="" name="Pz-41.78" level="application" />
   </component>
 </module>
