@@ -7,7 +7,10 @@
 local blockLevel = require("BlockLevel")
 local characterPz = require("lib/CharacterPZ")
 local characterMaxSkill = require("CharacterMaxSkill")
+local codePerkDetails = require("CodePerkDetails")
 local debugDiagnostics = require("lib/DebugDiagnostics")
+local modDataManager = require("lib/ModDataManager")
+local skillLimiter = require("SkillLimiter")
 
 local CreateCharacterMaxSkillObj
 
@@ -169,7 +172,7 @@ local function blockLevelX(character)
 
 end
 
-local function tdd()
+local function tddSkill()
     local character = debugDiagnostics.characterUpdate()
 
     --- **Passive**
@@ -389,6 +392,55 @@ local function tdd()
             characterPz.getXp(character, perk), "PlantScavenging xp : ")
 end
 
+local function tddModDataSkill()
+    local characterMaxSkillModData = "characterMaxSkill"
+    --- **Remove ModData**
+    modDataManager.remove(characterMaxSkillModData)
+
+    --- **Init Part 2**
+    ---@type CharacterBaseObj
+    local writeMaxSkillObj = skillLimiter.initCharacter()
+    debugDiagnostics.checkTest(true, true, "WriteMaxSkillObj")
+
+    --- **Init Part 1**
+    ---@type CharacterBaseObj
+    local readMaxSkillObj = skillLimiter.initCharacter()
+    debugDiagnostics.checkTest(true, true, "ReadMaxSkillObj")
+
+    ---@type table
+    local table1 = writeMaxSkillObj:getPerkDetails()
+    ---@type table
+    local table2 = readMaxSkillObj:getPerkDetails()
+
+    debugDiagnostics.checkTest(#table1,
+            #table2, "MaxSkill table length" )
+
+    --- **Check all Perks, currentLevel, maxLevel, xp**
+    for i, v in ipairs(table1) do
+        if v.perk == table2[i].perk and v.currentLevel == table2[i].currentLevel and
+                v.maxLevel == table2[i].maxLevel and v.xp == table2[i].xp then
+            debugDiagnostics.checkTest(true, true, "MaxSkill " .. tostring(v.perk) )
+        end
+    end
+
+    --- **Remove ModData**
+    modDataManager.remove(characterMaxSkillModData)
+end
+
+local function displaySkill()
+    ---@type CharacterBaseObj
+    local maxSkillObj =
+        characterMaxSkill.getCreateMaxSkill( debugDiagnostics.characterUpdate() )
+
+    for _, v in pairs(maxSkillObj:getPerkDetails()) do
+        print("Perk - " .. tostring(v:getPerk()) ..
+                " - CurrentLevel " .. tostring(v:getCurrentLevel()) ..
+                " - MaxLevel " .. tostring(v:getMaxLevel()) ..
+                " - Xp " .. tostring(v:getXp()) )
+        debugDiagnostics.printLine()
+    end
+end
+
 local function calculateMaxSkill()
     CreateCharacterMaxSkillObj =
         characterMaxSkill.getCreateMaxSkill( debugDiagnostics.characterUpdate() )
@@ -409,10 +461,12 @@ local function createCharacter()
     blockLevelX(character)
     calculateMaxSkill(character)
 
-    tdd()
+    tddSkill()
+    tddModDataSkill()
 
+    debugDiagnostics.deleteCharacter()
+    debugDiagnostics.createBasicCharacter()
     debugDiagnostics.displayTest()
-
 end
 
 ---@param character IsoGameCharacter
@@ -426,8 +480,8 @@ end
 ---@param character IsoGameCharacter
 local function key35(character, key)
     if key == 35 then -- <<< h
-        print("Key = h > blockLevel \n")
-
+        print("Key = h > Display Skills \n")
+        displaySkill()
     end
 end
 

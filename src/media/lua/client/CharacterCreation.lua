@@ -6,8 +6,6 @@
 
 ---@class CharacterCreation
 
-local CharacterCreation = {}
-
 require("lib/CharacterBaseObj")
 
 local characterLib = require("CharacterLib")
@@ -15,6 +13,8 @@ local debugDiagnostics = require("lib/DebugDiagnostics")
 local errHandler = require("lib/ErrorHandler")
 local group = require("Group")
 local perkFactoryPZ = require("lib/PerkFactoryPZ")
+
+local CharacterCreation = {}
 
 ---@type table
 local mergeTraitsPerks_ = {}

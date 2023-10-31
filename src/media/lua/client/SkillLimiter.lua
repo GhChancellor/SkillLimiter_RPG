@@ -8,24 +8,26 @@
 
 ---@class SkillLimiter
 
-local SkillLimiter = {}
+require("lib/CharacterBaseObj")
 
 local blockLevel = require("BlockLevel")
 local characterMaxSkill = require("CharacterMaxSkill")
-local characterLib = require("CharacterLib")
+local codePerkDetails = require("CodePerkDetails")
 local debugDiagnostics = require("lib/DebugDiagnostics")
+local errHandler = require("lib/ErrHandler")
 local modDataManager = require("lib/ModDataManager")
 
--- local characterBaseObj = require("lib/CharacterBaseObj")
-require("lib/CharacterBaseObj")
+-- @type CharacterBaseObj
+local CreateCharacterMaxSkillObj -- = CharacterBaseObj:new()
 
-local CreateCharacterMaxSkillObj
+local SkillLimiter = {}
 
 -- **Create Character Max Skill and create ModData**
 ---@return CharacterBaseObj
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 function SkillLimiter.initCharacter()
-    ---@type CharacterBaseObj
+    --- **Init Part 1**
+
     CreateCharacterMaxSkillObj = CharacterBaseObj:new()
 
     ---@type string
@@ -40,16 +42,25 @@ function SkillLimiter.initCharacter()
         characterMaxSkillTable =
             modDataManager.read(characterMaxSkillModData)
 
+        --- **Decode ModData**
         CreateCharacterMaxSkillObj =
-            characterLib.decodePerkDetails(characterMaxSkillTable)
+            codePerkDetails.decodePerkDetails(characterMaxSkillTable)
     else
+        --- **Init Part 2**
+
+        --- **Remove ModData**
+        modDataManager.remove(characterMaxSkillModData)
+
+        --- **Get skill obj**
         CreateCharacterMaxSkillObj =
             characterMaxSkill.getCreateMaxSkill( debugDiagnostics.characterUpdate() )
 
+        --- **Encode ModData**
         characterMaxSkillTable =
-            characterLib.encodePerkDetails(CreateCharacterMaxSkillObj)
+            codePerkDetails.encodePerkDetails(CreateCharacterMaxSkillObj)
 
-        modDataManager.save(characterMaxSkillModData, characterMaxSkillTable )
+        --- **Save ModData**
+        modDataManager.save(characterMaxSkillModData, characterMaxSkillTable)
     end
 
     return CreateCharacterMaxSkillObj
@@ -78,6 +89,24 @@ end
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 --- - PerkFactory.Perk : zombie.characters.skills.PerkFactory.Perk
 local function AddXP(character, perk, level)
+    if not character then
+        errHandler.errMsg("SkillLimiter.AddXP(character, perk, level)",
+                errHandler.err.IS_NULL_CHARACTERS)
+        return nil
+    end
+
+    if not perk then
+        errHandler.errMsg("SkillLimiter.AddXP(character, perk, level)",
+                errHandler.err.IS_NULL_PERK)
+        return nil
+    end
+
+    if not CreateCharacterMaxSkillObj then
+        errHandler.errMsg("SkillLimiter.AddXP(character, perk, level)",
+                " CreateCharacterMaxSkillObj " .. errHandler.err.IS_NULL)
+        return nil
+    end
+
     blockLevel.checkLevelMax(character, perk, CreateCharacterMaxSkillObj)
 end
 

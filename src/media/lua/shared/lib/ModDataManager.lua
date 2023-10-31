@@ -69,7 +69,11 @@ function ModDataManager.isExists(nameFile)
         return nil
     end
 
-    return ModData.exists(nameFile)
+    if ModData.exists(nameFile) then
+        return true
+    end
+
+    return false
 end
 
 --- **Remove modData**
