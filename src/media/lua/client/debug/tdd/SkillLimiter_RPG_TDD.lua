@@ -470,6 +470,14 @@ local function createCharacter()
 end
 
 ---@param character IsoGameCharacter
+local function key24(character, key)
+    if key == 24 then -- <<<< o
+        print("Key = o > Display Skills \n")
+        displaySkill()
+    end
+end
+
+---@param character IsoGameCharacter
 local function key34(character, key)
     if key == 34 then -- <<<< g
         print("Key = g > createCharacter \n")
@@ -480,8 +488,8 @@ end
 ---@param character IsoGameCharacter
 local function key35(character, key)
     if key == 35 then -- <<< h
-        print("Key = h > Display Skills \n")
-        displaySkill()
+        print("Key = h >  \n")
+
     end
 end
 
@@ -528,13 +536,14 @@ end
 local function onCustomUIKeyPressed(key)
     local character = getPlayer()
 
-    key16(character, key) -- q kill character
-    key17(character, key) -- w
-    key18(character, key) -- e
-    key34(character, key) -- g
-    key35(character, key) -- h
-    key36(character, key) -- j
-    key37(character, key) -- k
+    --key16(character, key) -- q kill character
+    --key17(character, key) -- w
+    --key18(character, key) -- e
+    --key24(character, key) -- o display skills
+    key34(character, key) -- g createCharacter
+    --key35(character, key) -- h
+    --key36(character, key) -- j
+    --key37(character, key) -- k
 end
 
 Events.OnCustomUIKeyPressed.Add(onCustomUIKeyPressed)

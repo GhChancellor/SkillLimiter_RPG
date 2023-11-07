@@ -29,7 +29,7 @@ function CharacterMaxSkill.getRulePerk(levelCurrentPerk)
     local result
 
     if levelCurrentPerk == characterPz.EnumNumbers.ZERO then -- 0
-        result = characterPz.EnumNumbers.FIVE -- max levelPerk 5
+        result = characterPz.EnumNumbers.FOUR -- max 4
     elseif levelCurrentPerk == characterPz.EnumNumbers.ONE then -- 1
         result = characterPz.EnumNumbers.SIX -- max levelPerk 6
     elseif levelCurrentPerk == characterPz.EnumNumbers.TWO then -- 2
@@ -54,7 +54,7 @@ function CharacterMaxSkill.getRuleCombat(combatCurrentPerk)
     local result
 
     if combatCurrentPerk == characterPz.EnumNumbers.ZERO then -- 0
-        result = characterPz.EnumNumbers.FIVE -- max levelPerk 5
+        result = characterPz.EnumNumbers.FOUR -- max levelPerk 4
     elseif combatCurrentPerk == characterPz.EnumNumbers.ONE then -- 1
         result = characterPz.EnumNumbers.SEVEN -- max levelPerk 7
     elseif combatCurrentPerk >= characterPz.EnumNumbers.TWO then -- 2
@@ -106,10 +106,11 @@ function CharacterMaxSkill.getCreateMaxSkill(character)
             PerkDetailsObj01:setMaxLevel(CharacterMaxSkill.getRuleProfession(value.currentLevel))
         end
 
-        --- **Set Maximum Level for Combat group**
-        if value.group == group.COMBAT then
-            PerkDetailsObj01:setMaxLevel(CharacterMaxSkill.getRuleCombat(0))
-        end
+        --- **Feature disabled, check CharacterCreation**
+        ----- **Set Maximum Level for Combat group**
+        --if value.group == group.COMBAT then
+        --    PerkDetailsObj01:setMaxLevel(CharacterMaxSkill.getRuleCombat(0))
+        --end
 
         --- **Set Maximum Level for Generic group**
         if value.group == group.GENERIC then

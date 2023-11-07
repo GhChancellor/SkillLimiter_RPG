@@ -6,6 +6,8 @@
 --- ISSkillProgressBar:updateTooltip(lvlSelected)
 -- -----------------------------------------------------------------
 
+--- Version 03-11-23 11:56
+
 ---@class SkillLimiter
 
 require("lib/CharacterBaseObj")
@@ -22,6 +24,9 @@ local CreateCharacterMaxSkillObj -- = CharacterBaseObj:new()
 
 local SkillLimiter = {}
 
+---@type string
+local characterMaxSkillModData = "characterMaxSkill"
+
 -- **Create Character Max Skill and create ModData**
 ---@return CharacterBaseObj
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
@@ -29,9 +34,6 @@ function SkillLimiter.initCharacter()
     --- **Init Part 1**
 
     CreateCharacterMaxSkillObj = CharacterBaseObj:new()
-
-    ---@type string
-    local characterMaxSkillModData = "characterMaxSkill"
 
     ---@type table
     local characterMaxSkillTable -- = {}
@@ -70,11 +72,9 @@ end
 --- - Triggered when a character or zombie is killed
 ---@param character IsoGameCharacter
 ---@return void
----
 local function OnCharacterDeath(character)
     --- **kill player**
     if getPlayer():isDead() then
-        local characterMaxSkillModData = "characterMaxSkill"
         --- **Delete ModData**
         modDataManager.remove(characterMaxSkillModData)
     end
@@ -119,6 +119,10 @@ end
 --- **Init Character**
 --- - Triggered when a player is being created.
 local function OnCreatePlayer(playerIndex, player)
+    --- **Remove ModData**
+    modDataManager.remove(characterMaxSkillModData)
+
+    --- **Init Create Character Max Skill object from initCharacter()**
     CreateCharacterMaxSkillObj = SkillLimiter.initCharacter()
 end
 

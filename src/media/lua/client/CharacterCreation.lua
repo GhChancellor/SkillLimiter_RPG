@@ -120,13 +120,16 @@ end
 --- **Set No Limits Group**
 ---@return void
 local function setNoLimitsGroup()
+    local fitness = debugDiagnostics.Perks.FITNESS
+    local strength = debugDiagnostics.Perks.STRENGTH
+
     --- **set no limits group**
-    setGroup(debugDiagnostics.Perks.FITNESS, group.NO_LIMITS )
-    setGroup(debugDiagnostics.Perks.STRENGTH, group.NO_LIMITS )
+    setGroup(fitness, group.NO_LIMITS )
+    setGroup(strength, group.NO_LIMITS )
 
     --- **Remove perks from Trait & Perk**
-    removeTraitsPerks(debugDiagnostics.Perks.FITNESS)
-    removeTraitsPerks(debugDiagnostics.Perks.STRENGTH)
+    removeTraitsPerks(fitness)
+    removeTraitsPerks(strength)
 end
 
 --- **Set Profession Group**
@@ -138,9 +141,12 @@ local function setProfessionGroup()
 end
 
 --- **Set Combat Group**
+--- - Feature disabled, check CharacterMaxSkill
+--- - **!!!!! DANGER !!!!!** Possible conflict with Profession group
 ---@return void
 local function setCombatGroup()
     for perk, _ in pairs(mergeTraitsPerks_) do
+        --- **Possible conflict with Profession group**
         if "combat" == perkFactoryPZ.getParent_PZ(perk) then
             setGroup(perk, group.COMBAT)
         end
@@ -173,7 +179,8 @@ function CharacterCreation.getCharacterCreation(character)
 
     setNoLimitsGroup()
     setProfessionGroup()
-    setCombatGroup()
+    --- **Feature disabled, check CharacterMaxSkill **
+    -- setCombatGroup()
     setGenericGroup()
 
     return characterAllPerks_
