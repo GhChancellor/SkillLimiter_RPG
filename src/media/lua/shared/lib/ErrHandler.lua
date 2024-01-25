@@ -41,17 +41,32 @@ function ErrHandler.validateParam(value, dataValidatorFn, errMsg)
     end
 end
 
+---@return table string
 ErrHandler.err = {
-    IS_NULL_CHARACTERS = "is null characters",
-    IS_NULL_PERK = "is null perk",
-    IS_NULL_XP = "is null xp",
-    IS_NULL = "is null",
-    IS_NOT_STRING = "is not string",
+    ---@type string
     IS_NOT_BOOLEAN = "is not boolean",
+    ---@type string
     IS_NOT_DOUBLE_FLOAT = "is not double float",
+    ---@type string
     IS_NOT_INT = "is not int",
+    ---@type string
+    IS_NOT_NUMBER = "is not number",
+    ---@type string
+    IS_NOT_PROFESSION = "is null profession",
+    ---@type string
+    IS_NOT_STRING = "is not string",
+    ---@type string
     IS_NOT_TABLE = "is not table",
+    ---@type string
+    IS_NULL = "is null",
+    ---@type string
+    IS_NULL_CHARACTERS = "is null characters",
+    ---@type string
+    IS_NOT_CHARACTERS = "is not characters",
+    ---@type string
+    IS_NULL_PERK = "is null perk",
+    ---@type string
+    IS_NULL_XP = "is null xp",
 }
-
 
 return ErrHandler

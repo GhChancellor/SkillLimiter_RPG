@@ -19,6 +19,7 @@ local CodePerkDetails = {}
 ---@param characterObj CharacterBaseObj
 ---@return table
 function CodePerkDetails.encodePerkDetails(characterObj)
+    --- **Check if characterObj is null**
     if not characterObj then
         errHandler.errMsg("CharacterLib.encodePerkDetails(characterObj)",
                 "characterObj " .. errHandler.err.IS_NULL)
@@ -47,13 +48,14 @@ end
 ---@return CharacterBaseObj getPerkDetails()
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 function CodePerkDetails.decodePerkDetails(characterPerkDetails)
+    --- **Check if characterPerkDetails is table**
     if not dataValidator.isTable(characterPerkDetails) then
         errHandler.errMsg("CharacterLib.decodePerkDetails(characterPerkDetails)",
                 "characterPerkDetails " .. errHandler.err.IS_NOT_TABLE)
         return nil
     end
 
-    ---@type CharacterBaseObj
+    -- @type CharacterBaseObj
     local CharacterObj01 = CharacterBaseObj:new()
 
     ---@type table

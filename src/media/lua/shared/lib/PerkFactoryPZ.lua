@@ -9,12 +9,14 @@
 local PerkFactoryPZ = {}
 
 local errHandler = require("lib/ErrHandler")
+local dataValidator = require("lib/DataValidator")
 
 --- **Get Perk**
 ---@param perk PerkFactory
 ---@return PerkFactory.Perk perk
 --- - PerkFactory.Perk : zombie.characters.skills.PerkFactory.Perk
 function PerkFactoryPZ.getPerk_PZ(perk)
+    --- **Check if perk is null**
     if not perk then
         errHandler.errMsg("PerkFactoryPZ.getPerk_PZ(perk)", errHandler.err.IS_NULL_PERK)
         return nil
@@ -28,6 +30,7 @@ end
 ---@return PerkFactory.Perk perk
 --- - PerkFactory.Perk : zombie.characters.skills.PerkFactory.Perk
 function PerkFactoryPZ.getPerkByName_PZ(perk)
+    --- **Check if perk is null**
     if not perk then
         errHandler.errMsg("PerkFactoryPZ.getPerkByName_PZ(perk)", errHandler.err.IS_NULL_PERK)
         return nil
@@ -45,12 +48,23 @@ function PerkFactoryPZ.convertLevelToXp(perk, level)
     local characterPz = require("lib/CharacterPZ")
 
     -- Perks.Sprinting:getXp1()
+
+    --- **Get Xp level**
     ---@type int
     local result
 
-    if not perk or not level then
+    --- **Check if perk is null**
+    if not perk then
+        errHandler.errMsg("PerkFactoryPZ.convertLevelToXp(perk, level)", errHandler.err.IS_NULL_PERK)
+        return nil
+    --- **Check if level is not number**
+    elseif not dataValidator.isNumber(level) then
         errHandler.errMsg("PerkFactoryPZ.convertLevelToXp(perk, level)",
-                errHandler.err.IS_NULL_PERK .. " or " .. "level " .. errHandler.err.IS_NULL)
+                "level " .. errHandler.err.IS_NOT_NUMBER )
+        return nil
+    --- **Check if level is null**
+    elseif not level then
+        errHandler.errMsg("PerkFactoryPZ.convertLevelToXp(perk, level)", "level " .. errHandler.err.IS_NULL)
         return nil
     end
 
@@ -85,6 +99,7 @@ end
 ---@return String
 --- - PerkFactory.Perk : zombie.characters.skills.PerkFactory.Perk
 function PerkFactoryPZ.getParent_PZ(perk)
+    --- **Check if perk is null**
     if not perk then
         errHandler.errMsg("PerkFactoryPZ.getParent_PZ(perk)", errHandler.err.IS_NULL_PERK)
         return nil

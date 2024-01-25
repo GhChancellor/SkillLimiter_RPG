@@ -74,6 +74,7 @@ end
 ---@return void
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 local function mergeTraitPerkFromProfession(character)
+    --- **Check if character is null**
     if not character then
         errHandler.errMsg("mergeTraitPerkFromProfession(character)",
                 errHandler.err.IS_NULL_CHARACTER)
@@ -103,6 +104,7 @@ end
 ---@return void
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 local function characterAllPerks(character)
+    --- **Check if character is null**
     if not character then
         errHandler.errMsg("characterAllPerks(character)",
                 errHandler.err.IS_NULL_CHARACTER)
@@ -120,7 +122,9 @@ end
 --- **Set No Limits Group**
 ---@return void
 local function setNoLimitsGroup()
+    ---@type PerkFactory.Perk
     local fitness = debugDiagnostics.Perks.FITNESS
+    ---@type PerkFactory.Perk
     local strength = debugDiagnostics.Perks.STRENGTH
 
     --- **set no limits group**
@@ -168,6 +172,7 @@ end
 ---@return table PerkFactory.Perk perk, int currentlevel, int maxlevel, string group
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 function CharacterCreation.getCharacterCreation(character)
+    --- **Check if character is null**
     if not character then
         errHandler.errMsg("CharacterCreation.getCharacterCreation(character)",
                 errHandler.err.IS_NULL_CHARACTER)

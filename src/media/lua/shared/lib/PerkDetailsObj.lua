@@ -14,15 +14,15 @@ function PerkDetailsObj:new()
     local o =  {}
     setmetatable(o, self)
     self.__index = self
-    o.perk = ""
-    o.minLevel = ""
+    o.XPBoost = ""
     o.currentLevel = ""
-    o.maxLevel = ""
-    o.xp = ""
-    o.boostLevel = ""
-    o.multiplier = ""
     o.flag = false
     o.idGroup = ""
+    o.maxLevel = ""
+    o.minLevel = ""
+    o.multiplier = ""
+    o.perk = ""
+    o.xp = ""
     return o
 end
 
@@ -91,7 +91,7 @@ end
 
 --- **Set perk**
 ---@param perk PerkFactory.Perk
----
+---@return void
 --- - PerkFactory.Perk : zombie.characters.skills.PerkFactory.Perk.Perk
 function PerkDetailsObj:setPerk(perk)
     self.perk = perk
@@ -105,16 +105,16 @@ function PerkDetailsObj:getPerk()
 end
 
 --- **Set Boost**
----@param boostLevel int
----
-function PerkDetailsObj:setBoostLevel(boostLevel)
-    self.boostLevel = boostLevel
+---@param XPBoost int
+---@return void
+function PerkDetailsObj:setXPBoost(XPBoost)
+    self.XPBoost = XPBoost
 end
 
 --- **Get Boost**
----@return int boostLevel
-function PerkDetailsObj:getBoostLevel()
-    return self.boostLevel
+---@return int XPBoost
+function PerkDetailsObj:getXPBoost()
+    return self.XPBoost
 end
 
 --- **Set Multiplier**
@@ -132,7 +132,7 @@ end
 
 --- **Set Flag**
 ---@param flag boolean
----
+---@return void
 function PerkDetailsObj:setFlag(flag)
     self.flag = flag
 end
@@ -144,14 +144,14 @@ function PerkDetailsObj:getFlag()
 end
 
 --- **Set idGroup**
----@param idGroup int
----
+---@param idGroup string
+---@return void
 function PerkDetailsObj:setIdGroup(idGroup)
     self.idGroup = idGroup
 end
 
 --- **Get idGroup**
----@return int idGroup
+---@return string idGroup
 function PerkDetailsObj:getIdGroup()
     return self.idGroup
 end

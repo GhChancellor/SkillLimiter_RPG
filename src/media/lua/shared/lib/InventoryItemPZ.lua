@@ -6,6 +6,7 @@
 
 local InventoryItemPZ = {}
 
+local dataValidator = require("lib/DataValidator")
 local errHandler = require("lib/ErrHandler")
 
 --- **Remove item**
@@ -16,10 +17,19 @@ local errHandler = require("lib/ErrHandler")
 --- - InventoryItem : zombie.inventory.InventoryItem
 --- - ItemContainer : zombie.inventory.ItemContainer
 function InventoryItemPZ.removeItem(character, item)
+    --- **Check if character is nil**
     if not character then
         errHandler.errMsg("InventoryItemPZ.removeItem(character, item)",
                 errHandler.err.IS_NULL_CHARACTERS)
         return nil
+
+    --- **Check if character is not IsoGameCharacter**
+    elseif not dataValidator.isCharacter(character) then
+        errHandler.errMsg("InventoryItemPZ.removeItem(character, item)",
+                errHandler.err.IS_NOT_CHARACTERS)
+        return nil
+
+    --- **Check if item is nil**
     elseif not item then
         errHandler.errMsg("InventoryItemPZ.removeItem(character, item)",
                 "Item " .. errHandler.err.IS_NULL)

@@ -112,7 +112,7 @@ end
 function DebugDiagnostics.displayTest()
     DebugDiagnostics.printLine()
     print("------------------CHECK TEST------------------")
-    print("TEST VERIFIED: >>>>>>>> ", results.testVerified .. " of " .. (results.passed + results.notPassed))
+    print("TEST VERIFIED: >>>>>>>> ", results.testVerified, " of ", (results.passed + results.notPassed))
     print("PASSED: >>>>>>>>>>>>>>> ", results.passed)
     print("NOT PASSED:  >>>>>>>>>> ", results.notPassed)
 
@@ -251,63 +251,64 @@ function DebugDiagnostics.setPerkLevel(character, perk, level)
                 perkFactoryPZ.convertLevelToXp(perk, level_)
     end
 
-    characterPz.addXP_PZ(character, perk, convertLevelToXp, false, false, true)
+    characterPz.addXP_PZ(character, perk, convertLevelToXp, true,false, false)
 end
 
---- **Display**
----@param displayName
+--- **Display
+---@param verbose boolean
+---@param displayName string
 ---@param i
----@param perk
----@param level
----@param xp
+---@param perk PerkFactory.Perk
+---@param level int
+---@param xp float
 ---@return void
-function DebugDiagnostics.display(displayName, i, perk, level, xp)
-    local dbg1 = perk
-    local dbg2 = level
-    local dbg3 = xp
-    print(displayName .. " " ..
-        tostring(i) .. " >> " .. tostring(perk) .. " - " ..
-        tostring(level) .. " - " .. tostring(xp) )
-    local dbg
-end
+--- - PerkFactory.Perk : zombie.characters.skills.PerkFactory.Perk
+function DebugDiagnostics.display(verbose, displayName, i, perk, level, xp)
+    local date = os.date("%H:%M:%S")
+    local dbg_perk = perk
+    local dbg_level = level
+    local dbg3_xp = xp
 
---- **Display Advanced**
----@param displayName
----@param i
----@param perk
----@param level
----@param xp
----@return void
-function DebugDiagnostics.displayAdvanced(displayName, i, perk, level, xp)
-    local dbg1 = perk
-    local dbg2 = level
-    local dbg3 = xp
+    DebugDiagnostics.printLine()
+    if verbose then
+        print(date, " ", displayName, "\n", i, " >> ",
+                type(perk), " ", perk, " - ",
+                type(level), " ", level, " - ",
+                type(xp), " ", xp)
+    else
+        print(date, " ", displayName, "\n", i, " >> ", perk, " - ", level, " - ", xp)
+    end
 
-    print(displayName .. " " ..
-        tostring(i) .. " >> " ..
-        type(perk) .. " " .. tostring(perk) .. " - " ..
-        type(level) .. " " .. tostring(level) .. " - " ..
-        type(xp) .. " " .. tostring(xp) )
+    DebugDiagnostics.printLine()
+
     local dbg
 end
 
 --- **Check Perk**
 ---@param displayName string
----@param perk_ PerkFactory.Perk
----@param perk PerkFactory.Perk
----@return void
+---@param actualPerk PerkFactory.Perk
+---@param expectedPerk PerkFactory.Perk
+---@return boolean
 --- - PerkFactory.Perk : zombie.characters.skills.PerkFactory.Perk
-function DebugDiagnostics.checkPerk(displayName, perk, perk_ )
+function DebugDiagnostics.checkPerk(displayName, actualPerk, expectedPerk)
     -- Perks.Maintenance
-    local dbg1 = perk
-    local dbg2 = perk_
+    local dbg_actualPerk = actualPerk
+    local dbg_expectedPerk = expectedPerk
 
-    if perk == perk_ then
+    if actualPerk == expectedPerk then
+
+        local character = DebugDiagnostics.characterUpdate()
+        local perkLevel = characterPz.getPerkLevel_PZ(character, actualPerk)
+        local xp = characterPz.getXp(character, actualPerk)
+
         DebugDiagnostics.printLine()
-        DebugDiagnostics.display(displayName, nil, perk, perk_, nil)
+        DebugDiagnostics.display(false, displayName, nil, actualPerk, perkLevel, xp)
         DebugDiagnostics.printLine()
         local dbg
+        return true
     end
+
+    return false
 end
 
 --- **Display CharacterObj**
@@ -317,7 +318,7 @@ end
 function DebugDiagnostics.displayCharacterObj(displayName, CharacterBaseObj)
     DebugDiagnostics.printLine()
     for i, v in pairs(CharacterBaseObj) do
-        DebugDiagnostics.display(displayName, i,
+        DebugDiagnostics.display(false, displayName, i,
                 v:getPerk(), v:getLevel(), v:getXp())
         --DbgLeleLib.displayAdvanced(displayName, i,
         --        v:getPerk(), v:getLevel(), v:getXp())
@@ -332,7 +333,7 @@ end
 function DebugDiagnostics.displayListPerks(displayName, perks_list)
     DebugDiagnostics.printLine()
     for i, v in pairs(perks_list) do
-        DebugDiagnostics.display(displayName, i, v.perk, v.level, nil)
+        DebugDiagnostics.display(false, displayName, i, v.perk, v.level, nil)
         -- DbgLeleLib.displayAdvanced(displayName, i, v.perk, v.level, nil)
         -- DBG_GetCheckPerk("DBG_GetCheckPerk", v.perk_, v.perk, _ )
     end
@@ -358,46 +359,46 @@ function DebugDiagnostics.deleteCharacter()
     local zero = 0.0
     local CharacterDeleteObj = CharacterBaseObj:new()
 
-    -- remove all Perk Boosts
+    --- **Remove all Perk Boosts**
     CharacterDeleteObj = characterLib.getAllPerks(character)
 
     for _, v in pairs(CharacterDeleteObj:getPerkDetails()) do
-        characterPz.removePerkBoost(character, v:getPerk())
+        characterPz.removeXPBoost(character, v:getPerk())
     end
 
-    -- remove Zombie Kills
+    --- **Remove Zombie Kills**
     characterPz.setZombieKills_PZ(character, characterPz.EnumNumbers.ZERO)
 
-    -- remove Hours Survived
+    --- **Remove Hours Survived**
     isoPlayerPZ.setHoursSurvived_PZ(zero)
 
-    -- remove Multiplier
+    --- **Remove all Multiplier**
     for _, v in pairs(CharacterDeleteObj:getPerkDetails()) do
         characterPz.removeMultiplier(character, v:getPerk())
     end
 
-    -- remove Calories
+    --- **Remove Calories**
     isoPlayerPZ.setCalories_PZ(zero)
 
-    -- remove Weight
+    --- **Remove Weight**
     isoPlayerPZ.setWeight_PZ(zero)
 
-    -- remove Perk Level
+    --- **Remove all Perk Level**
     for _, v in pairs(CharacterDeleteObj:getPerkDetails()) do
         characterPz.removePerkLevel(character, v:getPerk())
     end
 
-    -- remove Profession
+    --- **Remove Profession**
     characterPz.removeProfession(character)
 
-    -- remove Know Recipe
+    --- **Remove all Known Recipe**
     CharacterDeleteObj = characterLib.getKnownRecipes(character)
 
     for _, v in pairs(CharacterDeleteObj:getRecipes()) do
         characterPz.removeKnowRecipe_PZ(character, v)
     end
 
-    -- remove All Traits
+    --- **Remove all Traits**
     characterPz.removeAllTraits_PZ(character)
 
     character = DebugDiagnostics.characterUpdate()
@@ -411,44 +412,42 @@ end
 function DebugDiagnostics.createCharacter()
     local character = DebugDiagnostics.characterUpdate()
 
-    -- set profession
+    --- **Set Profession**
     characterPz.setProfession_PZ(character, DebugDiagnostics.Profession.CARPENTER)
 
-    -- set level
+    --- **Set Perk Level**
     characterPz.setPerkLevelFromXp(character, Perks.Fitness, 37500)
     characterPz.setPerkLevelFromXp(character, Perks.Strength, 37500)
     characterPz.setPerkLevelFromXp(character, Perks.Woodwork, 1275)
     characterPz.setPerkLevelFromXp(character, Perks.Maintenance, 75)
     characterPz.setPerkLevelFromXp(character, Perks.SmallBlunt, 75)
 
-    -- set boost
-    characterPz.setPerkBoost_PZ(character, Perks.Fitness, 3)
-    characterPz.setPerkBoost_PZ(character, Perks.Strength, 3)
-    characterPz.setPerkBoost_PZ(character, Perks.Woodwork, 3)
+    --- **Set XP Boost**
+    characterPz.setXPBoost(character, Perks.Axe, 3)
 
-    -- set trait
+    --- **Set Traits**
     characterPz.setTraitsPerk_PZ(character,"HardOfHearing" )
     characterPz.setTraitsPerk_PZ(character,"SlowReader" )
     characterPz.setTraitsPerk_PZ(character,"Handy" )
 
-    -- set zombie kills
+    --- **Set Zombie Kills**
     characterPz.setZombieKills_PZ(character, 15)
 
-    -- set multiplier
+    --- **Set Multiplier**
     characterPz.addXpMultiplier_PZ(character, Perks.Cooking, 1.0,
             characterPz.EnumNumbers.ONE, characterPz.EnumNumbers.ONE)
 
-    -- set recipe
+    --- **Set Known Recipe**
     local recipe = "Make Pizza"
     characterPz.addKnownRecipe(character, recipe)
 
-    -- set Hours Survived
+    --- **Set Hours Survived**
     isoPlayerPZ.setHoursSurvived_PZ(10)
 
-    -- set Calories
+    --- **Set Calories**
     isoPlayerPZ.setCalories_PZ(1500)
 
-    -- set Weight
+    --- **Set Weight**
     isoPlayerPZ.setWeight_PZ(92)
 
     character = DebugDiagnostics.characterUpdate()

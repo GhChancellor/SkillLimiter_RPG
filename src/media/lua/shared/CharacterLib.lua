@@ -6,11 +6,12 @@
 
 ---@class CharacterLib
 
+require("lib/CharacterBaseObj")
+
 local characterPz = require("lib/CharacterPZ")
-local perkFactoryPZ = require("lib/PerkFactoryPZ")
 local dataValidator = require("lib/DataValidator")
 local errHandler = require("lib/ErrHandler")
-require("lib/CharacterBaseObj")
+local perkFactoryPZ = require("lib/PerkFactoryPZ")
 
 local CharacterLib = {}
 
@@ -25,7 +26,7 @@ function CharacterLib.getTraitsPerk(character)
         return nil
     end
 
-    ---@type CharacterBaseObj
+    --  @type CharacterBaseObj
     local CharacterObj01 = CharacterBaseObj:new()
 
     ---@type List
@@ -130,7 +131,7 @@ end
 --- **Get character and get All skills/traits**
 ---@param character IsoGameCharacter
 ---
----@return CharacterBaseObj getPerkDetails() - table <PerkFactory.Perk perk, int level, float xp>
+---@return ---@param character IsoGameCharacter getPerkDetails() - table <PerkFactory.Perk perk, int level, float xp>
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 function CharacterLib.getAllPerks(character)
     if not character then
@@ -202,8 +203,8 @@ function CharacterLib.getPerksBoost(character)
 
     for _, v in pairs(CharacterObj01:getPerkDetails()) do
         ---@type int
-        local boost = characterPz.getPerkBoost_PZ(character, v:getPerk())
-        v:setBoostLevel(boost)
+        local boost = characterPz.getXPBoost(character, v:getPerk())
+        v:setXPBoost(boost)
     end
 
     return CharacterObj01

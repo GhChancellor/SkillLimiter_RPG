@@ -16,12 +16,14 @@ function CharacterBaseObj:new()
     local o = {}
     setmetatable(o, self)
     self.__index = self
-    o.profession = ""
-    o.weight = ""
     o.calories = ""
+    o.kill = ""
     o.perkDetails_LIST = {}
-    o.traits_List = {}
+    o.perk = ""
+    o.profession = ""
     o.recipes_List = {}
+    o.traits_List = {}
+    o.weight = ""
     return o
 end
 
@@ -136,4 +138,15 @@ function CharacterBaseObj:getWeight()
     return self.weight
 end
 
+--- **Set Kill**
+---@param kill int
+---@return void
+function CharacterBaseObj:setKill(kill)
+    self.kill = kill
+end
 
+--- **Get Kill**
+---@return int kill
+function CharacterBaseObj:getKill()
+    return self.kill
+end

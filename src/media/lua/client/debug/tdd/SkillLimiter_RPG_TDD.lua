@@ -41,94 +41,98 @@ end
 ---@param character IsoGameCharacter
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 local function setCurrentPerksLevel(character)
+    ---@type int
     local five = 5
+    ---@type int
     local seven = 7
+    ---@type int
     local ten = 10
+    ---@type float
     local xp = 10.0
 
     --- **Passive**
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.FITNESS, ten)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.FITNESS, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.FITNESS, xp, true, false, false)
 
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.STRENGTH, ten)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.STRENGTH, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.STRENGTH, xp, true, false, false)
 
     --- **Agility**
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.SPRINTING, five)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.SPRINTING, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.SPRINTING, xp, true, false, false)
 
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.LIGHTFOOT, five)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.LIGHTFOOT, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.LIGHTFOOT, xp, true, false, false)
 
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.NIMBLE, five)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.NIMBLE, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.NIMBLE, xp, true, false, false)
 
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.SNEAK, five)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.SNEAK, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.SNEAK, xp, true, false, false)
 
     --- **Combat**
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.AXE, five)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.AXE, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.AXE, xp, true, false, false)
 
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.LONGBLUNT, five)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.LONGBLUNT, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.LONGBLUNT, xp, true, false, false)
 
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.SMALLBLUNT, seven)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.SMALLBLUNT, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.SMALLBLUNT, xp, true, false, false)
 
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.LONGBLADE, five)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.LONGBLADE, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.LONGBLADE, xp, true, false, false)
 
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.SMALLBLADE, five)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.SMALLBLADE, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.SMALLBLADE, xp, true, false, false)
 
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.SPEAR, five)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.SPEAR, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.SPEAR, xp, true, false, false)
 
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.MAINTENANCE, seven)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.MAINTENANCE, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.MAINTENANCE, xp, true, false, false)
 
     --- **Crafting**
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.WOODWORK, ten)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.WOODWORK, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.WOODWORK, xp, true, false, false)
 
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.COOKING, five)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.COOKING, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.COOKING, xp, true, false, false)
 
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.FARMING, five)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.FARMING, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.FARMING, xp, true, false, false)
 
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.DOCTOR, five)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.DOCTOR, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.DOCTOR, xp, true, false, false)
 
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.ELECTRICITY, five)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.ELECTRICITY, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.ELECTRICITY, xp, true, false, false)
 
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.METALWELDING, five)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.METALWELDING, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.METALWELDING, xp, true, false, false)
 
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.MECHANICS, five)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.MECHANICS, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.MECHANICS, xp, true, false, false)
 
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.TAILORING, five)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.TAILORING, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.TAILORING, xp, true, false, false)
 
     --- **Firearm**
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.AIMING, five)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.AIMING, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.AIMING, xp, true, false, false)
 
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.RELOADING, five)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.RELOADING, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.RELOADING, xp, true, false, false)
 
     -- **Survivalist**
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.FISHING, five)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.FISHING, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.FISHING, xp, true, false, false)
 
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.TRAPPING, five)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.TRAPPING, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.TRAPPING, xp, true, false, false)
 
     debugDiagnostics.setPerkLevel(character, debugDiagnostics.Perks.PLANTSCAVENGING, five)
-    characterPz.addXP_PZ(character, debugDiagnostics.Perks.PLANTSCAVENGING, xp, false, false, true)
+    characterPz.addXP_PZ(character, debugDiagnostics.Perks.PLANTSCAVENGING, xp, true, false, false)
 end
 
 local function blockLevelX(character)
@@ -176,6 +180,7 @@ local function tddSkill()
     local character = debugDiagnostics.characterUpdate()
 
     --- **Passive**
+
     ---@type PerkFactory.Perk
     local perk = debugDiagnostics.Perks.FITNESS
 
@@ -451,6 +456,7 @@ local function calculateMaxSkill()
 end
 
 local function createCharacter()
+    ---@type IsoGameCharacter
     local character = debugDiagnostics.characterUpdate()
 
     debugDiagnostics.setVerbose(false)
@@ -469,81 +475,34 @@ local function createCharacter()
     debugDiagnostics.displayTest()
 end
 
----@param character IsoGameCharacter
-local function key24(character, key)
-    if key == 24 then -- <<<< o
-        print("Key = o > Display Skills \n")
-        displaySkill()
-    end
-end
-
----@param character IsoGameCharacter
-local function key34(character, key)
-    if key == 34 then -- <<<< g
-        print("Key = g > createCharacter \n")
+local function key79(character, key)
+    if key == 79 then -- <<<< numpad 1
+        print("Key = numpad 1 > createCharacter  \n")
         createCharacter()
     end
 end
 
----@param character IsoGameCharacter
-local function key35(character, key)
-    if key == 35 then -- <<< h
-        print("Key = h >  \n")
-
+local function key80(character, key)
+    if key == 80 then -- <<<< numpad 2
+        print("Key = numpad 2 > Display Skills \n")
+        displaySkill()
     end
 end
 
----@param character IsoGameCharacter
-local function key36(character, key)
-    if key == 36 then -- <<<< j
-        print("Key = j addXP_PZ >  \n")
-
-    end
-end
-
----@param character IsoGameCharacter
-local function key37(character, key)
-    if key == 37 then -- <<<< k
-        print("Key = k >   \n")
-
-    end
-end
-
----@param character IsoGameCharacter
-local function key17(character, key)
-    if key == 17 then -- <<<< w
-        print("Key = w >   \n")
-
-    end
-end
-
----@param character IsoGameCharacter
-local function key18(character, key)
-    if key == 18 then -- <<<< e
-        print("Key = e >  \n")
-
-    end
-end
-
----@param character IsoGameCharacter
-local function key16(character, key)
-    if key == 16 then -- <<<< q
-        print("Key = q > kill Character \n")
+local function key73(character, key)
+    if key == 73 then -- <<<< numpad 9
+        print("Key = numpad 9 > kill Character \n")
         character:die()
     end
 end
 
 local function onCustomUIKeyPressed(key)
+    ---@type IsoGameCharacter
     local character = getPlayer()
 
-    --key16(character, key) -- q kill character
-    --key17(character, key) -- w
-    --key18(character, key) -- e
-    --key24(character, key) -- o display skills
-    key34(character, key) -- g createCharacter
-    --key35(character, key) -- h
-    --key36(character, key) -- j
-    --key37(character, key) -- k
+    key79(character, key) -- numpad 1 createCharacter
+    key80(character, key) -- numpad 2 display skills
+    key73(character, key) -- numpad 9 kill Character
 end
 
 Events.OnCustomUIKeyPressed.Add(onCustomUIKeyPressed)

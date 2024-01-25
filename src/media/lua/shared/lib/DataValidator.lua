@@ -15,6 +15,23 @@ function DataValidator.trunkFloatTo2Decimal(value)
     return tonumber(string.format("%.2f", value)) + 0.0
 end
 
+--- **Validate Table Value**
+---@param table table
+---@param key string
+---@param value any
+---@return boolean
+function DataValidator.validateTableValue( table, key, value)
+    local success, error = pcall(function()
+        table[key] = value
+    end)
+
+    if not success then
+        return false
+    end
+
+    return true
+end
+
 --- **Is String**
 ---@param value string
 ---@return boolean
@@ -25,6 +42,18 @@ function DataValidator.isString(value)
 
     return true
 end
+
+--- **Is Character**
+---@param character IsoGameCharacter
+---@return boolean
+function DataValidator.isCharacter(character)
+    if not instanceof(character, "IsoGameCharacter") then
+        return false
+    end
+
+    return true
+end
+
 
 --- **Is Number**
 ---@param value number

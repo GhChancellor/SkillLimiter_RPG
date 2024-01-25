@@ -38,6 +38,7 @@ function SkillLimiter.initCharacter()
     ---@type table
     local characterMaxSkillTable -- = {}
 
+    --- **Check if ModData exists**
     if modDataManager.isExists(characterMaxSkillModData) then
 
         --- **Read ModData, get all stats of the character**
@@ -73,7 +74,7 @@ end
 ---@param character IsoGameCharacter
 ---@return void
 local function OnCharacterDeath(character)
-    --- **kill player**
+    --- **Kill player**
     if getPlayer():isDead() then
         --- **Delete ModData**
         modDataManager.remove(characterMaxSkillModData)
@@ -89,18 +90,21 @@ end
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 --- - PerkFactory.Perk : zombie.characters.skills.PerkFactory.Perk
 local function AddXP(character, perk, level)
+    --- **Check if character is null**
     if not character then
         errHandler.errMsg("SkillLimiter.AddXP(character, perk, level)",
                 errHandler.err.IS_NULL_CHARACTERS)
         return nil
     end
 
+    --- **Check if perk is null**
     if not perk then
         errHandler.errMsg("SkillLimiter.AddXP(character, perk, level)",
                 errHandler.err.IS_NULL_PERK)
         return nil
     end
 
+    --- **Check if CreateCharacterMaxSkillObj is null**
     if not CreateCharacterMaxSkillObj then
         errHandler.errMsg("SkillLimiter.AddXP(character, perk, level)",
                 " CreateCharacterMaxSkillObj " .. errHandler.err.IS_NULL)

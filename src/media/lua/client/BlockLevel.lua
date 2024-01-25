@@ -21,24 +21,28 @@ local BlockLevel = {}
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 --- - PerkFactory : zombie.characters.skills.PerkFactory
 function BlockLevel.blockLevel(character, perk, currentPerkLevel, maxLevel)
+    --- **Check if character is null**
     if not character then
         errHandler.errMsg("BlockLevel.blockLevel(character, perk, currentPerkLevel, maxLevel)",
                 errHandler.err.IS_NULL_CHARACTERS)
         return nil
     end
 
+    --- **Check if perk is null**
     if not perk then
         errHandler.errMsg("BlockLevel.blockLevel(character, perk, currentPerkLevel, maxLevel)",
                 errHandler.err.IS_NULL_PERK)
         return nil
     end
 
+    --- **Check if currentPerkLevel is null**
     if not currentPerkLevel then
         errHandler.errMsg("BlockLevel.blockLevel(character, perk, currentPerkLevel, maxLevel)",
                 " currentPerkLevel " .. errHandler.err.IS_NULL)
         return nil
     end
 
+    --- **Check if maxLevel is null**
     if not maxLevel then
         errHandler.errMsg("BlockLevel.blockLevel(character, perk, currentPerkLevel, maxLevel)",
                 " maxLevel " .. errHandler.err.IS_NULL)
@@ -62,7 +66,7 @@ function BlockLevel.blockLevel(character, perk, currentPerkLevel, maxLevel)
         return
     end
 
-    characterPz.addXP_PZ(character, perk, totalXp, false, false, true)
+    characterPz.addXP_PZ(character, perk, totalXp, true, false, false)
 end
 
 ---Calculate Block Level

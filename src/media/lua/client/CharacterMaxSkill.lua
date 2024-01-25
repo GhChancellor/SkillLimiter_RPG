@@ -20,12 +20,14 @@ local CharacterMaxSkill = {}
 ---@param levelCurrentPerk int
 ---@return int
 function CharacterMaxSkill.getRulePerk(levelCurrentPerk)
+    -- **Check if levelCurrentPerk is null**
     if not levelCurrentPerk then
         errHandler.errMsg("CharacterMaxSkill.getCharacterMaxLevelPerkObj(levelCurrentPerk)",
                 "levelCurrentPerk " .. errHandler.err.IS_NULL)
         return nil
     end
 
+    ---@type int
     local result
 
     if levelCurrentPerk == characterPz.EnumNumbers.ZERO then -- 0
@@ -45,12 +47,14 @@ end
 ---@param combatCurrentPerk int
 ---@return int Combat Max Level
 function CharacterMaxSkill.getRuleCombat(combatCurrentPerk)
+    -- **Check if combatCurrentPerk is null**
     if not combatCurrentPerk then
         errHandler.errMsg("CharacterMaxSkill.getCharacterMaxLevelCombatObj(combatCurrentPerk)",
                 "combatCurrentPerk " .. errHandler.err.IS_NULL)
         return nil
     end
 
+    ---@type int
     local result
 
     if combatCurrentPerk == characterPz.EnumNumbers.ZERO then -- 0
@@ -68,6 +72,7 @@ end
 ---@param levelCurrentPerk int
 ---@return int
 function CharacterMaxSkill.getRuleProfession(levelCurrentPerk)
+    -- **Check if levelCurrentPerk is null**
     if not levelCurrentPerk then
         errHandler.errMsg("CharacterMaxSkill.getCharacterProfessionMaxLevel(levelCurrentPerk)",
                 "levelCurrentPerk " .. errHandler.err.IS_NULL)
@@ -82,12 +87,13 @@ end
 ---@return CharacterBaseObj getPerkDetails() PerkFactory.Perk perk, int currentlevel, int maxlevel, string grou
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 function CharacterMaxSkill.getCreateMaxSkill(character)
+    --- **Check if character is null**
     if not character then
         errHandler.errMsg("CharacterMaxSkill.getCreateMaxSkill(character)",
                 errHandler.err.IS_NULL_CHARACTER)
         return nil
     end
-
+    -- @type CharacterBaseObj
     local CharacterBaseObj01 = CharacterBaseObj:new()
 
     ---@type table - PerkFactory.Perk perk, int currentlevel, int maxlevel, string group
@@ -117,9 +123,13 @@ function CharacterMaxSkill.getCreateMaxSkill(character)
             PerkDetailsObj01:setMaxLevel(CharacterMaxSkill.getRulePerk(0))
         end
 
+        --- **Set Perk Details**
         PerkDetailsObj01:setPerk(perk)
+        --- **Set Current XP**
         PerkDetailsObj01:setXp(characterPz.getXp(character, perk))
+        --- **Set Current Level**
         PerkDetailsObj01:setCurrentLevel(value.currentLevel)
+        --- **Save Perk Details**
         CharacterBaseObj01:savePerkDetails(PerkDetailsObj01)
     end
 
