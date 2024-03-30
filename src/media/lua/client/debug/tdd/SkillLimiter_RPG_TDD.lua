@@ -477,7 +477,7 @@ end
 
 local function key79(character, key)
     if key == 79 then -- <<<< numpad 1
-        print("Key = numpad 1 > createCharacter  \n")
+        print("Key = numpad 1 > Skill SkillLimiter TDD  \n")
         createCharacter()
     end
 end
@@ -500,7 +500,7 @@ local function onCustomUIKeyPressed(key)
     ---@type IsoGameCharacter
     local character = getPlayer()
 
-    key79(character, key) -- numpad 1 createCharacter
+    key79(character, key) -- numpad 1 Skill SkillLimiter TDD
     key80(character, key) -- numpad 2 display skills
     key73(character, key) -- numpad 9 kill Character
 end

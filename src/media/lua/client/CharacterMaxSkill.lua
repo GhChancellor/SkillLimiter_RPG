@@ -93,6 +93,7 @@ function CharacterMaxSkill.getCreateMaxSkill(character)
                 errHandler.err.IS_NULL_CHARACTER)
         return nil
     end
+
     -- @type CharacterBaseObj
     local CharacterBaseObj01 = CharacterBaseObj:new()
 

@@ -14,16 +14,6 @@ local modDataManager = require("lib/ModDataManager")
 local function AddXP(character, perk, level)
     -- TODO: Remove this debug
 
-    if debugDiagnostics.checkPerk("COOKING > ",
-            perk, debugDiagnostics.Perks.COOKING ) then
-        local dbg
-    end
-
-    if debugDiagnostics.checkPerk("WOODWORK > ",
-            perk, debugDiagnostics.Perks.WOODWORK ) then
-        local dbg
-    end
-
     debugDiagnostics.printLine()
     print("Current Perk", perk)
     debugDiagnostics.printLine()
@@ -35,8 +25,9 @@ end
 ---@param character IsoGameCharacter
 local function key82(character, key)
     if key == 82 then -- <<<< numpad 0
-        print("Key = numpad 0 >  \n")
-
+        print("Key = numpad 0 > Create Basic Character  \n")
+        debugDiagnostics.deleteCharacter()
+        debugDiagnostics.createBasicCharacter()
     end
 end
 
@@ -88,6 +79,14 @@ local function key72(character, key)
     end
 end
 
+---@param character IsoGameCharacter
+local function key73(character, key)
+    if key == 73 then -- <<<< numpad 9
+        print("Key = numpad 9 > kill Character \n")
+        character:die()
+    end
+end
+
 local function onCustomUIKeyPressed(key)
     ---@type IsoGameCharacter
     local character = getPlayer()
@@ -99,8 +98,8 @@ local function onCustomUIKeyPressed(key)
     key77(character, key) -- numpad 6
     key71(character, key) -- numpad 7
     key72(character, key) -- numpad 8
-
+    key73(character, key) -- numpad 9
 end
 
---Events.AddXP.Add(AddXP)
---Events.OnCustomUIKeyPressed.Add(onCustomUIKeyPressed)
+Events.AddXP.Add(AddXP)
+Events.OnCustomUIKeyPressed.Add(onCustomUIKeyPressed)

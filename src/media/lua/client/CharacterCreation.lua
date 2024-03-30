@@ -10,7 +10,7 @@ require("lib/CharacterBaseObj")
 
 local characterLib = require("CharacterLib")
 local debugDiagnostics = require("lib/DebugDiagnostics")
-local errHandler = require("lib/ErrorHandler")
+local errHandler = require("lib/ErrHandler")
 local group = require("Group")
 local perkFactoryPZ = require("lib/PerkFactoryPZ")
 

@@ -49,6 +49,7 @@ function BlockLevel.blockLevel(character, perk, currentPerkLevel, maxLevel)
         return nil
     end
 
+    ---@type float
     local convertLevelToXp_ = 0.0
 
     if currentPerkLevel >= maxLevel then
@@ -59,6 +60,7 @@ function BlockLevel.blockLevel(character, perk, currentPerkLevel, maxLevel)
         end
     end
 
+    ---@type float
     local totalXp = ( convertLevelToXp_ -
             characterPz.getXp(character, perk))
 
@@ -77,18 +79,21 @@ end
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 --- - PerkFactory.Perk : zombie.characters.skills.PerkFactory.Perk
 function BlockLevel.calculateBlockLevel(character, CreateCharacterMaxSkillObj, perk)
+    --- **Check if character is nil**
     if not character then
         errHandler.errMsg("BlockLevel.calculateBlockLevel(character, CreateCharacterMaxSkillObj, perk)",
                 errHandler.err.IS_NULL_CHARACTERS)
         return nil
     end
 
+    --- **Check if CreateCharacterMaxSkillObj is nil**
     if not CreateCharacterMaxSkillObj then
         errHandler.errMsg("BlockLevel.calculateBlockLevel(character, CreateCharacterMaxSkillObj, perk)",
                 " CreateCharacterMaxSkillObj " .. errHandler.err.IS_NULL)
         return nil
     end
 
+    --- **Check if perk is nil**
     if not perk then
         errHandler.errMsg("BlockLevel.calculateBlockLevel(character, CreateCharacterMaxSkillObj, perk)",
                 errHandler.err.IS_NULL_PERK)
@@ -119,18 +124,21 @@ end
 --- - IsoGameCharacter : zombie.characters.IsoGameCharacter
 --- - PerkFactory.Perk : zombie.characters.skills.PerkFactory.Perk
 function BlockLevel.checkLevelMax(character, perk, CreateCharacterMaxSkillObj)
+    --- **Check if character is nil**
     if not character then
         errHandler.errMsg("BlockLevel.checkLevelMax(character, perk, CreateCharacterMaxSkillObj)",
                 errHandler.err.IS_NULL_CHARACTERS)
         return nil
     end
 
+    --- **Check if perk is nil**
     if not perk then
         errHandler.errMsg("BlockLevel.checkLevelMax(character, perk, CreateCharacterMaxSkillObj)",
                 errHandler.err.IS_NULL_PERK)
         return nil
     end
 
+    --- **Check if CreateCharacterMaxSkillObj is nil**
     if not CreateCharacterMaxSkillObj then
         errHandler.errMsg("BlockLevel.checkLevelMax(character, perk, CreateCharacterMaxSkillObj)",
                 " CreateCharacterMaxSkillObj " .. errHandler.err.IS_NULL)
